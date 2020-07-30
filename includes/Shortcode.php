@@ -138,19 +138,19 @@ class Shortcode {
             $atts = array();
         }
         // translate new attributes
-        if ( isset( $atts['glossary'] ) ){
-            $parts = explode( ' ', $atts['glossary'] );
+        if ( isset( $atts['register'] ) ){
+            $parts = explode( ' ', $atts['register'] );
             foreach( $parts as $part ){
                 $part = trim( $part );
                 switch ( $part ){
                     case 'category':
                     case 'tag':
-                        $atts['glossary'] = $part;
+                        $atts['register'] = $part;
                     break;
                     case 'a-z':
                     case 'tabs':
                     case 'tagcloud':
-                        $atts['glossarystyle'] = $part;
+                        $atts['registerstyle'] = $part;
                     break;
                 }
 
@@ -167,8 +167,8 @@ class Shortcode {
                         $atts['hide_accordeon'] = TRUE;
                     break;
                     break;
-                    case 'glossary':
-                        $atts['glossarystyle'] = '';
+                    case 'register':
+                        $atts['registerstyle'] = '';
                     break;
                 }
             }
@@ -224,11 +224,11 @@ class Shortcode {
         extract( $atts );
         $content = '';
         $schema = '';
-        $glossarystyle  = ( isset( $glossarystyle ) ? $glossarystyle : '' );
+        $registerstyle  = ( isset( $registerstyle ) ? $registerstyle : '' );
         $hide_title = ( isset( $hide_title ) ? $hide_title : FALSE );        
         $color = ( isset( $color ) ? $color : '' );
-        if ( $glossary && ( array_key_exists( $glossary, $this->settings['glossary']['values'] ) == FALSE )){
-            return __( 'Attribute glossary is not correct. Please use either glossary="category" or glossary="tag".', 'rrze-glossary' );
+        if ( $register && ( array_key_exists( $register, $this->settings['register']['values'] ) == FALSE )){
+            return __( 'Attribute register is not correct. Please use either register="category" or register="tag".', 'rrze-glossary' );
         }
         if ( array_key_exists( $color, $this->settings['color']['values'] ) == FALSE ){
             return __( 'Attribute color is not correct. Please use either \'medfak\', \'natfak\', \'rwfak\', \'philfak\' or \'techfak\'', 'rrze-glossary' );
@@ -246,11 +246,11 @@ class Shortcode {
             }
             $found = FALSE;
             $accordion = '[collapsibles' . $expand_all_link . ']';
-            foreach ( $aIDs as $glossaryID ){
-                $glossaryID = trim( $glossaryID );
-                if ( $glossaryID ){
-                    $title = get_the_title( $glossaryID );
-                    $description = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content',  get_post_field( 'post_content', $glossaryID ) ) );
+            foreach ( $aIDs as $registerID ){
+                $registerID = trim( $registerID );
+                if ( $registerID ){
+                    $title = get_the_title( $registerID );
+                    $description = str_replace( ']]>', ']]&gt;', apply_filters( 'the_content',  get_post_field( 'post_content', $registerID ) ) );
                     if ( !isset( $description ) || ( mb_strlen( $description ) < 1)) {
                         $description = get_post_meta( $id, 'description', true );
                     }
@@ -258,8 +258,8 @@ class Shortcode {
                         $content .= ( $hide_title ? '' : '<h2>' . $title . '</h2>' ) . ( $description ? '<p>' . $description . '</p>' : '' );
                     } else {
                         if ( $description) {
-                            $accordion .= '[collapse title="' . $title . '" color="' . $color . '" name="ID-' . $glossaryID . '"' . $load_open . ']' . $description . '[/collapse]';
-                            $schema .= $this->getSchema( $glossaryID, $title, $description );
+                            $accordion .= '[collapse title="' . $title . '" color="' . $color . '" name="ID-' . $registerID . '"' . $load_open . ']' . $description . '[/collapse]';
+                            $schema .= $this->getSchema( $registerID, $title, $description );
                         }    
                     }        
                     $found = TRUE;
@@ -306,8 +306,8 @@ class Shortcode {
             $posts = get_posts( $postQuery );
 
             if ( $posts ){
-                if ( $glossary ){
-                    // attribut glossary is given
+                if ( $register ){
+                    // attribut register is given
                     // get all used tags or categories
                     $aUsedTerms = array();
                     $aPostIDs = array();
@@ -315,7 +315,7 @@ class Shortcode {
                         // get all tags for each post
                         $aTermIds = array();
                         $valid_term_ids = array();
-                        if ( $glossary == 'category' && $category ){
+                        if ( $register == 'category' && $category ){
                             if ( !is_array( $category ) ){
                                 $aCats = array_map( 'trim', explode( ',', $category ) );                
                             }else{
@@ -327,7 +327,7 @@ class Shortcode {
                                     $valid_term_ids[] = $filter_term->term_id;
                                 } 
                             }
-                        } elseif ( $glossary == 'tag' && $tag ){
+                        } elseif ( $register == 'tag' && $tag ){
                             if ( !is_array( $tag ) ){
                                 $aTags = array_map( 'trim', explode( ',', $tag ) );                
                             }else{
@@ -340,7 +340,7 @@ class Shortcode {
                                 } 
                             }
                         }     
-                        $terms = wp_get_post_terms( $post->ID, 'glossary_' . $glossary );
+                        $terms = wp_get_post_terms( $post->ID, 'glossary_' . $register );
                         if ( $terms ){
                             foreach( $terms as $t ){
                                 if ( $valid_term_ids && in_array( $t->term_id, $valid_term_ids ) === FALSE ){
@@ -357,7 +357,7 @@ class Shortcode {
                     ksort( $aUsedTerms );
                     $anchor = 'ID';
                     if ( $aLetters ){
-                        switch( $glossarystyle ){
+                        switch( $registerstyle ){
                             case 'a-z': 
                                 $content = $this->createAZ( $aLetters );
                                 $anchor = 'letter';
@@ -373,7 +373,7 @@ class Shortcode {
                     $accordion = '[collapsibles' . $expand_all_link . ']';
                     $last_anchor = '';
                     foreach ( $aUsedTerms as $k => $aVal ){
-                        if ( $glossarystyle == 'a-z' && $content ){
+                        if ( $registerstyle == 'a-z' && $content ){
                             $accordion_anchor = '';
                             $accordion .= ( $last_anchor != $aVal[$anchor] ? '<h2 id="' . $anchor . '-' . $aVal[$anchor] . '">' . $aVal[$anchor] . '</h2>' : '' );
                         } else {
@@ -408,7 +408,7 @@ class Shortcode {
 
                     $content .= do_shortcode( $accordion );
                 } else {  
-                    // attribut glossary is not given  
+                    // attribut register is not given  
                     if ( !$hide_accordeon ){
                         $accordion = '[collapsibles' . $expand_all_link . ']';
                     }           
@@ -426,7 +426,7 @@ class Shortcode {
                         if ( !$hide_accordeon ){
                             $accordion_anchor = '';
                             $accordion_anchor = 'name="ID-' . $post->ID . '"';
-                            if ( $glossarystyle == 'a-z' && count( $posts) > 1 ){
+                            if ( $registerstyle == 'a-z' && count( $posts) > 1 ){
                                 $accordion .= ( $last_anchor != $letter ? '<h2 id="letter-' . $letter . '">' . $letter . '</h2>' : '' );
                             }
                             $accordion .= '[collapse title="' . $title . '" color="' . $color . '" ' . $accordion_anchor . $load_open . ']' . $tmp . '[/collapse]';               
@@ -492,7 +492,7 @@ class Shortcode {
         }
 
         // fill select id ( = glossary )
-        $glossarys = get_posts( array(
+        $registers = get_posts( array(
             'posts_per_page'  => -1,
             'post_type' => 'glossary',
             'orderby' => 'title',
@@ -504,8 +504,8 @@ class Shortcode {
         $this->settings['id']['type'] = 'array';
         $this->settings['id']['items'] = array( 'type' => 'number' );
         $this->settings['id']['values'][0] = __( '-- all --', 'rrze-glossary' );
-        foreach ( $glossarys as $glossary){
-            $this->settings['id']['values'][$glossary->ID] = str_replace( "'", "", str_replace( '"', "", $glossary->post_title ) );
+        foreach ( $registers as $register){
+            $this->settings['id']['values'][$register->ID] = str_replace( "'", "", str_replace( '"', "", $register->post_title ) );
         }
 
         return $this->settings;
