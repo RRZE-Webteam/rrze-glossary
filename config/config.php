@@ -173,7 +173,7 @@ function getShortcodeSettings(){
             'show_block' => 'content',
 			'message' => __( 'Find the settings on the right side', 'rrze-glossary' )
 		],
-        'glossary' => [
+        'register' => [
 			'values' => [
 				'' => __( 'none', 'rrze-glossary' ),
 				'category' => __( 'Categories', 'rrze-glossary' ),
@@ -181,10 +181,10 @@ function getShortcodeSettings(){
 			],
 			'default' => '',
 			'field_type' => 'select',
-			'label' => __( 'Glossary content', 'rrze-glossary' ),
+			'label' => __( 'Register content', 'rrze-glossary' ),
 			'type' => 'string'
 		],
-        'glossarystyle' => [
+        'registerstyle' => [
 			'values' => [
 				'' => __( '-- hidden --', 'rrze-glossary' ),
 				'a-z' => __( 'A - Z', 'rrze-glossary' ),
@@ -193,7 +193,7 @@ function getShortcodeSettings(){
 			],
 			'default' => 'a-z',
 			'field_type' => 'select',
-			'label' => __( 'Glossary style', 'rrze-glossary' ),
+			'label' => __( 'Register style', 'rrze-glossary' ),
 			'type' => 'string'
 		],
 		'category' => [

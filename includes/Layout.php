@@ -15,7 +15,6 @@ class Layout {
     public function __construct() {
         
         add_filter( 'pre_get_posts', [$this, 'makeGlossarySortable'] );
-        add_filter( 'enter_title_here', [$this, 'changeTitleText'] );
         // show content in box if not editable ( = source is not "website" )
         add_action( 'admin_menu', [$this, 'toggleEditor'] );
         // Table "All glossaries"
@@ -108,13 +107,6 @@ class Layout {
         echo $ret;
     }
 
-    public function changeTitleText( $title ){
-        $screen = get_current_screen();
-        if  ( $screen->post_type == 'glossary' ) {
-             $title = __( 'Enter question here', 'rrze-glossary' );
-        }         
-        return $title;
-    }
 
     public function toggleEditor(){
         $post_id = ( isset( $_GET['post'] ) ? $_GET['post'] : ( isset ( $_POST['post_ID'] ) ? $_POST['post_ID'] : 0 ) ) ;
