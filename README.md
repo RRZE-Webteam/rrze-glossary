@@ -19,7 +19,7 @@ Das Plugin kann genutzt werden, um Glossar-Einträge zu erstellen und Glossar-Ei
 
 ```html
 [glossary 
-group=".." 
+register=".." 
 category=".."  
 tag=".." 
 id=".."

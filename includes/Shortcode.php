@@ -25,8 +25,7 @@ class Shortcode {
         $this->settings = getShortcodeSettings();
         add_action( 'init',  [$this, 'initGutenberg'] );
         add_shortcode( 'glossary', [ $this, 'shortcodeOutput' ], 10, 2 );
-        // add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ], 10, 2 ); // BK 2020-06-05 Shortcode [fau_glossar ...] wird in eigenes Plugin rrze-glossary ausgelagert, weil aus historischen Gründen inkompatibler Code in FAU-Einrichtungen besteht, was beim Umbau von rrze-glossary nicht bekannt war
-        // add_shortcode( 'glossary', [ $this, 'shortcodeOutput' ], 10, 2 ); // BK 2020-06-05 Shortcode [glossary ...] wird in eigenes Plugin rrze-glossary ausgelagert, weil aus historischen Gründen inkompatibler Code in FAU-Einrichtungen besteht, was beim Umbau von rrze-glossary nicht bekannt war
+        add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ], 10, 2 );
     }
 
     /**
