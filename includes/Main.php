@@ -83,7 +83,7 @@ class Main {
                     $aRet = $api->setDomain( $options['doms_new_name'], $options['doms_new_url'], $domains );
 
                     if ( $aRet['status'] ){
-                        // url is correct, RRZE-Synonym at given url is in use and shortname is new
+                        // url is correct, RRZE-Glossary at given url is in use and shortname is new
                         $domains[$aRet['ret']['cleanShortname']] = $aRet['ret']['cleanUrl'];
                     }else{
                         add_settings_error( 'doms_new_url', 'doms_new_error', $aRet['ret'], 'error' );        
