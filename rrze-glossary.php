@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Glossary
 Plugin URI:      https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary
 Description:     Plugin, um Glossar-Einträge zu erstellen, aus dem FAU-Netzwerk zu synchronisieren und mittels Shortcode oder als Block (Gutenberg Editor) einzubinden.  
-Version:         1.0.4
+Version:         1.0.5
 Author:          RRZE Webteam
 Author URI:      https://blogs.fau.de/webworking/
 License:         GNU General Public License v3
@@ -96,6 +96,27 @@ function system_requirements()
     return $error;
 }
 
+function addMetadata(){
+    $postIds = get_posts(
+        ['post_type' => 'glossary', 
+        'nopaging' => true, 
+        'fields' => 'ids'
+        ]
+    );
+
+    $lang = substr( get_locale(), 0, 2);
+
+    foreach( $postIds as $postID ){
+        if (metadata_exists('post', $postID, 'source') === false){
+            update_post_meta( $postID, 'source', 'website' );        
+            update_post_meta( $postID, 'remoteID', $postID );
+            update_post_meta( $postID, 'lang', $lang );
+            $remoteChanged = get_post_timestamp( $postID, 'modified' );
+            update_post_meta( $postID, 'remoteChanged', $remoteChanged );
+        }
+    }    
+}
+
 /**
  * Wird durchgeführt, nachdem das Plugin aktiviert wurde.
  */
@@ -113,6 +134,11 @@ function activation() {
     // Ab hier können die Funktionen hinzugefügt werden,
     // die bei der Aktivierung des Plugins aufgerufen werden müssen.
     // Bspw. wp_schedule_event, flush_rewrite_rules, etc.
+    // Einmaliger Aufruf: vom alten Plugin oder Fallback vom Theme gespeicherte Daten zum CPT "glossary" um Metadaten ergaenzen, damit rrze-glossary (version >= 2.0) funktioniert:
+    if ( get_option( 'rrze-glossary-metadata' ) != 'added' ) {
+        addMetadata();
+        update_option( 'rrze-glossary-metadata', 'added' );
+    }
 }
 
 /**

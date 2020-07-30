@@ -49,7 +49,7 @@ class CPT {
                 'show_in_menu'        => true,
                 'show_in_nav_menus'   => false,
                 'show_in_admin_bar'   => true,
-                'menu_icon'		  => 'dashicons-editor-book',
+                'menu_icon'		      => 'dashicons-book-alt',
                 'can_export'          => true,
                 'has_archive'         => true,
                 'exclude_from_search' => true,
