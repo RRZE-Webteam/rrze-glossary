@@ -76,18 +76,17 @@ class Main {
         $options = array_merge(get_option( 'rrze-glossary' ), $options);
         $tab = ( isset($_GET['glossarydoms'] ) ? 'doms' : ( isset( $_GET['glossarysync'] ) ? 'sync' : ( isset( $_GET['glossarydel'] ) ? 'del' : '' ) ) );
 
-
         switch ( $tab ){
             case 'doms':
-                if ( $options['doms_new_name'] && $options['doms_new_url'] ){
+                if ( $options['glossarydoms_new_name'] && $options['glossarydoms_new_url'] ){
                     // add new domain
-                    $aRet = $api->setDomain( $options['doms_new_name'], $options['doms_new_url'], $domains );
-
+                    $aRet = $api->setDomain( $options['glossarydoms_new_name'], $options['glossarydoms_new_url'], $domains );
+                    
                     if ( $aRet['status'] ){
                         // url is correct, RRZE-Glossary at given url is in use and shortname is new
                         $domains[$aRet['ret']['cleanShortname']] = $aRet['ret']['cleanUrl'];
                     }else{
-                        add_settings_error( 'doms_new_url', 'doms_new_error', $aRet['ret'], 'error' );        
+                        add_settings_error( 'glossarydoms_new_url', 'glossarydoms_new_error', $aRet['ret'], 'error' );        
                     }
                 } else {
                     // delete domain(s)
@@ -121,8 +120,8 @@ class Main {
         // we don't need these temporary fields to be stored in database table options
         // domains are stored as shortname and url in registeredDomains
         // categories and donotsync are stored in glossarysync_categories_<SHORTNAME> and glossarysync_donotsync_<SHORTNAME>
-        unset($options['doms_new_name']);
-        unset($options['doms_new_url']);
+        unset($options['glossarydoms_new_name']);
+        unset($options['glossarydoms_new_url']);
         unset($options['glossarysync_shortname']);
         unset($options['glossarysync_url']);
         unset($options['glossarysync_categories']);
