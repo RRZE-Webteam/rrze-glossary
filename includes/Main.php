@@ -40,8 +40,8 @@ class Main {
     public function onLoaded() {
         add_action( 'wp_enqueue_scripts', [$this, 'enqueueScripts'] );
         // Actions: sync, add domain, delete domain, delete logfile
-        add_action( 'update_option_rrze-synonym', [$this, 'checkSync'] );
-        add_filter( 'pre_update_option_rrze-synonym',  [$this, 'switchTask'], 10, 1 );
+        add_action( 'update_option_rrze-glossary', [$this, 'checkSync'] );
+        add_filter( 'pre_update_option_rrze-glossary',  [$this, 'switchTask'], 10, 1 );
 
         $cpt = new CPT(); 
 
@@ -74,10 +74,11 @@ class Main {
 
         // get stored options because they are generated and not defined in config.php
         $options = array_merge(get_option( 'rrze-glossary' ), $options);
-        $tab = ( isset($_GET['glossarydoms'] ) ? 'glossarydoms' : ( isset( $_GET['sync'] ) ? 'sync' : ( isset( $_GET['del'] ) ? 'del' : '' ) ) );
+        $tab = ( isset($_GET['glossarydoms'] ) ? 'doms' : ( isset( $_GET['glossarysync'] ) ? 'sync' : ( isset( $_GET['glossarydel'] ) ? 'del' : '' ) ) );
+
 
         switch ( $tab ){
-            case 'glossarydoms':
+            case 'doms':
                 if ( $options['doms_new_name'] && $options['doms_new_url'] ){
                     // add new domain
                     $aRet = $api->setDomain( $options['doms_new_name'], $options['doms_new_url'], $domains );

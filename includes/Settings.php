@@ -287,7 +287,7 @@ class Settings {
             }
             $btn_label = '';
             $get = '';
-            
+
             switch ( $this->currentTab ) {
                 case 'glossarysync':                    
                     $get = '?sync';
@@ -331,7 +331,7 @@ class Settings {
 
         if ( count($aDomains) > 0 ){
             $i = 1;
-            echo '<style> .settings_page_rrze-synonym #log .form-table th {width:0;}</style>';
+            echo '<style> .settings_page_rrze-glossary #log .form-table th {width:0;}</style>';
             echo '<table class="wp-list-table widefat striped"><thead><tr><th colspan="3">Domains:</th></tr></thead><tbody>';
             foreach ( $aDomains as $name => $url ){
                 echo '<tr><td><input type="checkbox" name="del_domain_' . $i . '" value="' . $url . '"></td><td>'. $name . '</td><td>'. $url . '</td></tr>';
@@ -935,7 +935,7 @@ class Settings {
         if ( file_exists( $args['default'] ) ) {
             $lines = file( $args['default'] );
             if ( $lines !== false ) {
-                echo '<style> .settings_page_rrze-synonym #glossarylog .form-table th {width:0;}</style><table class="wp-list-table widefat striped"><tbody>';
+                echo '<style> .settings_page_rrze-glossary #glossarylog .form-table th {width:0;}</style><table class="wp-list-table widefat striped"><tbody>';
                 foreach ( $lines as $line ){
                     echo '<tr><td>' . $line . '</td></tr>';
                 }
