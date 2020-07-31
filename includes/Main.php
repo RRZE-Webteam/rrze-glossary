@@ -74,10 +74,10 @@ class Main {
 
         // get stored options because they are generated and not defined in config.php
         $options = array_merge(get_option( 'rrze-glossary' ), $options);
-        $tab = ( isset($_GET['doms'] ) ? 'doms' : ( isset( $_GET['sync'] ) ? 'sync' : ( isset( $_GET['del'] ) ? 'del' : '' ) ) );
+        $tab = ( isset($_GET['glossarydoms'] ) ? 'glossarydoms' : ( isset( $_GET['sync'] ) ? 'sync' : ( isset( $_GET['del'] ) ? 'del' : '' ) ) );
 
         switch ( $tab ){
-            case 'doms':
+            case 'glossarydoms':
                 if ( $options['doms_new_name'] && $options['doms_new_url'] ){
                     // add new domain
                     $aRet = $api->setDomain( $options['doms_new_name'], $options['doms_new_url'], $domains );

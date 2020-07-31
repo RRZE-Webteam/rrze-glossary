@@ -52,7 +52,7 @@ function getHelpTab() {
 function getSections() {
 	return [ 
 		[
-			'id'    => 'doms',
+			'id'    => 'glossarydoms',
 			'title' => __('Domains', 'rrze-glossary' )
 		],
 		[
@@ -73,7 +73,7 @@ function getSections() {
 
 function getFields() {
 	return [
-		'doms' => [
+		'glossarydoms' => [
 			[
 				'name' => 'new_name',
 				'label' => __('Short name', 'rrze-glossary' ),

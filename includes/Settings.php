@@ -287,14 +287,14 @@ class Settings {
             }
             $btn_label = '';
             $get = '';
-
+            
             switch ( $this->currentTab ) {
                 case 'glossarysync':                    
                     $get = '?sync';
                     break;
-                case 'doms': 
+                case 'glossarydoms': 
                     $btn_label = __('Add domain', 'rrze-glossary' );
-                    $get = '?doms';
+                    $get = '?glossarydoms';
                     break;
                 case 'glossarylog': 
                     $btn_label = __('Delete logfile', 'rrze-glossary' );
@@ -307,7 +307,7 @@ class Settings {
             settings_fields($section['id']);
             do_settings_sections($section['id']);
             submit_button( $btn_label );
-            if ( $this->currentTab == 'doms' ){
+            if ( $this->currentTab == 'glossarydoms' ){
                 $this->domainOutput();
             }            
             echo '</form>';
