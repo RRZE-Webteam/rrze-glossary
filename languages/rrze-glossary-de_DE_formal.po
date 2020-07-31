@@ -1,0 +1,548 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: RRZE Glossary\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-31 11:06+0000\n"
+"PO-Revision-Date: 2020-07-31 13:37+0000\n"
+"Last-Translator: \n"
+"Language-Team: Deutsch (Sie)\n"
+"Language: de_DE_formal\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.4.0; wp-5.4.2"
+
+#: includes/API.php:21 includes/API.php:24
+msgid " is already in use."
+msgstr " ist bereits in Verwendung."
+
+#: includes/API.php:31 includes/API.php:39
+msgid " is not valid."
+msgstr " ist nicht gültig."
+
+#: includes/Sync.php:39
+msgid " updated"
+msgstr "aktualisiert"
+
+#: includes/Shortcode.php:478 includes/Shortcode.php:506
+msgid "-- all --"
+msgstr "-- alle --"
+
+#: config/config.php:189
+msgid "-- hidden --"
+msgstr "-- versteckt --"
+
+#: config/config.php:190
+msgid "A - Z"
+msgstr ""
+
+#: includes/Layout.php:105
+msgid "Accordion with all entries"
+msgstr "Akkordeon mit allen Einträgen"
+
+#: includes/Layout.php:103
+msgid "Accordion with category"
+msgstr "Akkordeon mit Kategorie"
+
+#: includes/Layout.php:104
+msgid "Accordion with tag"
+msgstr "Akkordeon mit Schlagwort"
+
+#: includes/Settings.php:296
+msgid "Add domain"
+msgstr "Domain hinzufügen"
+
+#: includes/CPT.php:29
+msgid "Add glossary"
+msgstr "Erstellen"
+
+#: includes/CPT.php:76 includes/CPT.php:77
+msgid "Add new category"
+msgstr "Neue Kategorie erstellen"
+
+#: includes/CPT.php:30
+msgid "Add new glossary"
+msgstr "Neuen Glossar-Eintrag erstellen"
+
+#: includes/CPT.php:98 includes/CPT.php:99
+msgid "Add new tag"
+msgstr "Neues Schlagwort erstellen"
+
+#: config/config.php:261
+msgid "Additonal CSS-class(es) for sourrounding DIV"
+msgstr "Zusätzliche CSS-Klasse(n) für das umgebende DIV"
+
+#: includes/CPT.php:83
+msgid "All categories"
+msgstr "Alle Kategorien"
+
+#: includes/CPT.php:32
+msgid "All glossaries"
+msgstr "Alle Glossar-Einträge"
+
+#: config/config.php:127 config/config.php:129
+msgid ""
+"All glossaries that match to the selected categories will be updated or "
+"inserted. Already synchronized glossaries that refer to categories which are "
+"not selected will be deleted. Glossaries that have been deleted at the "
+"remote website will be deleted on this website, too."
+msgstr ""
+"Alle Glossar-Einträge, die zu den ausgewählten Kategorien passen, werden "
+"gespeichert. Bereits gespeicherte Glossar-Einträge, die zu Kategorien "
+"gehören, die nicht ausgewählt sind, werden gelöscht. Glossar-Einträge, die "
+"auf dem Fremdsystem gelöscht wurden, werden auf dieser Website ebenfalls "
+"gelöscht."
+
+#: includes/Sync.php:49
+msgid "All synchronizations completed"
+msgstr "Alle Synchronisierungen abgeschlossen"
+
+#: includes/CPT.php:105
+msgid "All tags"
+msgstr "Alle Schlagwörter"
+
+#: includes/Sync.php:39
+msgid "and"
+msgstr "und"
+
+#: config/config.php:277
+msgid "ASC"
+msgstr "aufsteigend"
+
+#: includes/Shortcode.php:234
+msgid ""
+"Attribute color is not correct. Please use either 'medfak', 'natfak', "
+"'rwfak', 'philfak' or 'techfak'"
+msgstr ""
+"Attribut color ist nicht richtig. Bitte verwenden Sie entweder 'medfak', "
+"'natfak', 'rwfak', 'philfak' oder 'techfak'"
+
+#: includes/Shortcode.php:231
+msgid ""
+"Attribute register is not correct. Please use either register=\"category\" "
+"or register=\"tag\"."
+msgstr ""
+"Das Attribut \"register\" ist nicht korrekt. Bitte benutzen Sie entweder "
+"register=\"category\" oder register=\"tag\"."
+
+#: config/config.php:107 config/config.php:179 config/config.php:202
+#: includes/Layout.php:236
+msgid "Categories"
+msgstr "Kategorien"
+
+#: includes/CPT.php:70 includes/CPT.php:75 includes/Layout.php:164
+msgid "Category"
+msgstr "Kategorie"
+
+#: includes/CPT.php:85
+msgid "Choose from the most used categories"
+msgstr "Wählen Sie aus den meistverwendeten Kategorien"
+
+#: includes/CPT.php:107
+msgid "Choose from the most used tags"
+msgstr "Wählen Sie aus den meistverwendeten Schlagwörtern"
+
+#: config/config.php:255
+msgid "Color"
+msgstr "Farbe"
+
+#: includes/Layout.php:76
+msgid "Criterion for sorting the output of the shortcode"
+msgstr "Kriterium für die Sortierung der Shortcode-Ausgabe"
+
+#: config/config.php:143
+msgid "daily"
+msgstr "täglich"
+
+#: includes/Settings.php:300
+msgid "Delete logfile"
+msgstr "Logfile löschen"
+
+#: includes/Settings.php:342
+msgid "Delete selected domains"
+msgstr "Ausgewählte Domains löschen"
+
+#: includes/Sync.php:39
+msgid "deleted"
+msgstr "gelöscht"
+
+#: config/config.php:278
+msgid "DESC"
+msgstr "absteigend"
+
+#: config/config.php:115
+msgid "Do not synchronize"
+msgstr "Nicht synchronisieren"
+
+#: includes/Sync.php:33 includes/Sync.php:39
+msgid "Domain"
+msgstr ""
+
+#: config/config.php:56
+msgid "Domains"
+msgstr ""
+
+#: includes/CPT.php:86
+msgid "Edit category"
+msgstr "Kategorie editieren"
+
+#: includes/CPT.php:31
+msgid "Edit glossary"
+msgstr "Glossar-Eintrag editieren"
+
+#: includes/CPT.php:108
+msgid "Edit tag"
+msgstr "Schlagwort editieren"
+
+#: config/config.php:80
+msgid "Enter a short name for this domain."
+msgstr "Geben Sie eine Kurzbezeichnung für diese Domain ein."
+
+#: config/config.php:86
+msgid "Enter the domain's URL you want to receive glossaries from."
+msgstr ""
+"Geben Sie die URL der Domain ein, von der Sie Glossar-Einträge beziehen "
+"möchten."
+
+#: config/config.php:174
+msgid "Find the settings on the right side"
+msgstr "Nehmen Sie die Einstellungen auf der rechten Seite vor"
+
+#: config/config.php:42
+msgid "For more information"
+msgstr "Weitere Informationen"
+
+#: config/config.php:139
+msgid "Frequency"
+msgstr "Häufigkeit"
+
+#: config/config.php:214 includes/CPT.php:28 includes/CPT.php:42
+msgid "Glossary"
+msgstr "Glossar"
+
+#: includes/CPT.php:26
+msgctxt "Glossary entries"
+msgid "Glossary"
+msgstr "Glossar-Einträge"
+
+#: includes/CPT.php:43
+msgid "Glossary informations"
+msgstr "Glossar Informationen"
+
+#: config/config.php:39
+msgid "Here comes the Context Help content."
+msgstr ""
+
+#: config/config.php:219
+msgid "Hide accordeon"
+msgstr "Ausgabe nicht in Akkordeons"
+
+#: config/config.php:226
+msgid "Hide title"
+msgstr "Ausgabe ohne Titel"
+
+#. Author URI of the plugin
+msgid "https://blogs.fau.de/webworking/"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary"
+msgstr ""
+
+#: config/config.php:267 includes/Layout.php:159 includes/Layout.php:168
+msgid "ID"
+msgstr ""
+
+#: includes/Layout.php:103
+msgid "If there is more than one category listed, use at least one of them."
+msgstr ""
+"Wenn mehrere Kategorien aufgeführt sind, nutzen Sie bitte mindestens eine "
+"davon."
+
+#: includes/Layout.php:104
+msgid "If there is more than one tag listed, use at least one of them."
+msgstr ""
+"Wenn mehrere Schlagwörter aufgeführt sind, nutzen Sie bitte mindestens eines "
+"davon."
+
+#: config/config.php:126
+msgid "Info"
+msgstr ""
+
+#. id, used as the html id att
+#: includes/Layout.php:139
+msgid "Integration in pages and posts"
+msgstr "Einfügen in Seiten und Beiträge"
+
+#: config/config.php:240
+msgid "Load website with opened accordeons"
+msgstr "Website mit geöffneten Akkordeons laden"
+
+#: config/config.php:64
+msgid "Logfile"
+msgstr "Protokoll"
+
+#: includes/Settings.php:944 includes/Settings.php:947
+msgid "Logfile is empty."
+msgstr "Logfile ist leer."
+
+#: config/config.php:133
+msgid "Mode"
+msgstr "Modus"
+
+#: includes/Sync.php:39
+msgid "new"
+msgstr "neu"
+
+#: includes/CPT.php:78
+msgid "New category"
+msgstr "Neue Kategorie"
+
+#: includes/CPT.php:100
+msgid "New tag"
+msgstr "Neues Schlagwort"
+
+#: includes/Main.php:173
+msgid "Next automatically synchronization:"
+msgstr "Nächste automatische Synchronisierung:"
+
+#: includes/CPT.php:82
+msgid "No category found"
+msgstr "Keine Kategorie gefunden"
+
+#: includes/Settings.php:373
+msgid "no category with source = \"website\" found"
+msgstr "Keine Kategorie mit Quelle = \"website\" gefunden"
+
+#: includes/CPT.php:104
+msgid "No tag found"
+msgstr "Kein Schlagwort gefunden"
+
+#: config/config.php:178
+msgid "none"
+msgstr "keine"
+
+#: config/config.php:282
+msgid "Order"
+msgstr "Reihenfolge"
+
+#: config/config.php:41
+msgid "Overview"
+msgstr "Übersicht"
+
+#: includes/Settings.php:341
+msgid ""
+"Please note: \"Delete selected domains\" will DELETE every glossary on this "
+"website that has been fetched from the selected domains."
+msgstr ""
+"Bitte beachten: \"Ausgewählte Domains löschen\" LÖSCHT alle Glossar-Einträge "
+"auf dieser Website, die von den ausgewählten Domains bezogen wurden."
+
+#: config/config.php:108
+msgid "Please select the categories you'd like to fetch glossaries to."
+msgstr ""
+"Bitte wählen Sie die Kategorien aus, zu denen Glossar-Einträge geholt werden "
+"sollen."
+
+#. Description of the plugin
+msgid ""
+"Plugin, um Glossar-Einträge zu erstellen, aus dem FAU-Netzwerk zu "
+"synchronisieren und mittels Shortcode oder als Block (Gutenberg Editor) "
+"einzubinden."
+msgstr ""
+
+#: config/config.php:184
+msgid "Register content"
+msgstr "Register Inhalt"
+
+#: config/config.php:196
+msgid "Register style"
+msgstr "Style des Registers"
+
+#: includes/Sync.php:39 includes/Sync.php:49
+msgid "Required time:"
+msgstr "Benötigte Zeit:"
+
+#. Name of the plugin
+#: config/config.php:22 config/config.php:23
+msgid "RRZE Glossary"
+msgstr ""
+
+#: config/config.php:26
+msgid "RRZE Glossary Settings"
+msgstr "RRZE Glossary Einstellungen"
+
+#. Author of the plugin
+msgid "RRZE Webteam"
+msgstr ""
+
+#: config/config.php:42
+msgid "RRZE Webteam on Github"
+msgstr ""
+
+#: includes/CPT.php:81
+msgid "Search categories"
+msgstr "Kategorien suchen"
+
+#: includes/CPT.php:33
+msgid "Search glossary"
+msgstr "Glossar-Einträge suchen"
+
+#: includes/CPT.php:103
+msgid "Search tags"
+msgstr "Schlagwörter suchen"
+
+#: includes/Sync.php:39 includes/Sync.php:49
+msgid "seconds"
+msgstr "Sekunden"
+
+#: includes/CPT.php:84
+msgid "Separate categories with commas"
+msgstr "Trennen Sie Kategorien durch Kommata"
+
+#: includes/CPT.php:106
+msgid "Separate tags with commas"
+msgstr "Trennen Sie Schlagwörter durch Kommata"
+
+#: includes/Sync.php:51
+msgid "Settings updated"
+msgstr "Einstellungen aktualisiert"
+
+#: config/config.php:79 config/config.php:93
+msgid "Short name"
+msgstr "Kurzbezeichnung"
+
+#: config/config.php:233
+msgid "Show \"expand all\" button"
+msgstr "\"Alle öffnen\" - Button anzeigen"
+
+#: includes/CPT.php:80
+msgid "Show categories"
+msgstr "Kategorien anzeigen"
+
+#: includes/CPT.php:79
+msgid "Show category"
+msgstr "Kategorie anzeigen"
+
+#: includes/CPT.php:101
+msgid "Show tag"
+msgstr "Schlagwort anzeigen"
+
+#: includes/CPT.php:102
+msgid "Show tags"
+msgstr "Schlagwörter anzeigen"
+
+#: includes/Layout.php:102
+msgid "Single entries"
+msgstr "Einzelner Eintrag"
+
+#: includes/CPT.php:27
+msgctxt "Single glossary "
+msgid "Glossary"
+msgstr "Glossar-Eintrag"
+
+#. id, used as the html id att
+#: config/config.php:272 includes/Layout.php:148
+msgid "Sort"
+msgstr "Sortierung"
+
+#: includes/Layout.php:157
+msgid "Sort criterion"
+msgstr "Sortierkriterium"
+
+#: config/config.php:268
+msgid "Sort field"
+msgstr "Sortierfeld"
+
+#: includes/Layout.php:158 includes/Layout.php:167 includes/Layout.php:198
+msgid "Source"
+msgstr "Quelle"
+
+#: includes/Sync.php:39
+msgid "Synchronization completed."
+msgstr "Synchronisierung abgeschlossen."
+
+#: includes/Sync.php:33
+msgid ""
+"Synchronization error. This glossary contains sliders ([gallery]) and cannot "
+"be synchronized:"
+msgstr ""
+"Synchronisierungsfehler. Dieser Glossar-Eintrag enthält sliders ([gallery]) "
+"und kann nicht synchronisiert werden: "
+
+#: config/config.php:60 config/config.php:114
+msgid "Synchronize"
+msgstr "Synchronisieren"
+
+#: config/config.php:134
+msgid "Synchronize automatically"
+msgstr "Automatisch synchronisieren"
+
+#: config/config.php:192
+msgid "Tabs"
+msgstr ""
+
+#: includes/CPT.php:97 includes/Layout.php:165
+msgid "Tag"
+msgstr "Schlagwort"
+
+#: config/config.php:191
+msgid "Tagcloud"
+msgstr ""
+
+#: config/config.php:180 config/config.php:208 includes/CPT.php:92
+#: includes/Layout.php:237
+msgid "Tags"
+msgstr "Schlagwörter"
+
+#: rrze-glossary.php:91
+#, php-format
+msgid ""
+"The server is running PHP version %1$s. The Plugin requires at least PHP "
+"version %2$s."
+msgstr ""
+
+#: rrze-glossary.php:94
+#, php-format
+msgid ""
+"The server is running WordPress version %1$s. The Plugin requires at least "
+"WordPress version %2$s."
+msgstr ""
+
+#. id, used as the html id att
+#: includes/Layout.php:129
+msgid "This glossary cannot be edited because it is sychronized"
+msgstr ""
+"Dieser Glossar-Eintrag kann nicht editiert werden, weil er synchronisiert "
+"wurde"
+
+#: config/config.php:266
+msgid "Title"
+msgstr "Titel"
+
+#: config/config.php:144
+msgid "twicedaily"
+msgstr "Zwei Mal am Tag"
+
+#: includes/CPT.php:87
+msgid "Update category"
+msgstr "Kategorie aktualisieren"
+
+#: includes/CPT.php:109
+msgid "Update tag"
+msgstr "Schlagwort aktualisieren"
+
+#: config/config.php:85 config/config.php:100
+msgid "URL"
+msgstr ""
+
+#: config/config.php:94
+msgid "Use this name as attribute 'domain' in shortcode [glossary]"
+msgstr ""
+"Verwenden Sie diesen Namen als Attribut für 'domain' im Shortcode [glossary]"
+
+#: includes/Layout.php:129
+msgid "You can edit it at the source"
+msgstr "Sie können es auf der Quelle editieren"
