@@ -124,9 +124,9 @@ function getFields() {
 			[
 				'name' => 'info',
 				'label' => __('Info', 'rrze-glossary' ),
-				'desc' => __( 'All glossaries that match to the selected categories will be updated or inserted. Already synchronized glossaries that refer to categories which are not selected will be deleted. Glossaries that have been deleted at the remote website will be deleted on this website, too.', 'rrze-glossary' ),
+				'desc' => __('All glossaries that match to the selected categories will be updated or inserted. Already synchronized glossaries that refer to categories which are not selected will be deleted. Glossaries that have been deleted at the remote website will be deleted on this website, too.', 'rrze-glossary'),
 				'type' => 'plaintext',
-				'default' => __( 'All glossaries that match to the selected categories will be updated or inserted. Already synchronized glossaries that refer to categories which are not selected will be deleted. Glossaries that have been deleted at the remote website will be deleted on this website, too.', 'rrze-glossary' ),
+				'default' => __('All glossaries that match to the selected categories will be updated or inserted. Already synchronized glossaries that refer to categories which are not selected will be deleted. Glossaries that have been deleted at the remote website will be deleted on this website, too.', 'rrze-glossary'),
 			],
 			[
 				'name' => 'autosync',

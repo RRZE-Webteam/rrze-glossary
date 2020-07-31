@@ -73,7 +73,10 @@ class Main {
         $domains = $api->getDomains();
 
         // get stored options because they are generated and not defined in config.php
-        $options = array_merge(get_option( 'rrze-glossary' ), $options);
+        $storedOptions = get_option( 'rrze-glossary' );
+        if (is_array($storedOptions)){
+            $options = array_merge($storedOptions, $options);
+        }
         $tab = ( isset($_GET['glossarydoms'] ) ? 'doms' : ( isset( $_GET['glossarysync'] ) ? 'sync' : ( isset( $_GET['glossarydel'] ) ? 'del' : '' ) ) );
 
         switch ( $tab ){

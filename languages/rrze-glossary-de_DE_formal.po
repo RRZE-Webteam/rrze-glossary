@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: RRZE Glossary\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-31 11:06+0000\n"
-"PO-Revision-Date: 2020-07-31 13:21+0000\n"
+"PO-Revision-Date: 2020-07-31 13:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: Deutsch (Sie)\n"
 "Language: de_DE_formal\n"
@@ -56,19 +56,19 @@ msgstr "Domain hinzufügen"
 
 #: includes/CPT.php:29
 msgid "Add glossary"
-msgstr "Glossar-Eintrag hinzufügen"
+msgstr "Erstellen"
 
 #: includes/CPT.php:76 includes/CPT.php:77
 msgid "Add new category"
-msgstr "Neue Kategorie hinzufügen"
+msgstr "Neue Kategorie erstellen"
 
 #: includes/CPT.php:30
 msgid "Add new glossary"
-msgstr "Glossar-Eintrag hinzufügen"
+msgstr "Neuen Glossar-Eintrag erstellen"
 
 #: includes/CPT.php:98 includes/CPT.php:99
 msgid "Add new tag"
-msgstr "Neues Schlagwort hinzufügen"
+msgstr "Neues Schlagwort erstellen"
 
 #: config/config.php:261
 msgid "Additonal CSS-class(es) for sourrounding DIV"
@@ -220,7 +220,7 @@ msgstr "Häufigkeit"
 
 #: config/config.php:214 includes/CPT.php:28 includes/CPT.php:42
 msgid "Glossary"
-msgstr "Glossar-Eintrag"
+msgstr "Glossar"
 
 #: includes/CPT.php:26
 msgctxt "Glossary entries"
@@ -495,7 +495,7 @@ msgstr ""
 #: config/config.php:180 config/config.php:208 includes/CPT.php:92
 #: includes/Layout.php:237
 msgid "Tags"
-msgstr "Schlagwort"
+msgstr "Schlagwörter"
 
 #: rrze-glossary.php:91
 #, php-format
