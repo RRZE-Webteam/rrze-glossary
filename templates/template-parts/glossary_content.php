@@ -1,6 +1,6 @@
 <?php
 /**
- * This is part of the templates for displaying the FAQ
+ * This is part of the templates for displaying the Glossary
  *
  *
  * @package WordPress

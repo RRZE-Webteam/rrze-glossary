@@ -8,7 +8,7 @@
  * @since FAU 1.0
 */
 
-use RRZE\FAQ\Layout;
+use RRZE\Glossary\Layout;
 
 $thisThemeGroup = Layout::getThemeGroup();
 
