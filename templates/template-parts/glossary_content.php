@@ -10,8 +10,10 @@
 
 namespace RRZE\Glossary;
 
+$output = '<h2>' . __('Glossary', 'rrze-glossary') . '</h2>';
+
 $posts = get_posts(array('post_type' => 'glossary', 'post_status' => 'publish', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'suppress_filters' => false));
-$output = '<div class="fau-glossar">';
+$output .= '<div class="fau-glossar">';
 
 $current = "A";
 $letters = array();
