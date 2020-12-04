@@ -10,16 +10,15 @@
 
 namespace RRZE\Glossary;
 
-$output = '<h2>' . __('Glossary', 'rrze-glossary') . '</h2>';
 
 $posts = get_posts(array('post_type' => 'glossary', 'post_status' => 'publish', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'suppress_filters' => false));
-$output .= '<div class="fau-glossar">';
+
 
 $current = "A";
 $letters = array();
 
 
-$accordion = '<div class="accordion">'."\n";
+$accordion = '[collapsibles]';
 
 $i = 0;
 foreach($posts as $post) {
@@ -36,40 +35,30 @@ foreach($posts as $post) {
     $id = $post->ID.'000'.$i;
     $title = get_the_title($post->ID);
 
-    $content = apply_filters( 'the_content',  get_post_field('post_content',$post->ID) );
-    $content = str_replace( ']]>', ']]&gt;', $content );
-    if ( isset($content) && (mb_strlen($content) > 1)) {
-    $desc = $content;
-    } else {
-    $desc = get_post_meta( $post->ID, 'description', true );
+    $tmp = str_replace( ']]>', ']]&gt;', get_post_field( 'post_content', $post->ID ));
+    if ( !isset( $tmp ) || ( mb_strlen( $tmp ) < 1 ) ) {
+        $tmp = get_post_meta( $post->ID, 'description', true );
     }
 
-    $accordion .= getAccordionbyTheme($id,$title,'','','',$desc);
-
-    
-    
+    $accordion .= '[collapse title="' . $title . '" name="ID-' . $id . '"]' . $tmp . '[/collapse]';
     $i++;
 }
 
-$accordion .= '</div>'."\n";
+$accordion .= '[/collapsibles]';
 
-$output .= '<ul class="letters" aria-hidden="true">'."\n";
+$register = '<div class="fau-glossary"><div class="fau-glossar"><ul class="letters" aria-hidden="true">';
 
 $alphabet = range('A', 'Z');
 foreach($alphabet as $a)  {
     if(in_array($a, $letters)) {
-        $output .= '<li class="filled"><a href="#letter-'.$a.'">'.$a.'</a></li>';
+        $register .= '<li class="filled"><a href="#letter-'.$a.'">'.$a.'</a></li>';
     }  else {
-        $output .= '<li>'.$a.'</li>';
+        $register .= '<li>'.$a.'</li>';
     }
 }
 
-$output .= '</ul>'."\n";
-$output .= $accordion;
-$output .= '</div>'."\n";
+$register .= '</ul></div>';
 
-if ( is_plugin_active( 'rrze-elements/rrze-elements.php' ) ) {
-    wp_enqueue_script('rrze-accordions');
-}
-
-echo $output;
+echo '<h2>' . __('Glossary', 'rrze-glossary') . '</h2>';
+echo $register;
+echo do_shortcode($accordion);

@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying Glossary
+ * The template for displaying Glossary 
  *
  *
  * @package WordPress
