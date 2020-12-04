@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Glossary
 Plugin URI:      https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary
 Description:     Plugin, um Glossar-Einträge zu erstellen, aus dem FAU-Netzwerk zu synchronisieren und mittels Shortcode oder als Block (Gutenberg Editor) einzubinden.  
-Version:         1.1.12
+Version:         1.1.17
 Author:          RRZE Webteam
 Author URI:      https://blogs.fau.de/webworking/
 License:         GNU General Public License v3
@@ -79,6 +79,7 @@ function load_textdomain()
 {
     load_plugin_textdomain('rrze-glossary', false, sprintf('%s/languages/', dirname(plugin_basename(__FILE__))));
 }
+
 
 /**
  * Überprüft die minimal erforderliche PHP- u. WP-Version.

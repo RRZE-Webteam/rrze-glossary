@@ -5,6 +5,7 @@ namespace RRZE\Glossary;
 defined( 'ABSPATH' ) || exit;
 
 use RRZE\Glossary\API;
+use function RRZE\Glossary\Config\getConstants;
 
 
 /**
@@ -250,4 +251,19 @@ class Layout {
         }
         return $content;
     }
+
+    public static function getThemeGroup() {
+        $constants = getConstants();
+        $ret = '';
+        $active_theme = wp_get_theme();
+        $active_theme = $active_theme->get( 'Name' );
+
+        if (in_array($active_theme, $constants['fauthemes'])) {
+            $ret = 'fauthemes';
+        }elseif (in_array($active_theme, $constants['rrzethemes'])) {
+            $ret = 'rrzethemes';
+        }
+        return $ret;   
+    }
+
 }
