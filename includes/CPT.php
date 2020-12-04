@@ -18,6 +18,7 @@ class CPT {
         add_action( 'publish_glossary', [$this, 'setPostMeta'], 10, 1 );
         add_action( 'create_glossary_category', [$this, 'setTermMeta'], 10, 1 );
         add_action( 'create_glossary_tag', [$this, 'setTermMeta'], 10, 1 );
+        add_filter( 'archive_template', [$this, 'filter_archive_template'] );
     }
 
     
@@ -169,5 +170,11 @@ class CPT {
         add_term_meta( $termID, 'lang', $this->lang, TRUE );
     }
     
+    public function filter_archive_template( $template ){
+        if( is_post_type_archive('glossary')){
+            $template = plugin_dir_path( __DIR__ ) .'templates/archive-glossary.php';
+        }
+        return $template;
+    }
 
 }
