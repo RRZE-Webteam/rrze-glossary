@@ -61,7 +61,8 @@ class Main {
      * Enqueue der globale Skripte.
      */
     public function enqueueScripts() {
-        wp_register_style('rrze-glossary-styles', plugins_url('assets/css/rrze-glossary.min.css', plugin_basename($this->pluginFile)));
+        wp_register_style('rrze-glossary-style', plugins_url('assets/css/rrze-glossary.css', plugin_basename($this->pluginFile)));
+        wp_enqueue_style('rrze-glossary-style');
     }
 
 

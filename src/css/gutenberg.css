@@ -1,0 +1,33 @@
+/* Gutenberg */
+.editor-styles-wrapper { 
+    line-height: normal !important;
+}
+.wp-core-ui select {
+    max-width: 100% !important;
+}
+.components-placeholder {     
+    text-align: left !important;
+    align-items: stretch !important;
+}
+.editor-styles-wrapper label {
+    font-weight: normal;
+}
+
+.editor-styles-wrapper H2, H3, H4, .accordion{ 
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.editor-styles-wrapper H2{
+    padding: 22px 0 !important;
+    font-size: 1.6rem !important;
+}
+
+.editor-styles-wrapper p{
+    margin: 0 !important;
+    font-size: 1rem !important;
+}
+
+.fau-glossary{
+    font-family: Roboto,sans-serif !important;
+}
