@@ -13,21 +13,35 @@
     font-weight: normal;
 }
 
-.editor-styles-wrapper H2, H3, H4, .accordion{ 
+.editor-styles-wrapper H2, H3, H4 { 
     margin: 0 !important;
     padding: 0 !important;
 }
 
-.editor-styles-wrapper H2{
+.editor-styles-wrapper H2 {
     padding: 22px 0 !important;
     font-size: 1.6rem !important;
 }
 
-.editor-styles-wrapper p{
+.editor-styles-wrapper p {
     margin: 0 !important;
     font-size: 1rem !important;
 }
 
+.accordion{
+    margin: 0;
+    padding: 0;
+}
+
 .fau-glossary{
     font-family: Roboto,sans-serif !important;
+}
+
+ul.letters{
+    margin: 20px 0 10px !important;
+    padding: 0 !important;
+}
+
+.accordion-body{
+    display: none !important;
 }

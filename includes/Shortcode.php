@@ -28,9 +28,6 @@ class Shortcode {
         add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ], 10, 2 );
     }
 
-    /**
-     * Enqueue der Skripte.
-     */
     private function getLetter( &$txt ) {
         return mb_strtoupper( mb_substr( remove_accents( $txt ), 0, 1 ), 'UTF-8');
     }
@@ -519,7 +516,7 @@ class Shortcode {
 
         $this->settings = $this->fillGutenbergOptions();
 
-        $js = '../assets/js/gutenberg.min.js';
+        $js = '../src/js/gutenberg.js';
         $editor_script = $this->settings['block']['blockname'] . '-blockJS';
 
         wp_register_script(
@@ -539,9 +536,8 @@ class Shortcode {
         $theme_style = 'theme-css';
         wp_register_style($theme_style, get_template_directory_uri() . '/style.css', array('wp-editor'), null);
 
-        $editor_style = 'gutenberg-css';
-        wp_register_style($editor_style, plugins_url('../assets/css/gutenberg.css', __FILE__ ));
-
+        $editor_style = 'plugin-css';
+        wp_register_style($editor_style, plugins_url('../src/css/gutenberg.css', __FILE__ ));
 
         register_block_type( $this->settings['block']['blocktype'], array(
             'editor_script' => $editor_script,

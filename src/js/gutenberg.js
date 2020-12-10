@@ -1,3 +1,9 @@
+jQuery(document).ready(function($) {
+    // Close Accordions on start, except first
+    $('.accordion-body').not(".accordion-body.open").not('.accordion-body.stayopen').hide();
+});
+
+
 edited = false;
 
 function createBlock() {
