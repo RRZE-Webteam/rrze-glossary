@@ -196,7 +196,7 @@ function getShortcodeSettings(){
 			'blockname' => 'glossary',
 			'title' => 'RRZE Glossary',
 			'category' => 'widgets',
-            'icon' => 'editor-book',
+            'icon' => 'book',
             'show_block' => 'content',
 			'message' => __( 'Find the settings on the right side', 'rrze-glossary' )
 		],
