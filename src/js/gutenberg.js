@@ -1,16 +1,13 @@
-jQuery(document).ready(function($) {
-    // Close Accordions on start, except first
-    $('.accordion-body').not(".accordion-body.open").not('.accordion-body.stayopen').hide();
-});
-
+jQuery.holdReady( true );
 
 edited = false;
 
 function createBlock() {
+    // alert('gutenberg.js');
 	const { registerBlockType } = wp.blocks;
 	const { createElement } = wp.element;
 	const { InspectorControls }  = wp.blockEditor;
-	const { CheckboxControl, RadioControl, SelectControl, TextControl, TextareaControl, ToggleControl, ServerSideRender } = wp.components;
+	const { CheckboxControl, RadioControl, SelectControl, TextControl, TextareaControl, ToggleControl } = wp.components;
 	const { serverSideRender } = wp;
 
 	const phpConfig = eval( blockname + 'Config;' ); 
@@ -21,7 +18,7 @@ function createBlock() {
 		category: phpConfig.block.category,
 		icon: phpConfig.block.icon,
 		construct(){
-			props.setAttributes({ countit: 0 });
+            props.setAttributes({ countit: 0 });
 		},
 		edit( props ){
 			const att = props.attributes;
@@ -93,7 +90,7 @@ function createBlock() {
 					return createElement('div', { className: "components-placeholder" }, ret )
 				}
 			}
-		},
+        },
 		save( props ){
 			return null;
 		}

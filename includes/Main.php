@@ -44,6 +44,9 @@ class Main {
         add_action( 'update_option_rrze-glossary', [$this, 'checkSync'] );
         add_filter( 'pre_update_option_rrze-glossary',  [$this, 'switchTask'], 10, 1 );
 
+        add_action( 'enqueue_block_editor_assets', [$this, 'enqueueThemeScripts'] );
+        add_action( 'admin_enqueue_scripts', [$this, 'enqueueThemeScripts'] );
+
         $cpt = new CPT(); 
 
         $this->settings = new Settings($this->pluginFile);
@@ -57,6 +60,14 @@ class Main {
         add_action( 'rrze_glossary_auto_sync', [$this, 'runGlossaryCronjob'] );
     }
 
+    public function enqueueThemeScripts() {
+        wp_register_script(
+            'gutenberg-accordion',
+            plugins_url() . '/rrze-elements/includes/Accordion/assets/js/rrze-accordion.js',
+            array('jquery')
+        );
+        wp_enqueue_script('gutenberg-accordion');
+    }
 
     /**
      * Enqueue der globale Skripte.
@@ -64,6 +75,13 @@ class Main {
     public function enqueueScripts() {
         wp_register_style('rrze-glossary-style', plugins_url('assets/css/rrze-glossary.css', plugin_basename($this->pluginFile)));
         wp_enqueue_style('rrze-glossary-style');
+
+        wp_register_script(
+            'rrze-glossary',
+            plugins_url( '../src/js/rrze-glossary.js', __FILE__ ),
+            array('jquery')
+        );
+        wp_enqueue_script('gutenberg-accordion');
     }
 
 
