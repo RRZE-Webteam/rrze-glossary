@@ -131,10 +131,6 @@ class Shortcode {
      * @return string Gib den Inhalt zurück
      */
     public function shortcodeOutput( $atts ) {
-
-
-        // echo '<script>console.log("BK DEBUG in shortcodeOutput()")</script>';
-
         if ( !$atts ){
             $atts = array();
         }
@@ -448,13 +444,6 @@ class Shortcode {
         //     wp_enqueue_script( 'fau-js-heroslider' );
         // }
 
-        // wp_register_script(
-        //     'gutenberg-accordion',
-        //     plugins_url() . '/rrze-elements/includes/Accordion/assets/js/rrze-accordion.js',
-        //     array('jquery')
-        // );
-        // wp_enqueue_script('gutenberg-accordion');
-
         $content = '<div id="myBlock" class="fau-glossary' . ( $color ? ' ' . $color . ' ' : '' ) . ( isset( $additional_class) ? $additional_class : '' ) . '">' . $content . '</div>';
         return $content;
     }
@@ -529,7 +518,7 @@ class Shortcode {
 
         $this->settings = $this->fillGutenbergOptions();
 
-        $js = '../src/js/gutenberg.js';
+        $js = '../assets/js/gutenberg.js';
         $editor_script = $this->settings['block']['blockname'] . '-blockJS';
 
         wp_register_script(
@@ -550,14 +539,10 @@ class Shortcode {
         wp_register_style($theme_style, get_template_directory_uri() . '/style.css', array('wp-editor'), null);
 
         $editor_style = 'plugin-css';
-        wp_register_style($editor_style, plugins_url('../src/css/gutenberg.css', __FILE__ ));
-
-        $preview_script = 'gutenberg-preview';
-        wp_register_script($preview_script, plugins_url( '../src/js/gutenberg-preview.js', __FILE__ ), array('jquery'), null);
+        wp_register_style($editor_style, plugins_url('../assets/css/gutenberg.css', __FILE__ ));
 
         register_block_type( $this->settings['block']['blocktype'], array(
             'editor_script' => $editor_script,
-            'script' => $preview_script,
             'editor_style' => $editor_style,
             'style' => $theme_style,
             'render_callback' => [$this, 'shortcodeOutput'],

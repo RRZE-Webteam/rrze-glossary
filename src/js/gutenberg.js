@@ -1,9 +1,6 @@
-jQuery.holdReady( true );
-
 edited = false;
 
 function createBlock() {
-    // alert('gutenberg.js');
 	const { registerBlockType } = wp.blocks;
 	const { createElement } = wp.element;
 	const { InspectorControls }  = wp.blockEditor;
@@ -13,12 +10,12 @@ function createBlock() {
 	const phpConfig = eval( blockname + 'Config;' ); 
 	
 
-	registerBlockType( phpConfig.block.blocktype, {
+    registerBlockType( phpConfig.block.blocktype, {
 		title: phpConfig.block.title,
 		category: phpConfig.block.category,
 		icon: phpConfig.block.icon,
 		construct(){
-            props.setAttributes({ countit: 0 });
+			props.setAttributes({ countit: 0 });
 		},
 		edit( props ){
 			const att = props.attributes;
@@ -38,7 +35,7 @@ function createBlock() {
 				  	}
 				}
 			}
-			
+		
 	
 			if ( ( props['isSelected'] === false ) && ( edited === true ) ){
 				clean( att );
@@ -90,7 +87,7 @@ function createBlock() {
 					return createElement('div', { className: "components-placeholder" }, ret )
 				}
 			}
-        },
+		},
 		save( props ){
 			return null;
 		}
