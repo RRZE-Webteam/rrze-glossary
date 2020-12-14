@@ -78,14 +78,7 @@ function createBlock() {
 
 				edited = true;
 
-				if ( phpConfig.block.show_block == 'right'){
-					return createElement('div', {}, [
-						createElement( 'div', {}, phpConfig.block.message ),
-						createElement( InspectorControls, {}, ret )
-					] )
-				}else{
-					return createElement('div', { className: "components-placeholder" }, ret )
-				}
+			    return createElement('div', { className: "components-placeholder" }, ret )
 			}
 		},
 		save( props ){
