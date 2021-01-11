@@ -11,6 +11,10 @@
 
 include_once('template-parts/head.php');
 
-include('template-parts/glossary_content.php');
+if ( have_posts() ) : while ( have_posts() ) : the_post();
+
+include('template-parts/faq_content.php');
+
+endwhile; endif;
 
 include_once('template-parts/foot.php');

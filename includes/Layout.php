@@ -32,8 +32,6 @@ class Layout {
         add_filter( 'manage_edit-glossary_tag_columns', [$this, 'addTaxColumns'] );
         add_filter( 'manage_glossary_tag_custom_column', [$this, 'getTaxColumnsValues'], 10, 3 );
         add_filter( 'manage_edit-glossary_tag_sortable_columns', [$this, 'addTaxColumns'] );
-        // show categories and tags under content
-        add_filter( 'the_content', [$this, 'showDetails'] );  
         
         add_action( 'save_post_glossary', [$this, 'savePostMeta'] );        
     }
@@ -226,30 +224,6 @@ class Layout {
             $ret .= $term->name . ', ';
         }
         return substr( $ret, 0, -2 );
-    }
-
-    public function showDetails( $content ){
-        global $post;
-        if ( $post->post_type == 'glossary' ){
-            $cats = $this->getTermsAsString( $post->ID, 'category' );
-            $tags = $this->getTermsAsString( $post->ID, 'tag' );            
-            $details = '<!-- rrze-glossary --><p id="rrze-glossary" class="meta-footer">'
-            . ( $cats ? '<span class="post-meta-categories"> '. __( 'Categories', 'rrze-glossary' ) . ': ' . $cats . '</span>' : '' )
-            . ( $tags ? '<span class="post-meta-tags"> '. __( 'Tags', 'rrze-glossary' ) . ': ' . $tags . '</span>' : '' )
-            . '</p>';
-            $schema = '';
-            $source = get_post_meta( $post->ID, "source", TRUE );
-            if ( $source == 'website' ){
-                $title = get_the_title( $post->ID );
-                $content = wp_strip_all_tags( $content, TRUE );
-                $schema = RRZE_SCHEMA_START;
-                $schema .= RRZE_SCHEMA_TITLE_START . $title . RRZE_SCHEMA_TITLE_END;
-                $schema .= RRZE_SCHEMA_CONTENT_START . $content . RRZE_SCHEMA_CONTENT_END;
-                $schema .= RRZE_SCHEMA_END;
-            }
-            $content .= $details . $schema;
-        }
-        return $content;
     }
 
     public static function getThemeGroup() {
