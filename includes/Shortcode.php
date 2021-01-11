@@ -28,9 +28,6 @@ class Shortcode {
         add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ], 10, 2 );
     }
 
-    /**
-     * Enqueue der Skripte.
-     */
     private function getLetter( &$txt ) {
         return mb_strtoupper( mb_substr( remove_accents( $txt ), 0, 1 ), 'UTF-8');
     }
@@ -447,7 +444,8 @@ class Shortcode {
         //     wp_enqueue_script( 'fau-js-heroslider' );
         // }
 
-        return '<div class="fau-glossary' . ( $color ? ' ' . $color . ' ' : '' ) . ( isset( $additional_class) ? $additional_class : '' ) . '">' . $content . '</div>';
+        $content = '<div id="myBlock" class="fau-glossary' . ( $color ? ' ' . $color . ' ' : '' ) . ( isset( $additional_class) ? $additional_class : '' ) . '">' . $content . '</div>';
+        return $content;
     }
 
     public function sortIt( &$arr ){
@@ -520,7 +518,7 @@ class Shortcode {
 
         $this->settings = $this->fillGutenbergOptions();
 
-        $js = '../assets/js/gutenberg.min.js';
+        $js = '../assets/js/gutenberg.js';
         $editor_script = $this->settings['block']['blockname'] . '-blockJS';
 
         wp_register_script(
@@ -537,19 +535,21 @@ class Shortcode {
         );
         wp_localize_script( $editor_script, 'blockname', $this->settings['block']['blockname'] );
 
-        $css = '../assets/css/gutenberg.min.css';
-        $editor_style = 'gutenberg-css';
-        wp_register_style( $editor_style, plugins_url( $css, __FILE__ ) );
+        $theme_style = 'theme-css';
+        wp_register_style($theme_style, get_template_directory_uri() . '/style.css', array('wp-editor'), null);
+
+        $editor_style = 'plugin-css';
+        wp_register_style($editor_style, plugins_url('../assets/css/gutenberg.css', __FILE__ ));
+
         register_block_type( $this->settings['block']['blocktype'], array(
             'editor_script' => $editor_script,
-            'style' => $editor_style,
+            'editor_style' => $editor_style,
+            'style' => $theme_style,
             'render_callback' => [$this, 'shortcodeOutput'],
-            'attributes' => $this->settings
-            // 'attributes' => $this->fillGutenbergOptions()
+            'attributes' => $this->settings,
             ) 
         );
 
         wp_localize_script( $editor_script, $this->settings['block']['blockname'] . 'Config', $this->settings );
-        // wp_localize_script( $editor_script, $this->settings['block']['blockname'] . 'Config', $this->fillGutenbergOptions() );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * This is part of the templates for displaying the Glossary
+ * This is part of the templates for displaying the glossary entries
  *
  *
  * @package WordPress
@@ -8,57 +8,32 @@
  * @since FAU 1.0
 */
 
-namespace RRZE\Glossary;
+namespace RRZE\FAQ;
+
+use RRZE\FAQ\Layout;
+
+echo '<div id="post-' . get_the_ID() . '" class="' . implode(' ', get_post_class()) .'">';
+
+?>
 
 
-$posts = get_posts(array('post_type' => 'glossary', 'post_status' => 'publish', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'suppress_filters' => false));
+
+<h1 id="droppoint" class="glossary-title" itemprop="title"><?php the_title(); ?></h1>
 
 
-$current = "A";
-$letters = array();
+<?php 
 
+$postID = get_the_ID();
+$cats = Layout::getTermLinks( $postID, 'glossary_category' );
+$tags = Layout::getTermLinks( $postID, 'glossary_tag' );            
+$details = '<article class="news-details">
+<!-- rrze-glossary --><p id="rrze-faq" class="meta-footer">'
+. ( $cats ? '<span class="post-meta-categories"> '. __( 'Categories', 'rrze-faq' ) . ': ' . $cats . '</span>' : '' )
+. ( $tags ? '<span class="post-meta-tags"> '. __( 'Tags', 'rrze-faq' ) . ': ' . $tags . '</span>' : '' )
+. '</p></article>';
 
-$accordion = '[collapsibles]';
+the_content(); 
+echo $details;
 
-$i = 0;
-foreach($posts as $post) {
-    $letter = remove_accents(get_the_title($post->ID));
-    $letter = mb_substr($letter, 0, 1);
-    $letter = mb_strtoupper($letter, 'UTF-8');
+echo '</div>';
 
-    if( $i == 0 || $letter != $current) {
-        $accordion .= '<h2 id="letter-'.$letter.'">'.$letter.'</h2>'."\n";
-        $current = $letter;
-        $letters[] = $letter;
-    }
-    
-    $id = $post->ID.'000'.$i;
-    $title = get_the_title($post->ID);
-
-    $tmp = str_replace( ']]>', ']]&gt;', get_post_field( 'post_content', $post->ID ));
-    if ( !isset( $tmp ) || ( mb_strlen( $tmp ) < 1 ) ) {
-        $tmp = get_post_meta( $post->ID, 'description', true );
-    }
-
-    $accordion .= '[collapse title="' . $title . '" name="ID-' . $id . '"]' . $tmp . '[/collapse]';
-    $i++;
-}
-
-$accordion .= '[/collapsibles]';
-
-$register = '<div class="fau-glossary"><div class="fau-glossar"><ul class="letters" aria-hidden="true">';
-
-$alphabet = range('A', 'Z');
-foreach($alphabet as $a)  {
-    if(in_array($a, $letters)) {
-        $register .= '<li class="filled"><a href="#letter-'.$a.'">'.$a.'</a></li>';
-    }  else {
-        $register .= '<li>'.$a.'</li>';
-    }
-}
-
-$register .= '</ul></div>';
-
-echo '<h2>' . __('Glossary', 'rrze-glossary') . '</h2>';
-echo $register;
-echo do_shortcode($accordion);

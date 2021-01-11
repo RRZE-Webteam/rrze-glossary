@@ -18,7 +18,9 @@ class CPT {
         add_action( 'publish_glossary', [$this, 'setPostMeta'], 10, 1 );
         add_action( 'create_glossary_category', [$this, 'setTermMeta'], 10, 1 );
         add_action( 'create_glossary_tag', [$this, 'setTermMeta'], 10, 1 );
+        add_filter( 'single_template', [$this, 'filter_single_template'] );
         add_filter( 'archive_template', [$this, 'filter_archive_template'] );
+        add_filter( 'taxonomy_template', [$this, 'filter_taxonomy_template'] );
     }
 
     
@@ -69,7 +71,7 @@ class CPT {
             [ 
                 'name' => 'glossary_category',
                 'label' => __('Categories', 'rrze-glossary'),
-                'slug' => 'category',
+                'slug' => 'glossary_category',
                 'rest_base' => 'glossary_category',
                 'hierarchical' => TRUE,
                 'labels' => array(
@@ -91,7 +93,7 @@ class CPT {
             [ 
                 'name' => 'glossary_tag',
                 'label' => __('Tags', 'rrze-glossary'),
-                'slug' => 'tag',
+                'slug' => 'glossary_tag',
                 'rest_base' => 'glossary_tag',
                 'hierarchical' => FALSE,
                 'labels' => array(
@@ -169,10 +171,28 @@ class CPT {
         add_term_meta( $termID, 'source', 'website', TRUE );
         add_term_meta( $termID, 'lang', $this->lang, TRUE );
     }
+
     
+    public function filter_single_template( $template ){
+        global $post;
+        if( 'glossary' === $post->post_type ){
+            $template = plugin_dir_path( __DIR__ ) .'templates/single-glossary.php';
+        }
+        return $template;
+    }
+
     public function filter_archive_template( $template ){
         if( is_post_type_archive('glossary')){
             $template = plugin_dir_path( __DIR__ ) .'templates/archive-glossary.php';
+        }
+        return $template;
+    }
+
+    public function filter_taxonomy_template( $template ){
+        if( is_tax('glossary_category')){
+            $template = plugin_dir_path( __DIR__ ) .'templates/glossary_category.php';
+        }elseif( is_tax('glossary_tag')){
+            $template = plugin_dir_path( __DIR__ ) .'templates/glossary_tag.php';
         }
         return $template;
     }
