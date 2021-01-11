@@ -217,14 +217,16 @@ class Layout {
         }
     }
 
-    public function getTermsAsString( &$postID, $field ){
+    public static function getTermLinks( &$postID, $mytaxonomy ){
         $ret = '';
-        $terms = wp_get_post_terms( $postID, 'glossary_' . $field );
+        $terms = wp_get_post_terms( $postID, $mytaxonomy);
+
         foreach ( $terms as $term ){
-            $ret .= $term->name . ', ';
+            $ret .= '<a href="' . get_term_link($term->slug, $mytaxonomy ) . '">' . $term->name . '</a>, ';
         }
         return substr( $ret, 0, -2 );
     }
+
 
     public static function getThemeGroup() {
         $constants = getConstants();
