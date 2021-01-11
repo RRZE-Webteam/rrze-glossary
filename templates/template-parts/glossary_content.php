@@ -8,9 +8,9 @@
  * @since FAU 1.0
 */
 
-namespace RRZE\FAQ;
+namespace RRZE\Glossary;
 
-use RRZE\FAQ\Layout;
+use RRZE\Glossary\Layout;
 
 echo '<div id="post-' . get_the_ID() . '" class="' . implode(' ', get_post_class()) .'">';
 
