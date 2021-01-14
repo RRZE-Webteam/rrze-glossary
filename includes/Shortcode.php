@@ -455,8 +455,6 @@ class Shortcode {
     }
 
     public function fillGutenbergOptions() {
-        $options = get_option( 'rrze-glossary' );
-
         // fill selects "category" and "tag"
         $fields = array( 'category', 'tag' );
         foreach ( $fields as $field ) {
@@ -466,7 +464,7 @@ class Shortcode {
             $this->settings[$field]['default'] = array('');
             $this->settings[$field]['type'] = 'array';
             $this->settings[$field]['items'] = array( 'type' => 'string' );
-            $this->settings[$field]['values'][0] = __( '-- all --', 'rrze-glossary' );
+            $this->settings[$field]['values'][] = ['id' => 0, 'val' => __( '-- all --', 'rrze-glossary' )];
 
             // get categories and tags from this website
             $terms = get_terms([
@@ -476,14 +474,16 @@ class Shortcode {
                 'order' => 'ASC'
                 ]);
 
-
             foreach ( $terms as $term ){
-                $this->settings[$field]['values'][$term->slug] = $term->name;
+                $this->settings[$field]['values'][] = [
+                    'id' => $term->slug,
+                    'val' => $term->name
+                ];
             }
         }
 
         // fill select id ( = glossary )
-        $registers = get_posts( array(
+        $glossaries = get_posts( array(
             'posts_per_page'  => -1,
             'post_type' => 'glossary',
             'orderby' => 'title',
@@ -494,9 +494,12 @@ class Shortcode {
         $this->settings['id']['default'] = array('');
         $this->settings['id']['type'] = 'array';
         $this->settings['id']['items'] = array( 'type' => 'number' );
-        $this->settings['id']['values'][0] = __( '-- all --', 'rrze-glossary' );
-        foreach ( $registers as $register){
-            $this->settings['id']['values'][$register->ID] = str_replace( "'", "", str_replace( '"', "", $register->post_title ) );
+        $this->settings['id']['values'][] = ['id' => 0, 'val' => __( '-- all --', 'rrze-glossary' )];
+        foreach ( $glossaries as $glossary){
+            $this->settings['id']['values'][] = [
+                'id' => $glossary->ID,
+                'val' => str_replace( "'", "", str_replace( '"', "", $glossary->post_title ) )
+            ];
         }
 
         return $this->settings;
@@ -519,7 +522,8 @@ class Shortcode {
         $this->settings = $this->fillGutenbergOptions();
 
         $js = '../assets/js/gutenberg.js';
-        $editor_script = $this->settings['block']['blockname'] . '-blockJS';
+        // $editor_script = $this->settings['block']['blockname'] . '-blockJS';
+        $editor_script = 'RRZE-Gutenberg';
 
         wp_register_script(
             $editor_script,

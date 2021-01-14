@@ -35,7 +35,6 @@ function createBlock() {
 				  	}
 				}
 			}
-		
 	
 			if ( ( props['isSelected'] === false ) && ( edited === true ) ){
 				clean( att );
@@ -58,9 +57,9 @@ function createBlock() {
 							break;
 						case 'multi_select': 
 						case 'select': 
-							var opts = [];
-							for ( var v in phpConfig[fieldname]['values'] ){
-								opts.push( JSON.parse( '{"value":"' + v + '", "label":"' + phpConfig[fieldname]['values'][v] + '"}' ) );
+                            var opts = [];
+                            for (var i = 0; i < phpConfig[fieldname]['values'].length; i++) { 
+                                opts.push( JSON.parse( '{"value":"' + phpConfig[fieldname]['values'][i]['id'] + '", "label":"' + phpConfig[fieldname]['values'][i]['val'] + '"}' ) );
 							}
 							ret.push( createElement( SelectControl, { multiple: ( phpConfig[fieldname]['field_type'] == 'multi_select' ? 1 : 0 ), value: att[fieldname], label: phpConfig[fieldname]['label'], type: phpConfig[fieldname]['type'], onChange: changeField.bind( fieldname ), options: opts } ) );
 							break;
