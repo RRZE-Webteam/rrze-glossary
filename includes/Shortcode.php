@@ -545,7 +545,7 @@ class Shortcode {
             ),
             NULL
         );
-        wp_localize_script( $editor_script, 'blockConfig', $this->settings );
+        wp_localize_script( $editor_script, $this->settings['block']['blockname'] . 'Config', $this->settings );
 
         // register styles
         $editor_style = 'gutenberg-css';

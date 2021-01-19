@@ -1,1 +1,1 @@
-createBlock( blockConfig );
+createBlock( glossaryConfig );
