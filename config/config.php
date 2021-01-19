@@ -221,15 +221,15 @@ function getShortcodeSettings(){
 			'field_type' => 'select',
 			'label' => __( 'Register style', 'rrze-glossary' ),
 			'type' => 'string'
-		],
+        ],        
 		'category' => [
-			'default' => '',
+			'default' => '0',
 			'field_type' => 'text',
 			'label' => __( 'Categories', 'rrze-glossary' ),
 			'type' => 'text'
         ],
 		'tag' => [
-			'default' => '',
+			'default' => 0,
 			'field_type' => 'text',
 			'label' => __( 'Tags', 'rrze-glossary' ),
 			'type' => 'text'
