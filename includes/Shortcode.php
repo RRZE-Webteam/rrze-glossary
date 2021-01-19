@@ -7,9 +7,6 @@ use function RRZE\Glossary\Config\getShortcodeSettings;
 use RRZE\Glossary\API;
 
 
-
-$settings;
-
 /**
  * Shortcode
  */
@@ -224,12 +221,12 @@ class Shortcode {
         $registerstyle  = ( isset( $registerstyle ) ? $registerstyle : '' );
         $hide_title = ( isset( $hide_title ) ? $hide_title : FALSE );        
         $color = ( isset( $color ) ? $color : '' );
-        if ( $register && ( array_key_exists( $register, $this->settings['register']['values'] ) == FALSE )){
-            return __( 'Attribute register is not correct. Please use either register="category" or register="tag".', 'rrze-glossary' );
-        }
-        if ( array_key_exists( $color, $this->settings['color']['values'] ) == FALSE ){
-            return __( 'Attribute color is not correct. Please use either \'medfak\', \'natfak\', \'rwfak\', \'philfak\' or \'techfak\'', 'rrze-glossary' );
-        }
+        // if ( $register && ( array_key_exists( $register, $this->settings['register']['values'] ) == FALSE )){
+        //     return __( 'Attribute register is not correct. Please use either register="category" or register="tag".', 'rrze-glossary' );
+        // }
+        // if ( array_key_exists( $color, $this->settings['color']['values'] ) == FALSE ){
+        //     return __( 'Attribute color is not correct. Please use either \'medfak\', \'natfak\', \'rwfak\', \'philfak\' or \'techfak\'', 'rrze-glossary' );
+        // }
 
         $gutenberg = ( is_array( $id ) ? TRUE : FALSE );
 
