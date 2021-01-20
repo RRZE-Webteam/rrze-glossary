@@ -7,9 +7,6 @@ use function RRZE\Glossary\Config\getShortcodeSettings;
 use RRZE\Glossary\API;
 
 
-
-$settings;
-
 /**
  * Shortcode
  */
@@ -224,12 +221,12 @@ class Shortcode {
         $registerstyle  = ( isset( $registerstyle ) ? $registerstyle : '' );
         $hide_title = ( isset( $hide_title ) ? $hide_title : FALSE );        
         $color = ( isset( $color ) ? $color : '' );
-        if ( $register && ( array_key_exists( $register, $this->settings['register']['values'] ) == FALSE )){
-            return __( 'Attribute register is not correct. Please use either register="category" or register="tag".', 'rrze-glossary' );
-        }
-        if ( array_key_exists( $color, $this->settings['color']['values'] ) == FALSE ){
-            return __( 'Attribute color is not correct. Please use either \'medfak\', \'natfak\', \'rwfak\', \'philfak\' or \'techfak\'', 'rrze-glossary' );
-        }
+        // if ( $register && ( array_key_exists( $register, $this->settings['register']['values'] ) == FALSE )){
+        //     return __( 'Attribute register is not correct. Please use either register="category" or register="tag".', 'rrze-glossary' );
+        // }
+        // if ( array_key_exists( $color, $this->settings['color']['values'] ) == FALSE ){
+        //     return __( 'Attribute color is not correct. Please use either \'medfak\', \'natfak\', \'rwfak\', \'philfak\' or \'techfak\'', 'rrze-glossary' );
+        // }
 
         $gutenberg = ( is_array( $id ) ? TRUE : FALSE );
 
@@ -455,18 +452,16 @@ class Shortcode {
     }
 
     public function fillGutenbergOptions() {
-        $options = get_option( 'rrze-glossary' );
-
         // fill selects "category" and "tag"
         $fields = array( 'category', 'tag' );
         foreach ( $fields as $field ) {
             // set new params for gutenberg / the old ones are used for shortcode in classic editor
             $this->settings[$field]['values'] = array();
             $this->settings[$field]['field_type'] = 'multi_select';
-            $this->settings[$field]['default'] = array('');
+            $this->settings[$field]['default'] = array(0);
             $this->settings[$field]['type'] = 'array';
             $this->settings[$field]['items'] = array( 'type' => 'string' );
-            $this->settings[$field]['values'][0] = __( '-- all --', 'rrze-glossary' );
+            $this->settings[$field]['values'][] = ['id' => 0, 'val' => __( '-- all --', 'rrze-glossary' )];
 
             // get categories and tags from this website
             $terms = get_terms([
@@ -476,14 +471,16 @@ class Shortcode {
                 'order' => 'ASC'
                 ]);
 
-
             foreach ( $terms as $term ){
-                $this->settings[$field]['values'][$term->slug] = $term->name;
+                $this->settings[$field]['values'][] = [
+                    'id' => $term->slug,
+                    'val' => $term->name
+                ];
             }
         }
 
         // fill select id ( = glossary )
-        $registers = get_posts( array(
+        $glossaries = get_posts( array(
             'posts_per_page'  => -1,
             'post_type' => 'glossary',
             'orderby' => 'title',
@@ -491,12 +488,15 @@ class Shortcode {
         ));
 
         $this->settings['id']['field_type'] = 'multi_select';
-        $this->settings['id']['default'] = array('');
+        $this->settings['id']['default'] = array(0);
         $this->settings['id']['type'] = 'array';
         $this->settings['id']['items'] = array( 'type' => 'number' );
-        $this->settings['id']['values'][0] = __( '-- all --', 'rrze-glossary' );
-        foreach ( $registers as $register){
-            $this->settings['id']['values'][$register->ID] = str_replace( "'", "", str_replace( '"', "", $register->post_title ) );
+        $this->settings['id']['values'][] = ['id' => 0, 'val' => __( '-- all --', 'rrze-glossary' )];
+        foreach ( $glossaries as $glossary){
+            $this->settings['id']['values'][] = [
+                'id' => $glossary->ID,
+                'val' => str_replace( "'", "", str_replace( '"', "", $glossary->post_title ) )
+            ];
         }
 
         return $this->settings;
@@ -516,14 +516,10 @@ class Shortcode {
             }
         }
 
-        $this->settings = $this->fillGutenbergOptions();
-
-        $js = '../assets/js/gutenberg.js';
-        $editor_script = $this->settings['block']['blockname'] . '-blockJS';
-
-        wp_register_script(
-            $editor_script,
-            plugins_url( $js, __FILE__ ),
+        // include gutenberg lib
+        wp_enqueue_script(
+            'RRZE-Gutenberg',
+            plugins_url( '../assets/js/gutenberg.js', __FILE__ ),
             array(
                 'wp-blocks',
                 'wp-i18n',
@@ -531,25 +527,40 @@ class Shortcode {
                 'wp-components',
                 'wp-editor'
             ),
-            filemtime( dirname( __FILE__ ) . '/' . $js )
+            NULL
         );
-        wp_localize_script( $editor_script, 'blockname', $this->settings['block']['blockname'] );
 
+        // get prefills for dropdowns
+        $this->settings = $this->fillGutenbergOptions();
+
+        // register js-script to inject php config to call gutenberg lib
+        $editor_script = $this->settings['block']['blockname'] . '-block';        
+        $js = '../assets/js/' . $editor_script . '.js';
+
+        wp_register_script(
+            $editor_script,
+            plugins_url( $js, __FILE__ ),
+            array(
+                'RRZE-Gutenberg',
+            ),
+            NULL
+        );
+        wp_localize_script( $editor_script, $this->settings['block']['blockname'] . 'Config', $this->settings );
+
+        // register styles
+        $editor_style = 'gutenberg-css';
+        wp_register_style( $editor_style, plugins_url( '../assets/css/gutenberg.css', __FILE__ ) );
         $theme_style = 'theme-css';
         wp_register_style($theme_style, get_template_directory_uri() . '/style.css', array('wp-editor'), null);
 
-        $editor_style = 'plugin-css';
-        wp_register_style($editor_style, plugins_url('../assets/css/gutenberg.css', __FILE__ ));
-
+        // register block
         register_block_type( $this->settings['block']['blocktype'], array(
             'editor_script' => $editor_script,
             'editor_style' => $editor_style,
             'style' => $theme_style,
             'render_callback' => [$this, 'shortcodeOutput'],
-            'attributes' => $this->settings,
+            'attributes' => $this->settings
             ) 
         );
-
-        wp_localize_script( $editor_script, $this->settings['block']['blockname'] . 'Config', $this->settings );
     }
 }
