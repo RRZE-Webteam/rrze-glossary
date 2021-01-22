@@ -20,6 +20,7 @@ class Shortcode {
 
     public function __construct() {
         $this->settings = getShortcodeSettings();
+        add_action( 'admin_enqueue_scripts', [$this, 'enqueueGutenberg'] );
         add_action( 'init',  [$this, 'initGutenberg'] );
         add_shortcode( 'glossary', [ $this, 'shortcodeOutput' ], 10, 2 );
         add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ], 10, 2 );
@@ -516,19 +517,6 @@ class Shortcode {
             }
         }
 
-        // include gutenberg lib
-        wp_enqueue_script(
-            'RRZE-Gutenberg',
-            plugins_url( '../assets/js/gutenberg.js', __FILE__ ),
-            array(
-                'wp-blocks',
-                'wp-i18n',
-                'wp-element',
-                'wp-components',
-                'wp-editor'
-            ),
-            NULL
-        );
 
         // get prefills for dropdowns
         $this->settings = $this->fillGutenbergOptions();
@@ -561,6 +549,26 @@ class Shortcode {
             'render_callback' => [$this, 'shortcodeOutput'],
             'attributes' => $this->settings
             ) 
+        );
+    }
+
+    public function enqueueGutenberg(){
+        if ( ! function_exists( 'register_block_type' ) ) {
+            return;        
+        }
+
+        // include gutenberg lib
+        wp_enqueue_script(
+            'RRZE-Gutenberg',
+            plugins_url( '../assets/js/gutenberg.js', __FILE__ ),
+            array(
+                'wp-blocks',
+                'wp-i18n',
+                'wp-element',
+                'wp-components',
+                'wp-editor'
+            ),
+            NULL
         );
     }
 }
