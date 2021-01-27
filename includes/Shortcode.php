@@ -443,6 +443,7 @@ class Shortcode {
         // }
 
         $content = '<div id="myBlock" class="fau-glossary' . ( $color ? ' ' . $color . ' ' : '' ) . ( isset( $additional_class) ? $additional_class : '' ) . '">' . $content . '</div>';
+        wp_enqueue_style('rrze-glossary-style');
         return $content;
     }
 

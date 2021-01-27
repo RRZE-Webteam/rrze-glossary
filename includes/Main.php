@@ -38,8 +38,7 @@ class Main {
      * Es wird ausgeführt, sobald die Klasse instanziiert wird.
      */
     public function onLoaded() {
-        add_action( 'wp_enqueue_scripts', [$this, 'enqueueScripts'] );
-        add_action( 'admin_enqueue_scripts', [$this, 'enqueueScripts'] );
+        add_action( 'init', [$this, 'enqueueScripts'] );
         // Actions: sync, add domain, delete domain, delete logfile
         add_action( 'update_option_rrze-glossary', [$this, 'checkSync'] );
         add_filter( 'pre_update_option_rrze-glossary',  [$this, 'switchTask'], 10, 1 );
@@ -62,7 +61,6 @@ class Main {
      */
     public function enqueueScripts() {
         wp_register_style('rrze-glossary-style', plugins_url('assets/css/rrze-glossary.css', plugin_basename($this->pluginFile)));
-        wp_enqueue_style('rrze-glossary-style');
     }
 
 
