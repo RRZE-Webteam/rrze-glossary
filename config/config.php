@@ -217,7 +217,7 @@ function getShortcodeSettings(){
 			'default' => '',
 			'field_type' => 'select',
 			'label' => __( 'Register content', 'rrze-glossary' ),
-			'type' => 'text'
+			'type' => 'string'
 		],
         'registerstyle' => [
 			'values' => [
@@ -247,13 +247,13 @@ function getShortcodeSettings(){
 			'default' => '0',
 			'field_type' => 'text',
 			'label' => __( 'Categories', 'rrze-glossary' ),
-			'type' => 'text'
+			'type' => 'string'
         ],
 		'tag' => [
 			'default' => 0,
 			'field_type' => 'text',
 			'label' => __( 'Tags', 'rrze-glossary' ),
-			'type' => 'text'
+			'type' => 'string'
         ],
 		'id' => [
 			'default' => NULL,
@@ -321,7 +321,7 @@ function getShortcodeSettings(){
 			'default' => '',
 			'field_type' => 'text',
 			'label' => __( 'Additonal CSS-class(es) for sourrounding DIV', 'rrze-glossary' ),
-			'type' => 'text'
+			'type' => 'string'
 		],
         'sort' => [
 			'values' => [
