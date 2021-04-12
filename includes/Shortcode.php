@@ -34,7 +34,7 @@ class Shortcode {
         if ( count( $aSearch ) == 1 ){
             return '';
         }
-        $ret = '<div class="fau-glossar"><ul class="letters" aria-hidden="true">';
+        $ret = '<div class="fau-glossar"><ul class="letters">';
         foreach ( range( 'A', 'Z' ) as $a ) {
             if ( array_key_exists( $a, $aSearch ) ) {
                 $ret .= '<li class="filled"><a href="#letter-'.$a.'">'.$a.'</a></li>';
@@ -49,7 +49,7 @@ class Shortcode {
         if ( count( $aTerms ) == 1 ){
             return '';
         }
-        $ret = '<div class="fau-glossar"><ul class="letters" aria-hidden="true">';
+        $ret = '<div class="fau-glossar"><ul class="letters">';
         foreach( $aTerms as $name => $aDetails ){
             $ret .= '<a href="#ID-' . $aDetails['ID'] . '">' . $name . '</a> | ';
         }
@@ -60,7 +60,7 @@ class Shortcode {
         if ( count( $aTerms ) == 1 ){
             return '';
         }
-        $ret = '<div class="fau-glossar"><ul class="letters" aria-hidden="true">';
+        $ret = '<div class="fau-glossar"><ul class="letters">';
         $smallest = 12;
         $largest = 22;
         $aCounts = array();
