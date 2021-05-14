@@ -197,7 +197,7 @@ function getShortcodeSettings(){
 			'title' => 'RRZE Glossary',
 			'category' => 'widgets',
             'icon' => 'book',
-            'show_block' => 'content'
+            'tinymce_icon' => 'info',
 		],
         'register' => [
 			'values' => [
