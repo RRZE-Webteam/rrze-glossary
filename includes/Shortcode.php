@@ -336,7 +336,8 @@ class Shortcode {
                             }
                         }     
                         $terms = wp_get_post_terms( $post->ID, 'glossary_' . $register );
-                        if ( $terms ){
+
+                        if ( $terms && !isset($terms->errors)){
                             foreach( $terms as $t ){
                                 if ( $valid_term_ids && in_array( $t->term_id, $valid_term_ids ) === FALSE ){
                                     continue;
@@ -426,6 +427,11 @@ class Shortcode {
                     }
                     if ( !$hide_accordeon ){
                         $accordion .= '[/collapsibles]';
+
+                        if ($registerstyle == 'a-z'){
+                            $content .= $this->createAZ( $aLetters );
+                        }
+
                         $content .= do_shortcode( $accordion );
                     }
                 }
