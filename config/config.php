@@ -261,9 +261,9 @@ function getShortcodeSettings(){
 			'label' => __( 'Glossary', 'rrze-glossary' ),
 			'type' => 'number'
 		],
-		'hide_accordeon' => [
+		'hide_accordion' => [
 			'field_type' => 'toggle',
-			'label' => __( 'Hide accordeon', 'rrze-glossary' ),
+			'label' => __( 'Hide accordion', 'rrze-glossary' ),
 			'type' => 'boolean',
 			'default' => FALSE,
 			'checked'   => FALSE
@@ -284,7 +284,7 @@ function getShortcodeSettings(){
 		],	  
 		'load_open' => [
 			'field_type' => 'toggle',
-			'label' => __( 'Load website with opened accordeons', 'rrze-glossary' ),
+			'label' => __( 'Load website with opened accordions', 'rrze-glossary' ),
 			'type' => 'boolean',
 			'default' => FALSE,
 			'checked'   => FALSE
@@ -358,7 +358,13 @@ function getShortcodeSettings(){
 			'field_type' => 'select',
 			'label' => __( 'Order', 'rrze-glossary' ),
 			'type' => 'string'
-		]				
+		],
+		'hstart' => [
+			'default' => 2,
+			'field_type' => 'text',
+			'label' => __( 'Heading level of the first heading', 'rrze-glossary' ),
+			'type' => 'number' 
+		],
     ];
 }
 

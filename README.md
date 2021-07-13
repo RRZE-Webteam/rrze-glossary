@@ -28,6 +28,7 @@ show=".."
 class=".."
 sort=".."
 order=".."
+hstart=".."
 ] 
 ```
 
@@ -44,16 +45,18 @@ tag : mit diesem Attribut wird bestimmt, zu welchen Schlagwörtern passende Glos
 
 id : mit diesem Attribut erfolgt die Ausgabe eines oder mehrerer Glossar-Einträge. Sie finden die ID in der rechten Spalte unter "Glossar"->"Alle Glossar-Einträge" sowie in der Informationsbox "Einfügen in Seiten und Beiträgen" bei jedem Glossar-Eintrag im Bearbeitungsmodus. Sie können damit auch die Reihenfolge der Glossar-Einträge in der Ausgabe bestimmen. 
 
-hide : hiermit können Sie bestimmen, welche standardmässige Ausgabe nicht dargestellt werden soll. Mit "accordeon" werden die Glossar-Einträge nicht in einem Akkordeon, sondern direkt mit Titel und Inhalt ausgeben. "title" verbirgt dabei die Ausgabe des Titels und mit dem Wert "register" wird das Register nicht angezeigt. Voreingestellt ist die Ausgabe als Accordeons.
+hide : hiermit können Sie bestimmen, welche standardmässige Ausgabe nicht dargestellt werden soll. Mit "accordion" werden die Glossar-Einträge nicht in einem Akkordeon, sondern direkt mit Titel und Inhalt ausgeben. "title" verbirgt dabei die Ausgabe des Titels und mit dem Wert "register" wird das Register nicht angezeigt. Voreingestellt ist die Ausgabe als accordions.
 
 show : belegen Sie dieses Attribut mit dem Wert "expand-all-link", dann erscheint oberhalb der Ausgabe der Glossar-Einträge ein Button, um alle Akkordeons mit einem Klick zu öffnen. Mit "load-open" werden die Akkordeons im geöffneten Zustand geladen. Voreingestellt ist die Ausgabe mit beim Laden geschlossenen Akkordeons und ohne "Alle öffnen"-Button.
 
-class : hier lässt sich festlegen, in welcher Farbe der linke Rand der Accordeons sein soll. Mögliche Werte sind die Kennungen der Fakultäten "med", "nat", "rw", "phil" oder "tk". Zusätlich können Sie hier beliebig viele CSS-Klassen durch Leerzeichen getrennt angeben, die als Klassen für das umrahmende DIV dienen.
+class : hier lässt sich festlegen, in welcher Farbe der linke Rand der accordions sein soll. Mögliche Werte sind die Kennungen der Fakultäten "med", "nat", "rw", "phil" oder "tk". Zusätlich können Sie hier beliebig viele CSS-Klassen durch Leerzeichen getrennt angeben, die als Klassen für das umrahmende DIV dienen.
 
 sort : die Sortierung der Ausgabe kann hiermit gesteuert werden. Mögliche Werte sind "title", "id" und "sortfield". 
 "sortfield" bezieht sich auf das Sortierfeld, das bei jedem Glossar-Eintrag eingeben werden kann. Bei Verwendung von "sortfield" wird zuerst nach dem Sortierfeld und danach nach dem Titel sortiert. Voreingestellt ist "title", womit alle Glossar-Einträge in alphabetischer Reihenfolge angezeigt werden.
 
 order : legt fest, in welcher Reihenfolge sortiert werden soll. "asc" aufsteigend und "desc" absteigend. Voreingestellt ist "asc".
+
+hstart : bestimmt die Überschriftenebene der ersten Überschrift. Voreingestellt ist 2, womit die Überschriften als <h2> ausgegeben werden.
 
 
 ## Beispiele
