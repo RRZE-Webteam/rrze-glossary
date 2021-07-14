@@ -236,7 +236,7 @@ msgid "Here comes the Context Help content."
 msgstr ""
 
 #: config/config.php:219
-msgid "Hide accordeon"
+msgid "Hide accordion"
 msgstr "Ausgabe nicht in Akkordeons"
 
 #: config/config.php:226
@@ -277,7 +277,7 @@ msgid "Integration in pages and posts"
 msgstr "Einfügen in Seiten und Beiträge"
 
 #: config/config.php:240
-msgid "Load website with opened accordeons"
+msgid "Load website with opened accordions"
 msgstr "Website mit geöffneten Akkordeons laden"
 
 #: config/config.php:64

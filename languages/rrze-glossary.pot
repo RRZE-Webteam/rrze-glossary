@@ -173,7 +173,7 @@ msgid "Glossary"
 msgstr ""
 
 #: config/config.php:219
-msgid "Hide accordeon"
+msgid "Hide accordion"
 msgstr ""
 
 #: config/config.php:226
@@ -185,7 +185,7 @@ msgid "Show \"expand all\" button"
 msgstr ""
 
 #: config/config.php:240
-msgid "Load website with opened accordeons"
+msgid "Load website with opened accordions"
 msgstr ""
 
 #: config/config.php:255
