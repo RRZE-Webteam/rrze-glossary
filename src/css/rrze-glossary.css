@@ -1,8 +1,5 @@
-.fau-glossary{
-    font-family: Roboto,sans-serif !important;
-}
 
-.fau-glossar .letters li{
+.fau-glossar .letters li {
     border: 1px solid #e9edf2;
     color: #e9edf2;
     vertical-align: middle;
@@ -14,7 +11,7 @@
     background-clip: padding-box
 }
 
-.fau-glossar .letters li.filled{
+.fau-glossar .letters li.filled {
     border-color: #dfe6ec;
     background: #dfe6ec;
     color: #036
@@ -29,15 +26,8 @@
     padding: 0;
 }
 
-.fau-glossary{
-    font-family: Roboto,sans-serif !important;
-}
 
 ul.letters{
-    margin: 20px 0 10px !important;
-    padding: 0 !important;
+    margin: 20px 0 10px;
+    padding: 0;
 }
-
-/* .accordion-body{
-    display: none !important;
-} */

@@ -39,7 +39,7 @@ class Shortcode {
             if ( array_key_exists( $a, $aSearch ) ) {
                 $ret .= '<li class="filled"><a href="#letter-'.$a.'">'.$a.'</a></li>';
             } else {
-                $ret .= '<li>'.$a.'</li>';
+                $ret .= '<li aria-hidden="true" role="presentation"><span>'.$a.'</span></li>';
             }
         }
         return $ret . '</ul></div>';
@@ -196,7 +196,7 @@ class Shortcode {
                     case 'nat':
                     case 'phil':
                     case 'rw':
-                    case 'tk':
+                    case 'tf':
                         $atts['color'] = $part;
                     break;
                     default:
