@@ -70,7 +70,7 @@ class CPT {
         $tax = [
             [ 
                 'name' => 'glossary_category',
-                'label' => __('Categories', 'rrze-glossary'),
+                'label' => __( 'Glossary', 'rrze-glossary' ) . ' ' . __('Categories', 'rrze-glossary'),
                 'slug' => 'glossary_category',
                 'rest_base' => 'glossary_category',
                 'hierarchical' => TRUE,
@@ -92,7 +92,7 @@ class CPT {
             ],
             [ 
                 'name' => 'glossary_tag',
-                'label' => __('Tags', 'rrze-glossary'),
+                'label' => __( 'Glossary', 'rrze-glossary' ) . ' ' . __('Tags', 'rrze-glossary'),
                 'slug' => 'glossary_tag',
                 'rest_base' => 'glossary_tag',
                 'hierarchical' => FALSE,
