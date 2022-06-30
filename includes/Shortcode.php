@@ -20,8 +20,8 @@ class Shortcode {
         $this->pluginname = $this->settings['block']['blockname'];
         add_action( 'admin_enqueue_scripts', [$this, 'enqueueGutenberg'] );
         add_action( 'init',  [$this, 'initGutenberg'] );
-        add_shortcode( 'glossary', [ $this, 'shortcodeOutput' ], 10, 2 );
-        add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ], 10, 2 );
+        add_shortcode( 'glossary', [ $this, 'shortcodeOutput' ]);
+        add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ]);
         add_action('admin_head', [$this, 'setMCEConfig']);
         add_filter('mce_external_plugins', [$this, 'addMCEButtons']);
     }
