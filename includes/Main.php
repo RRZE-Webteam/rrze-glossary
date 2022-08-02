@@ -61,6 +61,7 @@ class Main {
      */
     public function enqueueScripts() {
         wp_register_style('rrze-glossary-style', plugins_url('assets/css/rrze-glossary.css', plugin_basename($this->pluginFile)));
+        wp_enqueue_style('rrze-glossary-style');
     }
 
 
