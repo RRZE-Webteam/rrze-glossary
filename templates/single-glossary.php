@@ -9,6 +9,6 @@
 */
 
 
-include_once('template-parts/head.php');
+include_once('template-parts/single_head.php');
 include_once('template-parts/glossary_content.php');
 include_once('template-parts/foot.php');
