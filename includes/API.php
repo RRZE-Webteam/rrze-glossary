@@ -249,7 +249,12 @@ class API {
 
     protected function cleanContent( $txt ){
         // returns content without info below '<!-- rrze-glossary -->'
-        $txt = substr( $txt, 0, strpos( $txt, '<!-- rrze-glossary -->' ));
+        $pos = strpos( $txt, '<!-- rrze-glossary -->' );
+        
+        if ($pos !== false){
+            $txt = substr( $txt, 0, $pos);
+        }
+
         return $txt;
     }
 
@@ -315,7 +320,6 @@ class API {
                     }
                     foreach( $entries as $entry ){
                         if ( $entry['source'] == 'website' ){
-                            // $content = substr( $entry['content']['rendered'], 0, strpos( $entry['content']['rendered'], '<!-- rrze-glossary -->' ));
                             $content = $this->cleanContent( $entry['content']['rendered'] );
                             $content = $this->absoluteUrl( $content, $url );
 

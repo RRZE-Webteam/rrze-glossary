@@ -79,7 +79,12 @@ class Layout {
 
     public function fillContentBox( $post ) {
         $mycontent = apply_filters( 'the_content', $post->post_content );
-        $mycontent = substr( $mycontent, 0, strpos( $mycontent, '<!-- rrze-glossary -->' ));
+        $pos = strpos( $mycontent, '<!-- rrze-glossary -->' );
+
+        if ($pos !== false){
+            $mycontent = substr( $mycontent, 0, );
+        }
+        
         echo '<h1>' . html_entity_decode( $post->post_title ) . '</h1><br>' . $mycontent;
     }
 
