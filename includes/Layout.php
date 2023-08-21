@@ -82,9 +82,9 @@ class Layout {
         $pos = strpos( $mycontent, '<!-- rrze-glossary -->' );
 
         if ($pos !== false){
-            $mycontent = substr( $mycontent, 0, );
+            $mycontent = substr( $mycontent, 0, $pos);
         }
-        
+
         echo '<h1>' . html_entity_decode( $post->post_title ) . '</h1><br>' . $mycontent;
     }
 
