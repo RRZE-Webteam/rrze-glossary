@@ -18,8 +18,6 @@ class Shortcode {
     public function __construct() {
         $this->settings = getShortcodeSettings();
         $this->pluginname = $this->settings['block']['blockname'];
-        add_action( 'admin_enqueue_scripts', [$this, 'enqueueGutenberg'] );
-        add_action( 'init',  [$this, 'initGutenberg'] );
         add_shortcode( 'glossary', [ $this, 'shortcodeOutput' ]);
         add_shortcode( 'fau_glossar', [ $this, 'shortcodeOutput' ]);
         add_action('admin_head', [$this, 'setMCEConfig']);
@@ -459,117 +457,6 @@ class Shortcode {
         uasort( $arr, function($a, $b) {
             return strtolower( $a ) <=> strtolower( $b );
         } );
-    }
-
-    public function isGutenberg(){
-        $postID = get_the_ID();
-        if ($postID && !use_block_editor_for_post($postID)){
-            return false;
-        }
-
-        return true;        
-    }
-
-    public function fillGutenbergOptions() {
-        // fill selects "category" and "tag"
-        $fields = array( 'category', 'tag' );
-        foreach ( $fields as $field ) {
-            // set new params for gutenberg / the old ones are used for shortcode in classic editor
-            $this->settings[$field]['values'] = array();
-            $this->settings[$field]['field_type'] = 'multi_select';
-            $this->settings[$field]['default'] = array(0);
-            $this->settings[$field]['type'] = 'array';
-            $this->settings[$field]['items'] = array( 'type' => 'string' );
-            $this->settings[$field]['values'][] = ['id' => 0, 'val' => __( '-- all --', 'rrze-glossary' )];
-
-            // get categories and tags from this website
-            $terms = get_terms([
-                'taxonomy' => 'glossary_' . $field,
-                'hide_empty' => TRUE,
-                'orderby' => 'name',
-                'order' => 'ASC'
-                ]);
-
-            foreach ( $terms as $term ){
-                $this->settings[$field]['values'][] = [
-                    'id' => $term->slug,
-                    'val' => $term->name
-                ];
-            }
-        }
-
-        // fill select id ( = glossary )
-        $glossaries = get_posts( array(
-            'posts_per_page'  => -1,
-            'post_type' => 'glossary',
-            'orderby' => 'title',
-            'order' => 'ASC'
-        ));
-
-        $this->settings['id']['field_type'] = 'multi_select';
-        $this->settings['id']['default'] = array(0);
-        $this->settings['id']['type'] = 'array';
-        $this->settings['id']['items'] = array( 'type' => 'number' );
-        $this->settings['id']['values'][] = ['id' => 0, 'val' => __( '-- all --', 'rrze-glossary' )];
-        foreach ( $glossaries as $glossary){
-            $this->settings['id']['values'][] = [
-                'id' => $glossary->ID,
-                'val' => str_replace( "'", "", str_replace( '"', "", $glossary->post_title ) )
-            ];
-        }
-
-        return $this->settings;
-    }
-
-    public function initGutenberg() {
-        if (! $this->isGutenberg()){
-            return;
-        }
-
-        // get prefills for dropdowns
-        $this->settings = $this->fillGutenbergOptions();
-
-        // register js-script to inject php config to call gutenberg lib
-        $editor_script = $this->settings['block']['blockname'] . '-block';        
-        $js = '../assets/js/' . $editor_script . '.js';
-
-        wp_register_script(
-            $editor_script,
-            plugins_url( $js, __FILE__ ),
-            array(
-                'RRZE-Gutenberg',
-            ),
-            NULL
-        );
-        wp_localize_script( $editor_script, $this->settings['block']['blockname'] . 'Config', $this->settings );
-
-        // register block
-        register_block_type( $this->settings['block']['blocktype'], array(
-            'editor_script' => $editor_script,
-            'render_callback' => [$this, 'shortcodeOutput'],
-            'attributes' => $this->settings
-            ) 
-        );
-    }
-
-    public function enqueueGutenberg(){
-        if (! $this->isGutenberg()){
-            return;
-        }
-
-        // include gutenberg lib
-        wp_enqueue_script(
-            'RRZE-Gutenberg',
-            plugins_url( '../assets/js/gutenberg.js', __FILE__ ),
-            array(
-                'wp-blocks',
-                'wp-i18n',
-                'wp-element',
-                'wp-components',
-                'wp-editor'
-            ),
-            NULL
-        );
     }
 
     public function setMCEConfig(){
