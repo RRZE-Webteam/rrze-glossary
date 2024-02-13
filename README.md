@@ -1,5 +1,5 @@
 # RRZE-Glossary
-WordPress-Plugin: Shortcode zur Einbindung von eigenen Glossar-Einträgen sowie von Glossar-Einträgen aus dem FAU-Netzwerk. 
+WordPress-Plugin: Shortcode / Gutenberg Block / Widget zur Einbindung von eigenen Glossar-Einträgen sowie von Glossar-Einträge aus dem FAU-Netzwerk. 
 
 ## Allgemeines
 
@@ -83,6 +83,32 @@ Unabhängig von der Kategorie werden alle Glossar-Einträge, die das Schlagwort 
 Hierzu muss die gewünschte Domain über den Menüpunkt "Einstellungen" -> "RRZE Glossary" -> Tab "Domains" hinzugefügt werden.
 Das Synchronisieren kann über den Menüpunkt "Einstellungen" -> "RRZE Glossary" -> Tab "Synchonisierung" vorgenommen werden.
 Synchronisierte Glossar-Einträge können nun wie selbst erstellte Glossar-Einträge mit dem Shortcode ausgegeben werden.
+
+
+
+## Verwendung via REST API v2
+
+Beispiele:
+
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary
+
+Filterungen:
+
+Tag:
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_tag]=Matrix
+
+Mehrere Tags:
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_tag]=Matrix%2BAccounts
+
+Kategorie:
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_category]=Dienste
+
+Tags und Kategorien:
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_category]=Dienste&filter[glossary_tag]=Sprache
+
+Pagination:
+https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/
+
 
 
 

@@ -2,18 +2,13 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "create-block/rrze-glossary",
-	"version": "5.0.2",
-	"title": "RRZE Glossary",
+	"version": "2.0.1",
+	"title": "Glossary RRZE",
 	"category": "widgets",
 	"description": "Display glossaries",
+	"icon": "book",
 	"example": {},
 	"attributes": {
-		"register": {
-			"type": "string"
-		},
-		"registerstyle": {
-			"type": "string"
-		},
 		"category": {
 			"type": "string"
 		},
@@ -21,6 +16,12 @@
 			"type": "string"
 		},
 		"id": {
+			"type": "string"
+		},
+		"register": {
+			"type": "string"
+		},
+		"registerstyle": {
 			"type": "string"
 		},
 		"hide_accordion": {

@@ -12,9 +12,9 @@ import ServerSideRender from '@wordpress/server-side-render';
 
 
 export default function Edit({ attributes, setAttributes }) {
-	const { register, tag, id, hstart, order, sort, lang, additional_class, color, load_open, expand_all_link, hide_title, hide_accordion, glossarystyle, glossary } = attributes;
+	const { register, tag, id, hstart, order, sort, lang, additional_class, color, load_open, expand_all_link, hide_title, hide_accordion, registerstyle, glossary } = attributes;
 	const blockProps = useBlockProps();
-	const [registerstate, setSelectedCategories] = useState(['']);
+	const [categorystate, setSelectedCategories] = useState(['']);
 	const [tagstate, setSelectedTags] = useState(['']);
 	const [idstate, setSelectedIDs] = useState(['']);
 
@@ -32,9 +32,9 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({ expand_all_link: expand_all_link });
 		setAttributes({ hide_title: hide_title });
 		setAttributes({ hide_accordion: hide_accordion });
-		setAttributes({ glossarystyle: glossarystyle });
+		setAttributes({ registerstyle: registerstyle });
 		setAttributes({ glossary: glossary });
-	}, [register, tag, id, hstart, order, sort, lang, additional_class, color, load_open, expand_all_link, hide_title, hide_accordion, glossarystyle, glossary, setAttributes]);
+	}, [register, tag, id, hstart, order, sort, lang, additional_class, color, load_open, expand_all_link, hide_title, hide_accordion, registerstyle, glossary, setAttributes]);
 
 
 
@@ -42,7 +42,7 @@ export default function Edit({ attributes, setAttributes }) {
 		return select('core').getEntityRecords('taxonomy', 'glossary_category');
 	}, []);
 
-	const registeroptions = [
+	const categoryoptions = [
 		{
 			label: __('all', 'rrze-glossary'),
 			value: ''
@@ -51,7 +51,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 	if (!!categories) {
 		Object.values(categories).forEach(register => {
-			registeroptions.push({
+			categoryoptions.push({
 				label: register.name,
 				value: register.slug,
 			});
@@ -98,34 +98,57 @@ export default function Edit({ attributes, setAttributes }) {
 		});
 	}
 
-	// const languages = useSelect((select) => {
-	// 	return select('core').getEntityRecords('term', 'lang', { per_page: -1 });
-	// }, []);
-
-	// console.log('edit.js languages: ' + JSON.stringify(languages));
-
-	const langoptions = [
+	const registeroptions = [
 		{
-			label: __('all', 'rrze-glossary'),
+			label: __('none', 'rrze-faq'),
 			value: ''
+		},
+		{
+			label: __('Categories', 'rrze-faq'),
+			value: 'category'
+		},
+		{
+			label: __('Tags', 'rrze-faq'),
+			value: 'tag'
 		}
 	];
 
-	// if (!!languages) {
-	// 	Object.values(languages).forEach(language => {
-	// 		langoptions.push({
-	// 			label: language.name,
-	// 			value: language.id,
-	// 		});
-	// 	});
-	// }
 
-
-	const glossarystyleoptions = [
+	const langoptions = [
 		{
-			label: __('-- hidden --', 'rrze-glossary'),
+			label: __('all', 'rrze-faq'),
 			value: ''
 		},
+		{
+			label: __('German', 'rrze-faq'),
+			value: 'de'
+		},
+		{
+
+			label: __('English', 'rrze-faq'),
+			value: 'en'
+		},
+		{
+
+			label: __('French', 'rrze-faq'),
+			value: 'fr'
+		},
+		{
+
+			label: __('Spanish', 'rrze-faq'),
+			value: 'es'
+		},
+		{
+			label: __('Russian', 'rrze-faq'),
+			value: 'ru'
+		},
+		{
+			label: __('Chinese', 'rrze-faq'),
+			value: 'zh'
+		}
+	];
+
+	const registerstyleoptions = [
 		{
 			label: __('A - Z', 'rrze-glossary'),
 			value: 'a-z'
@@ -137,6 +160,10 @@ export default function Edit({ attributes, setAttributes }) {
 		{
 			label: __('Tabs', 'rrze-glossary'),
 			value: 'tabs'
+		},
+		{
+			label: __('-- hidden --', 'rrze-glossary'),
+			value: ''
 		}
 	];
 
@@ -195,9 +222,9 @@ export default function Edit({ attributes, setAttributes }) {
 
 	// console.log('edit.js attributes: ' + JSON.stringify(attributes));
 
-	const onChangeregister = (newValues) => {
+	const onChangeCategory = (newValues) => {
 		setSelectedCategories(newValues);
-		setAttributes({ register: String(newValues) })
+		setAttributes({ category: String(newValues) })
 	};
 
 	const onChangeTag = (newValues) => {
@@ -219,9 +246,9 @@ export default function Edit({ attributes, setAttributes }) {
 							"Categories",
 							'rrze-glossary'
 						)}
-						value={registerstate}
-						options={registeroptions}
-						onChange={onChangeregister}
+						value={categorystate}
+						options={categoryoptions}
+						onChange={onChangeCategory}
 						multiple
 					/>
 					<SelectControl
@@ -259,19 +286,19 @@ export default function Edit({ attributes, setAttributes }) {
 				<PanelBody title={__('Styles', 'rrze-glossary')}>
 					<SelectControl
 						label={__(
-							"Glossary Content",
+							"Register",
 							'rrze-glossary'
 						)}
-						options={glossaryoptions}
-						onChange={(value) => setAttributes({ glossary: value })}
+						options={registeroptions}
+						onChange={(value) => setAttributes({ register: value })}
 					/>
 					<SelectControl
 						label={__(
 							"Glossary Style",
 							'rrze-glossary'
 						)}
-						options={glossarystyleoptions}
-						onChange={(value) => setAttributes({ glossarystyle: value })}
+						options={registerstyleoptions}
+						onChange={(value) => setAttributes({ registerstyle: value })}
 					/>
 					<ToggleControl
 						checked={!!hide_accordion}

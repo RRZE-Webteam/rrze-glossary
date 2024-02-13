@@ -3,8 +3,8 @@
 /*
 Plugin Name:     RRZE Glossary
 Plugin URI:      https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary
-Description:     Plugin, um Glossar-Einträge zu erstellen, aus dem FAU-Netzwerk zu synchronisieren und mittels Shortcode oder als Block (Gutenberg Editor) einzubinden.  
-Version:         2.0.0
+Description:     Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget.
+Version:         2.0.1
 Requires at least: 6.1
 Requires PHP:      8.0
 Author:          RRZE Webteam

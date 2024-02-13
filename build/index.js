@@ -56,11 +56,11 @@ function Edit({
     expand_all_link,
     hide_title,
     hide_accordion,
-    glossarystyle,
+    registerstyle,
     glossary
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)();
-  const [registerstate, setSelectedCategories] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(['']);
+  const [categorystate, setSelectedCategories] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(['']);
   const [tagstate, setSelectedTags] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(['']);
   const [idstate, setSelectedIDs] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(['']);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
@@ -104,22 +104,22 @@ function Edit({
       hide_accordion: hide_accordion
     });
     setAttributes({
-      glossarystyle: glossarystyle
+      registerstyle: registerstyle
     });
     setAttributes({
       glossary: glossary
     });
-  }, [register, tag, id, hstart, order, sort, lang, additional_class, color, load_open, expand_all_link, hide_title, hide_accordion, glossarystyle, glossary, setAttributes]);
+  }, [register, tag, id, hstart, order, sort, lang, additional_class, color, load_open, expand_all_link, hide_title, hide_accordion, registerstyle, glossary, setAttributes]);
   const categories = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
     return select('core').getEntityRecords('taxonomy', 'glossary_category');
   }, []);
-  const registeroptions = [{
+  const categoryoptions = [{
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('all', 'rrze-glossary'),
     value: ''
   }];
   if (!!categories) {
     Object.values(categories).forEach(register => {
-      registeroptions.push({
+      categoryoptions.push({
         label: register.name,
         value: register.slug
       });
@@ -159,31 +159,39 @@ function Edit({
       });
     });
   }
-
-  // const languages = useSelect((select) => {
-  // 	return select('core').getEntityRecords('term', 'lang', { per_page: -1 });
-  // }, []);
-
-  // console.log('edit.js languages: ' + JSON.stringify(languages));
-
-  const langoptions = [{
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('all', 'rrze-glossary'),
-    value: ''
-  }];
-
-  // if (!!languages) {
-  // 	Object.values(languages).forEach(language => {
-  // 		langoptions.push({
-  // 			label: language.name,
-  // 			value: language.id,
-  // 		});
-  // 	});
-  // }
-
-  const glossarystyleoptions = [{
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('-- hidden --', 'rrze-glossary'),
+  const registeroptions = [{
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('none', 'rrze-faq'),
     value: ''
   }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Categories', 'rrze-faq'),
+    value: 'category'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Tags', 'rrze-faq'),
+    value: 'tag'
+  }];
+  const langoptions = [{
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('all', 'rrze-faq'),
+    value: ''
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('German', 'rrze-faq'),
+    value: 'de'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('English', 'rrze-faq'),
+    value: 'en'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('French', 'rrze-faq'),
+    value: 'fr'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Spanish', 'rrze-faq'),
+    value: 'es'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Russian', 'rrze-faq'),
+    value: 'ru'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Chinese', 'rrze-faq'),
+    value: 'zh'
+  }];
+  const registerstyleoptions = [{
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('A - Z', 'rrze-glossary'),
     value: 'a-z'
   }, {
@@ -192,6 +200,9 @@ function Edit({
   }, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Tabs', 'rrze-glossary'),
     value: 'tabs'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('-- hidden --', 'rrze-glossary'),
+    value: ''
   }];
   const coloroptions = [{
     label: 'fau',
@@ -232,10 +243,10 @@ function Edit({
 
   // console.log('edit.js attributes: ' + JSON.stringify(attributes));
 
-  const onChangeregister = newValues => {
+  const onChangeCategory = newValues => {
     setSelectedCategories(newValues);
     setAttributes({
-      register: String(newValues)
+      category: String(newValues)
     });
   };
   const onChangeTag = newValues => {
@@ -254,9 +265,9 @@ function Edit({
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Settings', 'rrze-glossary')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Categories", 'rrze-glossary'),
-    value: registerstate,
-    options: registeroptions,
-    onChange: onChangeregister,
+    value: categorystate,
+    options: categoryoptions,
+    onChange: onChangeCategory,
     multiple: true
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Tags", 'rrze-glossary'),
@@ -281,16 +292,16 @@ function Edit({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Styles', 'rrze-glossary')
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Glossary Content", 'rrze-glossary'),
-    options: glossaryoptions,
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Register", 'rrze-glossary'),
+    options: registeroptions,
     onChange: value => setAttributes({
-      glossary: value
+      register: value
     })
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Glossary Style", 'rrze-glossary'),
-    options: glossarystyleoptions,
+    options: registerstyleoptions,
     onChange: value => setAttributes({
-      glossarystyle: value
+      registerstyle: value
     })
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
     checked: !!hide_accordion,
@@ -460,7 +471,7 @@ module.exports = window["wp"]["serverSideRender"];
   \************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/rrze-glossary","version":"5.0.2","title":"RRZE Glossary","category":"widgets","description":"Display glossaries","example":{},"attributes":{"register":{"type":"string"},"registerstyle":{"type":"string"},"category":{"type":"string"},"tag":{"type":"string"},"id":{"type":"string"},"hide_accordion":{"type":"boolean"},"hide_title":{"type":"boolean"},"expand_all_link":{"type":"boolean"},"load_open":{"type":"boolean"},"color":{"type":"string"},"additional_class":{"type":"string"},"lang":{"type":"string"},"sort":{"type":"string"},"order":{"type":"string"},"hstart":{"type":"number"}},"supports":{"color":{"background":false,"text":true},"html":false,"typography":{"fontSize":true}},"textdomain":"rrze-glossary","editorScript":"file:./index.js","render":"file:./render.php"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/rrze-glossary","version":"2.0.1","title":"Glossary RRZE","category":"widgets","description":"Display glossaries","icon":"book","example":{},"attributes":{"category":{"type":"string"},"tag":{"type":"string"},"id":{"type":"string"},"register":{"type":"string"},"registerstyle":{"type":"string"},"hide_accordion":{"type":"boolean"},"hide_title":{"type":"boolean"},"expand_all_link":{"type":"boolean"},"load_open":{"type":"boolean"},"color":{"type":"string"},"additional_class":{"type":"string"},"lang":{"type":"string"},"sort":{"type":"string"},"order":{"type":"string"},"hstart":{"type":"number"}},"supports":{"color":{"background":false,"text":true},"html":false,"typography":{"fontSize":true}},"textdomain":"rrze-glossary","editorScript":"file:./index.js","render":"file:./render.php"}');
 
 /***/ })
 
@@ -539,14 +550,11 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./block.json */ "./src/block.json");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./save */ "./src/save.js");
-
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./block.json */ "./src/block.json");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/save.js");
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
@@ -560,18 +568,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const calendarIcon = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
-  viewBox: "0 0 24 24",
-  xmlns: "http://www.w3.org/2000/svg",
-  "aria-hidden": "true",
-  focusable: "false"
-}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-  d: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm.5 16c0 .3-.2.5-.5.5H5c-.3 0-.5-.2-.5-.5V7h15v12zM9 10H7v2h2v-2zm0 4H7v2h2v-2zm4-4h-2v2h2v-2zm4 0h-2v2h2v-2zm-4 4h-2v2h2v-2zm4 0h-2v2h2v-2z"
-}));
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_2__.name, {
-  icon: calendarIcon,
-  edit: _edit__WEBPACK_IMPORTED_MODULE_3__["default"],
-  save: _save__WEBPACK_IMPORTED_MODULE_4__["default"]
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_1__.name, {
+  edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+  save: _save__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 })();
 

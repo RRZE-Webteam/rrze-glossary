@@ -1,7 +1,7 @@
 {
 	"name": "rrze-glossary",
-	"version": "2.0.0",
-	"description": "Plugin, um Glossar-Einträge zu erstellen, aus dem FAU-Netzwerk zu synchronisieren und mittels Shortcode oder als Block (Gutenberg Editor) einzubinden.",
+	"version": "2.0.1",
+	"description": "Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget.",
 	"author": "RRZE Webteam",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
