@@ -221,6 +221,8 @@ class Shortcode {
         $registerstyle  = ( isset( $registerstyle ) ? $registerstyle : '' );
         $hide_title = ( isset( $hide_title ) ? $hide_title : FALSE );        
         $color = ( isset( $color ) ? $color : '' );
+        $style = (isset($style) ? 'style="' . $style . '"' : '');
+
         // if ( $register && ( array_key_exists( $register, $this->settings['register']['values'] ) == FALSE )){
         //     return __( 'Attribute register is not correct. Please use either register="category" or register="tag".', 'rrze-glossary' );
         // }
@@ -239,7 +241,8 @@ class Shortcode {
                 $aIDs = explode( ',', $id );
             }
             $found = FALSE;
-            $accordion = '[collapsibles' . $expand_all_link . ']';
+            $accordion = '[collapsibles hstart="' . $hstart . '" ' . $style . ' ' . $expand_all_link . ']';
+
             foreach ( $aIDs as $registerID ){
                 $registerID = trim( $registerID );
                 if ( $registerID ){
@@ -365,7 +368,7 @@ class Shortcode {
                                 break;            
                         }
                     }
-                    $accordion = '[collapsibles' . $expand_all_link . ']';
+                    $accordion = '[collapsibles hstart="' . $hstart . '" ' . $style . ' ' . $expand_all_link . ']';
                     $last_anchor = '';
                     foreach ( $aUsedTerms as $k => $aVal ){
                         if ( $registerstyle == 'a-z' && $content ){
@@ -398,7 +401,7 @@ class Shortcode {
                 } else {  
                     // attribut register is not given  
                     if ( !$hide_accordion ){
-                        $accordion = '[collapsibles' . $expand_all_link . ']';
+                        $accordion = '[collapsibles hstart="' . $hstart . '" ' . $style . ' ' . $expand_all_link . ']';
                     }           
                     $last_anchor = '';
                     foreach( $posts as $post ) {
