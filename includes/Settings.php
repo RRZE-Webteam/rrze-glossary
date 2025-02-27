@@ -105,6 +105,47 @@ class Settings {
         add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
     }
 
+    public function my_custom_allowed_html($allowed_tags, $context)
+    {
+        if ('post' === $context) {
+            // Add the <select> tag and its attributes
+            $allowed_tags['select'] = array(
+                'name' => true,
+                'id' => true,
+                'class' => true,
+                'multiple' => true,
+                'size' => true,
+            );
+
+            // Add the <option> tag and its attributes
+            $allowed_tags['option'] = array(
+                'value' => true,
+                'selected' => true,
+            );
+
+            // Add the <input> tag and its attributes
+            $allowed_tags['input'] = array(
+                'type' => true,
+                'name' => true,
+                'id' => true,
+                'class' => true,
+                'value' => true,
+                'placeholder' => true,
+                'checked' => true,
+                'disabled' => true,
+                'readonly' => true,
+                'maxlength' => true,
+                'size' => true,
+                'min' => true,
+                'max' => true,
+                'step' => true,
+            );
+        }
+
+        return $allowed_tags;
+    }
+
+
     public function regularInit(){
         $this->setMenu();
         $this->setSections();
@@ -259,8 +300,9 @@ class Settings {
      * Einstellungsbereiche als Registerkarte anzeigen.
      * Zeigt alle Beschriftungen der Einstellungsbereiche als Registerkarte an.
      */
-    public function showTabs() {
-        $html = '<h1>' . $this->settingsMenu['title'] . '</h1>' . PHP_EOL;
+    public function showTabs()
+    {
+        $html = '<h1>' . esc_html($this->settingsMenu['title']) . '</h1>' . PHP_EOL;
 
         if (count($this->settingsSections) < 2) {
             return;
@@ -273,15 +315,15 @@ class Settings {
             $html .= sprintf(
                 '<a href="?page=%4$s&current-tab=%1$s" class="nav-tab %3$s" id="%1$s-tab">%2$s</a>',
                 esc_attr($section['id']),
-                $section['title'],
+                esc_html($section['title']),
                 esc_attr($class),
-                $this->settingsMenu['menu_slug']
+                esc_attr($this->settingsMenu['menu_slug'])
             );
         }
 
         $html .= '</h2>' . PHP_EOL;
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -301,17 +343,17 @@ class Settings {
                     $get = '?sync';
                     break;
                 case 'glossarydoms': 
-                    $btn_label = __('Add domain', 'rrze-glossary' );
+                    $btn_label = esc_html__('Add domain', 'rrze-glossary' );
                     $get = '?glossarydoms';
                     break;
                 case 'glossarylog': 
-                    $btn_label = __('Delete logfile', 'rrze-glossary' );
+                    $btn_label = esc_html__('Delete logfile', 'rrze-glossary' );
                     $get = '?del';
                     break;
             }
 
-            echo '<div id="' . $section['id'] . '">';
-            echo '<form method="post" action="options.php'. $get . '">';
+            echo '<div id="' . esc_attr($section['id']) . '">';
+            echo '<form method="post" action="options.php'. esc_attr($get) . '">';
             settings_fields($section['id']);
             do_settings_sections($section['id']);
             submit_button( $btn_label );
@@ -336,21 +378,25 @@ class Settings {
     public function domainOutput(){
         $api = new API();
         $aDomains = $api->getDomains();
-
+    
         if ( count($aDomains) > 0 ){
             $i = 1;
             echo '<style> .settings_page_rrze-glossary #log .form-table th {width:0;}</style>';
-            echo '<table class="wp-list-table widefat striped"><thead><tr><th colspan="3">Domains:</th></tr></thead><tbody>';
+            echo '<table class="wp-list-table widefat striped"><thead><tr><th colspan="3">' . esc_html__( 'Domains:', 'rrze-glossary' ) . '</th></tr></thead><tbody>';
             foreach ( $aDomains as $name => $url ){
-                echo '<tr><td><input type="checkbox" name="del_domain_' . $i . '" value="' . $url . '"></td><td>'. $name . '</td><td>'. $url . '</td></tr>';
+                echo '<tr>';
+                echo '<td><input type="checkbox" name="del_domain_' . esc_attr( $i ) . '" value="' . esc_url( $url ) . '"></td>';
+                echo '<td>' . esc_html( $name ) . '</td>';
+                echo '<td>' . esc_url( $url ) . '</td>';
+                echo '</tr>';
                 $i++;
             }
             echo '</tbody></table>';
-            echo '<p>' . __( 'Please note: "Delete selected domains" will DELETE every glossary on this website that has been fetched from the selected domains.', 'rrze-glossary' ) . '</p>'; 
+            echo '<p>' . esc_html__( 'Please note: "Delete selected domains" will DELETE every glossary on this website that has been fetched from the selected domains.', 'rrze-glossary' ) . '</p>';
             submit_button( __( 'Delete selected domains', 'rrze-glossary' ) );
         }
     }
-
+    
     public function setSettingsDomains(){
         $i = 1;
         $newFields = array();
@@ -429,62 +475,80 @@ class Settings {
      */
     public function adminInit()
     {
+        add_filter('wp_kses_allowed_html', [$this, 'my_custom_allowed_html'], 10, 2);
+
         // Hinzufügen von Einstellungsbereichen
         foreach ($this->settingsSections as $section) {
             if (isset($section['desc']) && !empty($section['desc'])) {
-                $section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
+                $section['desc'] = '<div class="inside">' . wp_kses_post($section['desc']) . '</div>';
                 $callback = function () use ($section) {
-                    echo str_replace('"', '\"', $section['desc']);
+                    echo wp_kses_post($section['desc']);
                 };
             } elseif (isset($section['callback'])) {
                 $callback = $section['callback'];
             } else {
                 $callback = null;
             }
-
-            add_settings_section($section['id'], $section['title'], $callback, $section['id']);
+    
+            add_settings_section(
+                sanitize_key($section['id']),
+                esc_html($section['title']),
+                $callback,
+                sanitize_key($section['id'])
+            );
         }
-
-        // Hinzufügen von Einstellungsfelder
+    
+        // Hinzufügen von Einstellungsfeldern
         foreach ($this->settingsFields as $section => $field) {
             foreach ($field as $option) {
                 $name = $option['name'];
                 $type = isset($option['type']) ? $option['type'] : 'text';
-                $label = isset($option['label']) ? $option['label'] : '';
+                $label = isset($option['label']) ? esc_html($option['label']) : '';
                 $callback = isset($option['callback']) ? $option['callback'] : [$this, 'callback' . ucfirst($type)];
-
+    
                 $args = [
-                    'id' => $name,
-                    'class' => isset($option['class']) ? $option['class'] : $name,
-                    'label_for' => "{$section}[{$name}]",
-                    'desc' => isset($option['desc']) ? $option['desc'] : '',
+                    'id' => sanitize_key($name),
+                    'class' => isset($option['class']) ? esc_attr($option['class']) : sanitize_key($name),
+                    'label_for' => esc_attr("{$section}[{$name}]"),
+                    'desc' => isset($option['desc']) ? wp_kses_post($option['desc']) : '',
                     'name' => $label,
-                    'section' => $section,
-                    'size' => isset($option['size']) ? $option['size'] : null,
+                    'section' => sanitize_key($section),
+                    'size' => isset($option['size']) ? esc_attr($option['size']) : null,
                     'options' => isset($option['options']) ? $option['options'] : '',
-                    'default' => isset($option['default']) ? $option['default'] : '',
+                    'default' => isset($option['default']) ? esc_html($option['default']) : '',
                     'sanitize_callback' => isset($option['sanitize_callback']) ? $option['sanitize_callback'] : '',
-                    'type' => $type,
-                    'placeholder' => isset($option['placeholder']) ? $option['placeholder'] : '',
-                    'min' => isset($option['min']) ? $option['min'] : '',
-                    'max' => isset($option['max']) ? $option['max'] : '',
-                    'step' => isset($option['step']) ? $option['step'] : '',
+                    'type' => esc_attr($type),
+                    'placeholder' => isset($option['placeholder']) ? esc_attr($option['placeholder']) : '',
+                    'min' => isset($option['min']) ? esc_attr($option['min']) : '',
+                    'max' => isset($option['max']) ? esc_attr($option['max']) : '',
+                    'step' => isset($option['step']) ? esc_attr($option['step']) : '',
                 ];
-
-                add_settings_field("{$section}[{$name}]", $label, $callback, $section, $section, $args);
-
+    
+                add_settings_field(
+                    "{$section}[{$name}]",
+                    $label,
+                    $callback,
+                    $section,
+                    sanitize_key($section),
+                    $args
+                );
+    
                 if (in_array($type, ['color', 'file'])) {
                     add_action('admin_enqueue_scripts', [$this, $type . 'EnqueueScripts']);
                 }
             }
         }
-
+    
         // Registrieren der Einstellungen
         foreach ($this->settingsSections as $section) {
-            register_setting($section['id'], $this->optionName, [$this, 'sanitizeOptions']);
+            register_setting(
+                sanitize_key($section['id']),
+                $this->optionName,
+                [$this, 'sanitizeOptions']
+            );
         }
     }
-
+    
     /**
      * Hinzufügen der Optionen-Seite
      * @return void
@@ -571,23 +635,23 @@ class Settings {
     public function callbackText($args)
     {
         $value = esc_attr($this->getOption($args['section'], $args['id'], $args['default']));
-        $size = isset($args['size']) && !is_null($args['size']) ? $args['size'] : 'regular';
-        $type = isset($args['type']) ? $args['type'] : 'text';
-        $placeholder = empty($args['placeholder']) ? '' : ' placeholder="' . $args['placeholder'] . '"';
+        $size = isset($args['size']) && !is_null($args['size']) ? esc_attr($args['size']) : 'regular';
+        $type = isset($args['type']) ? esc_attr($args['type']) : 'text';
+        $placeholder = empty($args['placeholder']) ? '' : ' placeholder="' . esc_attr($args['placeholder']) . '"';
 
         $html = sprintf(
             '<input type="%1$s" class="%2$s-text" id="%4$s-%5$s" name="%3$s[%4$s_%5$s]" value="%6$s"%7$s>',
             $type,
             $size,
-            $this->optionName,
-            $args['section'],
-            $args['id'],
-            $value,
+            esc_attr($this->optionName),
+            esc_attr($args['section']),
+            esc_attr($args['id']),
+            esc_attr($value),
             $placeholder
         );
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -619,7 +683,7 @@ class Settings {
         );
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -655,7 +719,7 @@ class Settings {
         );
         $html .= '</fieldset>';
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -694,7 +758,7 @@ class Settings {
         $html .= $this->getFieldDescription($args);
         $html .= '</fieldset>';
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -730,7 +794,7 @@ class Settings {
         $html .= $this->getFieldDescription($args);
         $html .= '</fieldset>';
 
-        echo $html;
+        echo wp_kses_post($html);    
     }
 
     /**
@@ -761,7 +825,7 @@ class Settings {
         $html .= sprintf('</select>');
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
 
@@ -793,7 +857,7 @@ class Settings {
         $html .= sprintf('</select>');
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -817,7 +881,7 @@ class Settings {
         );
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -829,7 +893,7 @@ class Settings {
         $value = $this->getOption($args['section'], $args['id'], $args['default']);
         $size = isset($args['size']) && !is_null($args['size']) ? $args['size'] : '500px';
 
-        echo '<div style="max-width: ' . $size . ';">';
+        echo wp_kses_post('<div style="max-width: ' . $size . ';">');
 
         $editor_settings = [
             'teeny' => true,
@@ -845,7 +909,7 @@ class Settings {
 
         echo '</div>';
 
-        echo $this->getFieldDescription($args);
+        echo wp_kses_post($this->getFieldDescription($args));
     }
 
     /**
@@ -870,7 +934,7 @@ class Settings {
         $html .= '<input type="button" class="button settings-media-browse" value="' . $label . '">';
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -892,7 +956,7 @@ class Settings {
         );
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     /**
@@ -915,7 +979,7 @@ class Settings {
         );
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     public function callbackHidden($args) {
@@ -936,7 +1000,7 @@ class Settings {
         );
         $html .= $this->getFieldDescription($args);
 
-        echo $html;
+        echo wp_kses_post($html);
     }
 
     public function callbackLogfile($args) {
@@ -945,14 +1009,14 @@ class Settings {
             if ( $lines !== false ) {
                 echo '<style> .settings_page_rrze-glossary #glossarylog .form-table th {width:0;}</style><table class="wp-list-table widefat striped"><tbody>';
                 foreach ( $lines as $line ){
-                    echo '<tr><td>' . $line . '</td></tr>';
+                    echo wp_kses_post('<tr><td>' . $line . '</td></tr>');
                 }
                 echo '</tbody></table>';
             }else{
-                echo __( 'Logfile is empty.', 'rrze-glossary' );
+                echo esc_html(__('Logfile is empty.', 'rrze-faq'));
             }
         }else{
-            echo __( 'Logfile is empty.', 'rrze-glossary' );
+            echo esc_html(__('Logfile is empty.', 'rrze-faq'));
         }
     }
 
@@ -965,7 +1029,7 @@ class Settings {
     }
 
     public function callbackButton( $args ) {
-        echo submit_button( esc_attr($this->getOption($args['section'], $args['id'], $args['default'])) );
+        submit_button( esc_attr($this->getOption($args['section'], $args['id'], $args['default'])));
     }
 
 

@@ -26,7 +26,7 @@ if ($thisThemeGroup == 'fauthemes') {
             <div class="row">
                 <div class="col-xs-12">
                     <main id="droppoint">
-                        <h1 class="screen-reader-text"><?php echo __('Index','fau'); ?></h1>
+                        <h1 class="screen-reader-text"><?php echo esc_html__('Index','fau'); ?></h1>
 
 <?php } elseif ($thisThemeGroup == 'rrzethemes') {
 

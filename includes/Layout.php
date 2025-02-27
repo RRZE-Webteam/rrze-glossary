@@ -73,7 +73,7 @@ class Layout {
         $sortfield = get_post_meta( $meta_id->ID, 'sortfield', TRUE );
         $output = '<input type="text" name="sortfield" id="sortfield" class="sortfield" value="'. esc_attr($sortfield) .'">';
         $output .= '<p class="description">' . __( 'Criterion for sorting the output of the shortcode', 'rrze-glossary' ) . '</p>';
-        echo $output;
+        echo wp_kses_post($output);
     }
 
 
@@ -85,7 +85,7 @@ class Layout {
             $mycontent = substr( $mycontent, 0, $pos);
         }
 
-        echo '<h1>' . html_entity_decode( $post->post_title ) . '</h1><br>' . $mycontent;
+        echo '<h1>' . esc_html( $post->post_title ) . '</h1><br>' . wp_kses_post($mycontent);
     }
 
     public function fillShortcodeBox( ) { 
@@ -108,7 +108,7 @@ class Layout {
             $ret .= ( $tag ? '<h3 class="hndle">' . __( 'Accordion with tag','rrze-glossary' ) . ':</h3><p>[glossary tag="' . $tag . '"]</p><p>'. __( 'If there is more than one tag listed, use at least one of them.', 'rrze-glossary' ) . '</p>' : '' );
             $ret .= '<h3 class="hndle">' . __( 'Accordion with all entries','rrze-glossary' ) . ':</h3><p>[glossary]</p>';
         }    
-        echo $ret;
+        echo wp_kses_post($ret);
     }
 
 
@@ -205,20 +205,20 @@ class Layout {
 
     public function getGlossaryColumnsValues( $column_name, $post_id ) {
         if( $column_name == 'id' ) {
-            echo $post_id;
+            echo esc_html($post_id);
         }
         if( $column_name == 'source' ) {
-            echo get_post_meta( $post_id, 'source', true );
+            echo esc_html(get_post_meta($post_id, 'source', true ));
         }
         if( $column_name == 'sortfield' ) {
-            echo get_post_meta( $post_id, 'sortfield', true );
+            echo esc_html(get_post_meta($post_id, 'sortfield', true ));
         }
     }
 
     public function getTaxColumnsValues( $content, $column_name, $term_id ) {
         if( $column_name == 'source' ) {
             $source = get_term_meta( $term_id, 'source', true );
-            echo $source;
+            echo esc_html($source);
         }
     }
 
