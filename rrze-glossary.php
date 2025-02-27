@@ -176,6 +176,8 @@ function deactivation() {
 
 function rrze_glossary_init() {
 	register_block_type( __DIR__ . '/build' );
+    $script_handle = generate_block_asset_handle( 'create-block/rrze-glossary', 'editorScript' );
+    wp_set_script_translations( $script_handle, 'rrze-glossary', plugin_dir_path( __FILE__ ) . 'languages' );
 }
 
 /**

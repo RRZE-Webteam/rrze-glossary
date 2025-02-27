@@ -160,7 +160,6 @@ class Shortcode {
                     case 'accordeon':
                         $atts['hide_accordion'] = TRUE;
                     break;
-                    break;
                     case 'register':
                         $atts['registerstyle'] = '';
                     break;

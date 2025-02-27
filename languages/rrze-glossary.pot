@@ -1,415 +1,482 @@
-#, fuzzy
+# Copyright (C) 2025 RRZE Webteam
+# This file is distributed under the GNU General Public License v3.
 msgid ""
 msgstr ""
-"Project-Id-Version: RRZE Glossary\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-31 14:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: RRZE Glossary 2.1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-glossary\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.4.0; wp-5.4.2"
+"POT-Creation-Date: 2025-02-27T12:43:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: rrze-glossary\n"
 
-#: rrze-glossary.php:91
-#, php-format
-msgid ""
-"The server is running PHP version %1$s. The Plugin requires at least PHP "
-"version %2$s."
-msgstr ""
-
-#: rrze-glossary.php:94
-#, php-format
-msgid ""
-"The server is running WordPress version %1$s. The Plugin requires at least "
-"WordPress version %2$s."
-msgstr ""
-
-#. Name of the plugin
-#: config/config.php:22 config/config.php:23
+#. Plugin Name of the plugin
+#: rrze-glossary.php
+#: config/config.php:49
+#: config/config.php:50
 msgid "RRZE Glossary"
 msgstr ""
 
-#: config/config.php:26
+#. Plugin URI of the plugin
+#: rrze-glossary.php
+msgid "https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary"
+msgstr ""
+
+#. Description of the plugin
+#: rrze-glossary.php
+msgid "Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget."
+msgstr ""
+
+#. Author of the plugin
+#: rrze-glossary.php
+msgid "RRZE Webteam"
+msgstr ""
+
+#. Author URI of the plugin
+#: rrze-glossary.php
+msgid "https://blogs.fau.de/webworking/"
+msgstr ""
+
+#: config/config.php:32
+msgid "German"
+msgstr ""
+
+#: config/config.php:33
+msgid "English"
+msgstr ""
+
+#: config/config.php:34
+msgid "Spanish"
+msgstr ""
+
+#: config/config.php:35
+msgid "French"
+msgstr ""
+
+#: config/config.php:36
+msgid "Russian"
+msgstr ""
+
+#: config/config.php:37
+msgid "Chinese"
+msgstr ""
+
+#: config/config.php:53
 msgid "RRZE Glossary Settings"
 msgstr ""
 
-#: config/config.php:39
+#: config/config.php:66
 msgid "Here comes the Context Help content."
 msgstr ""
 
-#: config/config.php:41
+#: config/config.php:68
 msgid "Overview"
 msgstr ""
 
-#: config/config.php:42
+#: config/config.php:69
 msgid "For more information"
 msgstr ""
 
-#: config/config.php:42
+#: config/config.php:69
 msgid "RRZE Webteam on Github"
 msgstr ""
 
-#: config/config.php:56
+#: config/config.php:83
 msgid "Domains"
 msgstr ""
 
-#: config/config.php:60 config/config.php:114
+#: config/config.php:87
+#: config/config.php:141
 msgid "Synchronize"
 msgstr ""
 
-#: config/config.php:64
+#: config/config.php:91
 msgid "Logfile"
 msgstr ""
 
-#: config/config.php:79 config/config.php:93
+#: config/config.php:106
+#: config/config.php:120
 msgid "Short name"
 msgstr ""
 
-#: config/config.php:80
+#: config/config.php:107
 msgid "Enter a short name for this domain."
 msgstr ""
 
-#: config/config.php:85 config/config.php:100
+#: config/config.php:112
+#: config/config.php:127
 msgid "URL"
 msgstr ""
 
-#: config/config.php:86
+#: config/config.php:113
 msgid "Enter the domain's URL you want to receive glossaries from."
 msgstr ""
 
-#: config/config.php:94
+#: config/config.php:121
 msgid "Use this name as attribute 'domain' in shortcode [glossary]"
 msgstr ""
 
-#: config/config.php:107 config/config.php:179 config/config.php:202
-#: includes/CPT.php:70 includes/Layout.php:236
+#: config/config.php:134
+#: config/config.php:210
+#: config/config.php:249
+#: includes/CPT.php:73
+#: templates/template-parts/glossary_content.php:31
+#: build/index.js:1
 msgid "Categories"
 msgstr ""
 
-#: config/config.php:108
+#: config/config.php:135
 msgid "Please select the categories you'd like to fetch glossaries to."
 msgstr ""
 
-#: config/config.php:115
+#: config/config.php:142
 msgid "Do not synchronize"
 msgstr ""
 
-#: config/config.php:126
+#: config/config.php:153
 msgid "Info"
 msgstr ""
 
-#: config/config.php:127 config/config.php:129
-msgid ""
-"All glossaries that match to the selected categories will be updated or "
-"inserted. Already synchronized glossaries that refer to categories which are "
-"not selected will be deleted. Glossaries that have been deleted at the "
-"remote website will be deleted on this website, too."
+#: config/config.php:154
+#: config/config.php:156
+msgid "All glossaries that match to the selected categories will be updated or inserted. Already synchronized glossaries that refer to categories which are not selected will be deleted. Glossaries that have been deleted at the remote website will be deleted on this website, too."
 msgstr ""
 
-#: config/config.php:133
+#: config/config.php:160
 msgid "Mode"
 msgstr ""
 
-#: config/config.php:134
+#: config/config.php:161
 msgid "Synchronize automatically"
 msgstr ""
 
-#: config/config.php:139
+#: config/config.php:166
 msgid "Frequency"
 msgstr ""
 
-#: config/config.php:143
+#: config/config.php:170
 msgid "daily"
 msgstr ""
 
-#: config/config.php:144
+#: config/config.php:171
 msgid "twicedaily"
 msgstr ""
 
-#: config/config.php:174
-msgid "Find the settings on the right side"
-msgstr ""
-
-#: config/config.php:178
+#: config/config.php:206
+#: build/index.js:1
 msgid "none"
 msgstr ""
 
-#: config/config.php:180 config/config.php:208 includes/CPT.php:92
-#: includes/Layout.php:237
+#: config/config.php:214
+#: config/config.php:255
+#: includes/CPT.php:95
+#: templates/template-parts/glossary_content.php:32
+#: build/index.js:1
 msgid "Tags"
 msgstr ""
 
-#: config/config.php:184
+#: config/config.php:219
 msgid "Register content"
 msgstr ""
 
-#: config/config.php:189
+#: config/config.php:226
+#: build/index.js:1
 msgid "-- hidden --"
 msgstr ""
 
-#: config/config.php:190
+#: config/config.php:230
+#: build/index.js:1
 msgid "A - Z"
 msgstr ""
 
-#: config/config.php:191
+#: config/config.php:234
+#: build/index.js:1
 msgid "Tagcloud"
 msgstr ""
 
-#: config/config.php:192
+#: config/config.php:238
+#: build/index.js:1
 msgid "Tabs"
 msgstr ""
 
-#: config/config.php:196
+#: config/config.php:243
 msgid "Register style"
 msgstr ""
 
-#: config/config.php:214 includes/CPT.php:28 includes/CPT.php:42
+#: config/config.php:261
+#: includes/CPT.php:31
+#: includes/CPT.php:45
+#: includes/CPT.php:73
+#: includes/CPT.php:95
 msgid "Glossary"
 msgstr ""
 
-#: config/config.php:219
+#: config/config.php:266
+#: build/index.js:1
 msgid "Hide accordion"
 msgstr ""
 
-#: config/config.php:226
+#: config/config.php:273
+#: build/index.js:1
 msgid "Hide title"
 msgstr ""
 
-#: config/config.php:233
+#: config/config.php:280
+#: build/index.js:1
 msgid "Show \"expand all\" button"
 msgstr ""
 
-#: config/config.php:240
+#: config/config.php:287
+#: build/index.js:1
 msgid "Load website with opened accordions"
 msgstr ""
 
-#: config/config.php:255
+#: config/config.php:317
+#: build/index.js:1
 msgid "Color"
 msgstr ""
 
-#: config/config.php:261
+#: config/config.php:343
 msgid "Additonal CSS-class(es) for sourrounding DIV"
 msgstr ""
 
-#: config/config.php:266
+#: config/config.php:350
+#: build/index.js:1
 msgid "Title"
 msgstr ""
 
-#: config/config.php:267 includes/Layout.php:159 includes/Layout.php:168
+#: config/config.php:354
+#: includes/Layout.php:163
+#: includes/Layout.php:172
+#: build/index.js:1
 msgid "ID"
 msgstr ""
 
-#: config/config.php:268
+#: config/config.php:358
+#: build/index.js:1
 msgid "Sort field"
 msgstr ""
 
-#. id, used as the html id att
-#: config/config.php:272 includes/Layout.php:148
+#: config/config.php:363
+#: includes/Layout.php:152
+#: build/index.js:1
 msgid "Sort"
 msgstr ""
 
-#: config/config.php:277
+#: config/config.php:370
+#: build/index.js:1
 msgid "ASC"
 msgstr ""
 
-#: config/config.php:278
+#: config/config.php:374
+#: build/index.js:1
 msgid "DESC"
 msgstr ""
 
-#: config/config.php:282
+#: config/config.php:379
+#: build/index.js:1
 msgid "Order"
 msgstr ""
 
-#: includes/API.php:21 includes/API.php:24
+#: config/config.php:385
+msgid "Heading level of the first heading"
+msgstr ""
+
+#: includes/API.php:21
+#: includes/API.php:24
 msgid " is already in use."
 msgstr ""
 
-#: includes/API.php:31 includes/API.php:39
+#: includes/API.php:31
+#: includes/API.php:39
 msgid " is not valid."
 msgstr ""
 
-#: includes/CPT.php:26
+#: includes/CPT.php:29
 msgctxt "Glossary entries"
 msgid "Glossary"
 msgstr ""
 
-#: includes/CPT.php:27
+#: includes/CPT.php:30
 msgctxt "Single glossary "
 msgid "Glossary"
 msgstr ""
 
-#: includes/CPT.php:29
+#: includes/CPT.php:32
 msgid "Add glossary"
 msgstr ""
 
-#: includes/CPT.php:30
+#: includes/CPT.php:33
 msgid "Add new glossary"
 msgstr ""
 
-#: includes/CPT.php:31
+#: includes/CPT.php:34
 msgid "Edit glossary"
 msgstr ""
 
-#: includes/CPT.php:32
+#: includes/CPT.php:35
 msgid "All glossaries"
 msgstr ""
 
-#: includes/CPT.php:33
+#: includes/CPT.php:36
 msgid "Search glossary"
 msgstr ""
 
-#: includes/CPT.php:43
+#: includes/CPT.php:46
 msgid "Glossary informations"
 msgstr ""
 
-#: includes/CPT.php:75 includes/Layout.php:164
+#: includes/CPT.php:78
+#: includes/Layout.php:168
 msgid "Category"
 msgstr ""
 
-#: includes/CPT.php:76 includes/CPT.php:77
+#: includes/CPT.php:79
+#: includes/CPT.php:80
 msgid "Add new category"
 msgstr ""
 
-#: includes/CPT.php:78
+#: includes/CPT.php:81
 msgid "New category"
 msgstr ""
 
-#: includes/CPT.php:79
+#: includes/CPT.php:82
 msgid "Show category"
 msgstr ""
 
-#: includes/CPT.php:80
+#: includes/CPT.php:83
 msgid "Show categories"
 msgstr ""
 
-#: includes/CPT.php:81
+#: includes/CPT.php:84
 msgid "Search categories"
 msgstr ""
 
-#: includes/CPT.php:82
+#: includes/CPT.php:85
 msgid "No category found"
 msgstr ""
 
-#: includes/CPT.php:83
+#: includes/CPT.php:86
 msgid "All categories"
 msgstr ""
 
-#: includes/CPT.php:84
+#: includes/CPT.php:87
 msgid "Separate categories with commas"
 msgstr ""
 
-#: includes/CPT.php:85
+#: includes/CPT.php:88
 msgid "Choose from the most used categories"
 msgstr ""
 
-#: includes/CPT.php:86
+#: includes/CPT.php:89
 msgid "Edit category"
 msgstr ""
 
-#: includes/CPT.php:87
+#: includes/CPT.php:90
 msgid "Update category"
 msgstr ""
 
-#: includes/CPT.php:97 includes/Layout.php:165
+#: includes/CPT.php:100
+#: includes/Layout.php:169
 msgid "Tag"
 msgstr ""
 
-#: includes/CPT.php:98 includes/CPT.php:99
+#: includes/CPT.php:101
+#: includes/CPT.php:102
 msgid "Add new tag"
 msgstr ""
 
-#: includes/CPT.php:100
+#: includes/CPT.php:103
 msgid "New tag"
 msgstr ""
 
-#: includes/CPT.php:101
+#: includes/CPT.php:104
 msgid "Show tag"
 msgstr ""
 
-#: includes/CPT.php:102
+#: includes/CPT.php:105
 msgid "Show tags"
 msgstr ""
 
-#: includes/CPT.php:103
+#: includes/CPT.php:106
 msgid "Search tags"
 msgstr ""
 
-#: includes/CPT.php:104
+#: includes/CPT.php:107
 msgid "No tag found"
 msgstr ""
 
-#: includes/CPT.php:105
+#: includes/CPT.php:108
 msgid "All tags"
 msgstr ""
 
-#: includes/CPT.php:106
+#: includes/CPT.php:109
 msgid "Separate tags with commas"
 msgstr ""
 
-#: includes/CPT.php:107
+#: includes/CPT.php:110
 msgid "Choose from the most used tags"
 msgstr ""
 
-#: includes/CPT.php:108
+#: includes/CPT.php:111
 msgid "Edit tag"
 msgstr ""
 
-#: includes/CPT.php:109
+#: includes/CPT.php:112
 msgid "Update tag"
 msgstr ""
 
-#: includes/Layout.php:76
+#: includes/Layout.php:75
 msgid "Criterion for sorting the output of the shortcode"
 msgstr ""
 
-#: includes/Layout.php:102
+#: includes/Layout.php:106
 msgid "Single entries"
 msgstr ""
 
-#: includes/Layout.php:103
+#: includes/Layout.php:107
 msgid "Accordion with category"
 msgstr ""
 
-#: includes/Layout.php:103
+#: includes/Layout.php:107
 msgid "If there is more than one category listed, use at least one of them."
 msgstr ""
 
-#: includes/Layout.php:104
+#: includes/Layout.php:108
 msgid "Accordion with tag"
 msgstr ""
 
-#: includes/Layout.php:104
+#: includes/Layout.php:108
 msgid "If there is more than one tag listed, use at least one of them."
 msgstr ""
 
-#: includes/Layout.php:105
+#: includes/Layout.php:109
 msgid "Accordion with all entries"
 msgstr ""
 
-#. id, used as the html id att
-#: includes/Layout.php:129
+#: includes/Layout.php:133
 msgid "This glossary cannot be edited because it is sychronized"
 msgstr ""
 
-#: includes/Layout.php:129
+#: includes/Layout.php:133
 msgid "You can edit it at the source"
 msgstr ""
 
-#. id, used as the html id att
-#: includes/Layout.php:139
+#: includes/Layout.php:143
 msgid "Integration in pages and posts"
 msgstr ""
 
-#: includes/Layout.php:157
+#: includes/Layout.php:161
 msgid "Sort criterion"
 msgstr ""
 
-#: includes/Layout.php:158 includes/Layout.php:167 includes/Layout.php:198
+#: includes/Layout.php:162
+#: includes/Layout.php:171
+#: includes/Layout.php:202
 msgid "Source"
 msgstr ""
 
@@ -417,56 +484,37 @@ msgstr ""
 msgid "Next automatically synchronization:"
 msgstr ""
 
-#: includes/Settings.php:296
+#: includes/Settings.php:346
 msgid "Add domain"
 msgstr ""
 
-#: includes/Settings.php:300
+#: includes/Settings.php:350
 msgid "Delete logfile"
 msgstr ""
 
-#: includes/Settings.php:341
-msgid ""
-"Please note: \"Delete selected domains\" will DELETE every glossary on this "
-"website that has been fetched from the selected domains."
+#: includes/Settings.php:385
+msgid "Domains:"
 msgstr ""
 
-#: includes/Settings.php:342
+#: includes/Settings.php:395
+msgid "Please note: \"Delete selected domains\" will DELETE every glossary on this website that has been fetched from the selected domains."
+msgstr ""
+
+#: includes/Settings.php:396
 msgid "Delete selected domains"
 msgstr ""
 
-#: includes/Settings.php:373
+#: includes/Settings.php:427
 msgid "no category with source = \"website\" found"
 msgstr ""
 
-#: includes/Settings.php:944 includes/Settings.php:947
-msgid "Logfile is empty."
-msgstr ""
-
-#: includes/Shortcode.php:231
-msgid ""
-"Attribute register is not correct. Please use either register=\"category\" "
-"or register=\"tag\"."
-msgstr ""
-
-#: includes/Shortcode.php:234
-msgid ""
-"Attribute color is not correct. Please use either 'medfak', 'natfak', "
-"'rwfak', 'philfak' or 'techfak'"
-msgstr ""
-
-#: includes/Shortcode.php:478 includes/Shortcode.php:506
-msgid "-- all --"
-msgstr ""
-
-#: includes/Sync.php:32 includes/Sync.php:38
+#: includes/Sync.php:32
+#: includes/Sync.php:38
 msgid "Domain"
 msgstr ""
 
 #: includes/Sync.php:32
-msgid ""
-"Synchronization error. This glossary contains sliders ([gallery]) and cannot "
-"be synchronized:"
+msgid "Synchronization error. This glossary contains sliders ([gallery]) and cannot be synchronized:"
 msgstr ""
 
 #: includes/Sync.php:38
@@ -489,11 +537,13 @@ msgstr ""
 msgid "deleted"
 msgstr ""
 
-#: includes/Sync.php:38 includes/Sync.php:48
+#: includes/Sync.php:38
+#: includes/Sync.php:48
 msgid "Required time:"
 msgstr ""
 
-#: includes/Sync.php:38 includes/Sync.php:48
+#: includes/Sync.php:38
+#: includes/Sync.php:48
 msgid "seconds"
 msgstr ""
 
@@ -505,21 +555,72 @@ msgstr ""
 msgid "Settings updated"
 msgstr ""
 
-#. Description of the plugin
-msgid ""
-"Plugin, um Glossar-Einträge zu erstellen, aus dem FAU-Netzwerk zu "
-"synchronisieren und mittels Shortcode oder als Block (Gutenberg Editor) "
-"einzubinden."
+#: build/index.js:1
+msgid "all"
 msgstr ""
 
-#. URI of the plugin
-msgid "https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary"
+#: build/index.js:1
+msgid "No title"
 msgstr ""
 
-#. Author of the plugin
-msgid "RRZE Webteam"
+#: build/index.js:1
+msgid "Sorting options"
 msgstr ""
 
-#. Author URI of the plugin
-msgid "https://blogs.fau.de/webworking/"
+#: build/index.js:1
+msgid "Select categories to filter glossary entries."
+msgstr ""
+
+#: build/index.js:1
+msgid "Select tags to filter glossary entries."
+msgstr ""
+
+#: build/index.js:1
+msgid "Individual Glossary-Entries"
+msgstr ""
+
+#: build/index.js:1
+msgid "Select glossary entries to filter glossary entries."
+msgstr ""
+
+#: build/index.js:1
+msgid "Language"
+msgstr ""
+
+#: build/index.js:1
+msgid "Select language to filter glossary entries."
+msgstr ""
+
+#: build/index.js:1
+msgid "Group by"
+msgstr ""
+
+#: build/index.js:1
+msgid "Groups Glossary-Entries by category or tags."
+msgstr ""
+
+#: build/index.js:1
+msgid "Styles"
+msgstr ""
+
+#: build/index.js:1
+msgid "Glossary Style"
+msgstr ""
+
+#: build/index.js:1
+msgid "Controls the Appearance of the Tab bar."
+msgstr ""
+
+#: build/index.js:1
+msgid "Style"
+msgstr ""
+
+#: build/block.json
+msgctxt "block title"
+msgid "Glossary RRZE"
+msgstr ""
+
+#: build/block.json
+msgctxt "block description"
+msgid "Display glossaries"
 msgstr ""
