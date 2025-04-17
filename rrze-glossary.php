@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Glossary
 Plugin URI:      https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary
 Description:     Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget.
-Version:         2.1.2
+Version:         2.1.3
 Requires at least: 6.1
 Requires PHP:      8.0
 Author:          RRZE Webteam
@@ -67,20 +67,16 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Load the plugin's text domain for localization.
+add_action('init', fn() => load_plugin_textdomain('rrze-glossary', false, dirname(plugin_basename(__FILE__)) . '/languages'));
+
+
 // Registriert die Plugin-Funktion, die bei Aktivierung des Plugins ausgeführt werden soll.
 register_activation_hook(__FILE__, __NAMESPACE__ . '\activation');
 // Registriert die Plugin-Funktion, die ausgeführt werden soll, wenn das Plugin deaktiviert wird.
 register_deactivation_hook(__FILE__, __NAMESPACE__ . '\deactivation');
 // Wird aufgerufen, sobald alle aktivierten Plugins geladen wurden.
 add_action('plugins_loaded', __NAMESPACE__ . '\loaded');
-
-/**
- * Einbindung der Sprachdateien.
- */
-function load_textdomain()
-{
-    load_plugin_textdomain('rrze-glossary', false, sprintf('%s/languages/', dirname(plugin_basename(__FILE__))));
-}
 
 
 /**
@@ -185,9 +181,6 @@ function rrze_glossary_init() {
  * und alle Plugins eingebunden wurden.
  */
 function loaded() {
-    // Sprachdateien werden eingebunden.
-    load_textdomain();
-
     // Überprüft die minimal erforderliche PHP- u. WP-Version.
     if ($error = system_requirements()) {
         include_once(ABSPATH . 'wp-admin/includes/plugin.php');
