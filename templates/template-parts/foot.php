@@ -14,8 +14,8 @@ if ($thisThemeGroup == 'fauthemes') { ?>
 </div>
 </div>
 </div>
-<?php get_template_part('template-parts/footer', 'social');
-} elseif($thisThemeGroup == 'rrzethemes') { ?>
+
+<?php } elseif($thisThemeGroup == 'rrzethemes') { ?>
 
     </div>
 </div>
