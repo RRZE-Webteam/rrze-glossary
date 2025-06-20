@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Glossary
 Plugin URI:      https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary
 Description:     Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget.
-Version:         2.1.3
+Version:         2.1.4
 Requires at least: 6.1
 Requires PHP:      8.0
 Author:          RRZE Webteam
@@ -17,10 +17,9 @@ Text Domain:     rrze-glossary
 
 namespace RRZE\Glossary;
 
-
+    
 defined('ABSPATH') || exit;
 
-require_once 'config/config.php';
 use RRZE\Glossary\Main;
 
 $s = array(
@@ -67,8 +66,6 @@ spl_autoload_register(function ($class) {
     }
 });
 
-// Load the plugin's text domain for localization.
-add_action('init', fn() => load_plugin_textdomain('rrze-glossary', false, dirname(plugin_basename(__FILE__)) . '/languages'));
 
 
 // Registriert die Plugin-Funktion, die bei Aktivierung des Plugins ausgeführt werden soll.
@@ -82,15 +79,14 @@ add_action('plugins_loaded', __NAMESPACE__ . '\loaded');
 /**
  * Überprüft die minimal erforderliche PHP- u. WP-Version.
  */
-function system_requirements()
-{
+function system_requirements() {
     $error = '';
     if (version_compare(PHP_VERSION, RRZE_PHP_VERSION, '<')) {
         /* translators: 1: current PHP version, 2: required PHP version */
-        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-typesettings'), PHP_VERSION, RRZE_PHP_VERSION);
+        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-glossary'), PHP_VERSION, RRZE_PHP_VERSION);
     } elseif (version_compare($GLOBALS['wp_version'], RRZE_WP_VERSION, '<')) {
         /* translators: 1: current WordPress version, 2: required WordPress version */
-        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-typesettings'), $GLOBALS['wp_version'], RRZE_WP_VERSION);
+        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-glossary'), $GLOBALS['wp_version'], RRZE_WP_VERSION);
     }
     return $error;
 }
@@ -137,8 +133,6 @@ function addMetadata(){
  * Wird durchgeführt, nachdem das Plugin aktiviert wurde.
  */
 function activation() {
-    // Sprachdateien werden eingebunden.
-    load_textdomain();
 
     // Überprüft die minimal erforderliche PHP- u. WP-Version.
     // Wenn die Überprüfung fehlschlägt, dann wird das Plugin automatisch deaktiviert.
@@ -182,6 +176,10 @@ function rrze_glossary_init() {
  */
 function loaded() {
     // Überprüft die minimal erforderliche PHP- u. WP-Version.
+    add_action('init', fn() => load_plugin_textdomain('rrze-glossary', false, dirname(plugin_basename(__FILE__)) . '/languages'));
+    
+    require_once 'config/config.php';
+    
     if ($error = system_requirements()) {
         include_once(ABSPATH . 'wp-admin/includes/plugin.php');
         $plugin_data = get_plugin_data(__FILE__);
