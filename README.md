@@ -1,19 +1,8 @@
-=== RRZE Glossary ===
-Contributors: rrze-webteam
-Plugin URI: https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary
-Tags: glossary, shortcode, block, widget, synchronization
-Requires at least: 6.1
-Tested up to: 6.8
-Requires PHP: 8.0
-Stable tag: 2.1.4
-License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Author: RRZE Webteam
-Author URI: https://blogs.fau.de/webworking/
-Text Domain: rrze-glossary
-Domain Path: /languages
+[![Aktuelle Version](https://img.shields.io/github/package-json/v/rrze-webteam/rrze-glossary/main?label=Version)](https://github.com/RRZE-Webteam/rrze-glossary)
+[![Release Version](https://img.shields.io/github/v/release/rrze-webteam/rrze-glossary?label=Release+Version)](https://github.com/rrze-webteam/rrze-glossary/releases/)
+[![GitHub License](https://img.shields.io/github/license/rrze-webteam/rrze-glossary)](https://github.com/RRZE-Webteam/rrze-glossary)
+[![GitHub issues](https://img.shields.io/github/issues/RRZE-Webteam/rrze-glossary)](https://github.com/RRZE-Webteam/rrze-glossary/issues)
 
-Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget.
 
 
 # RRZE-Glossary
