@@ -215,45 +215,28 @@ class CPT
     {
         global $wpdb;
 
-        if (get_option('rrze_glossary_tax_fix_done')) {
+        if (get_option('rrze_glossary_taxonomy_fix_done')) {
             return;
         }
 
-        $post_ids = $wpdb->get_col("
-        SELECT DISTINCT tr.object_id
-        FROM {$wpdb->term_relationships} tr
-        INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        $wpdb->query("
+        UPDATE {$wpdb->term_taxonomy} tt
+        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
         INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
+        SET tt.taxonomy = 'glossary_category'
         WHERE p.post_type = 'glossary'
-        AND (tt.taxonomy = 'category' OR tt.taxonomy = 'post_tag')
+        AND tt.taxonomy = 'faq_category'
     ");
 
-        foreach ($post_ids as $post_id) {
-            $categories = get_the_terms($post_id, 'category');
-            if (!empty($categories) && !is_wp_error($categories)) {
-                foreach ($categories as $term) {
-                    $new_term = term_exists($term->slug, 'glossary_category');
-                    if (!$new_term) {
-                        $new_term = wp_insert_term($term->name, 'glossary_category', ['slug' => $term->slug]);
-                    }
-                    wp_set_object_terms($post_id, intval($new_term['term_id']), 'glossary_category', true);
-                }
-                wp_remove_object_terms($post_id, wp_list_pluck($categories, 'term_id'), 'category');
-            }
+        $wpdb->query("
+        UPDATE {$wpdb->term_taxonomy} tt
+        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
+        SET tt.taxonomy = 'glossary_tag'
+        WHERE p.post_type = 'glossary'
+        AND tt.taxonomy = 'faq_tag'
+    ");
 
-            $tags = get_the_terms($post_id, 'post_tag');
-            if (!empty($tags) && !is_wp_error($tags)) {
-                foreach ($tags as $term) {
-                    $new_term = term_exists($term->slug, 'glossary_tag');
-                    if (!$new_term) {
-                        $new_term = wp_insert_term($term->name, 'glossary_tag', ['slug' => $term->slug]);
-                    }
-                    wp_set_object_terms($post_id, intval($new_term['term_id']), 'glossary_tag', true);
-                }
-                wp_remove_object_terms($post_id, wp_list_pluck($tags, 'term_id'), 'post_tag');
-            }
-        }
-
-        update_option('rrze_glossary_tax_fix_done', 1);
+        update_option('rrze_glossary_taxonomy_fix_done', 1);
     }
 }
