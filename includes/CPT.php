@@ -2,75 +2,81 @@
 
 namespace RRZE\Glossary;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * Custom Post Type "glossary"
  */
-class CPT {
-    
+class CPT
+{
+
     private $lang = '';
 
-    public function __construct() {
-        $this->lang = substr( get_locale(), 0, 2 );
-        add_action( 'init', [$this, 'registerGlossary'], 0 );
-        add_action( 'init', [$this, 'registerGlossaryTaxonomy'], 0 );
-        add_action( 'publish_glossary', [$this, 'setPostMeta'], 10, 1 );
-        add_action( 'create_glossary_category', [$this, 'setTermMeta'], 10, 1 );
-        add_action( 'create_glossary_tag', [$this, 'setTermMeta'], 10, 1 );
-        add_filter( 'single_template', [$this, 'filter_single_template'] );
-        add_filter( 'archive_template', [$this, 'filter_archive_template'] );
-        add_filter( 'taxonomy_template', [$this, 'filter_taxonomy_template'] );
+    public function __construct()
+    {
+        $this->lang = substr(get_locale(), 0, 2);
+        add_action('init', [$this, 'registerGlossary'], 0);
+        add_action('init', [$this, 'registerGlossaryTaxonomy'], 0);
+        add_action('publish_glossary', [$this, 'setPostMeta'], 10, 1);
+        add_action('create_glossary_category', [$this, 'setTermMeta'], 10, 1);
+        add_action('create_glossary_tag', [$this, 'setTermMeta'], 10, 1);
+        add_filter('single_template', [$this, 'filter_single_template']);
+        add_filter('archive_template', [$this, 'filter_archive_template']);
+        add_filter('taxonomy_template', [$this, 'filter_taxonomy_template']);
+
+        add_action('wp_loaded', [$this, 'fixWrongTaxonomies']);
     }
 
-    
-    public function registerGlossary() {	    
+
+    public function registerGlossary()
+    {
         $labels = array(
-                'name'                => _x( 'Glossary', 'Glossary entries', 'rrze-glossary' ),
-                'singular_name'       => _x( 'Glossary', 'Single glossary ', 'rrze-glossary' ),
-                'menu_name'           => __( 'Glossary', 'rrze-glossary' ),
-                'add_new'             => __( 'Add glossary', 'rrze-glossary' ),
-                'add_new_item'        => __( 'Add new glossary', 'rrze-glossary' ),
-                'edit_item'           => __( 'Edit glossary', 'rrze-glossary' ),
-                'all_items'           => __( 'All glossaries', 'rrze-glossary' ),
-                'search_items'        => __( 'Search glossary', 'rrze-glossary' ),
+            'name' => _x('Glossary', 'Glossary entries', 'rrze-glossary'),
+            'singular_name' => _x('Glossary', 'Single glossary ', 'rrze-glossary'),
+            'menu_name' => __('Glossary', 'rrze-glossary'),
+            'add_new' => __('Add glossary', 'rrze-glossary'),
+            'add_new_item' => __('Add new glossary', 'rrze-glossary'),
+            'edit_item' => __('Edit glossary', 'rrze-glossary'),
+            'all_items' => __('All glossaries', 'rrze-glossary'),
+            'search_items' => __('Search glossary', 'rrze-glossary'),
         );
         $rewrite = array(
-                'slug'                => 'glossary',
-                'with_front'          => true,
-                'pages'               => true,
-                'feeds'               => true,
+            'slug' => 'glossary',
+            'with_front' => true,
+            'pages' => true,
+            'feeds' => true,
         );
         $args = array(
-                'label'               => __( 'Glossary', 'rrze-glossary' ),
-                'description'         => __( 'Glossary informations', 'rrze-glossary' ),
-                'labels'              => $labels,
-                'supports'            => array( 'title', 'editor' ),
-                'hierarchical'        => false,
-                'public'              => true,
-                'show_ui'             => true,
-                'show_in_menu'        => true,
-                'show_in_nav_menus'   => false,
-                'show_in_admin_bar'   => true,
-                'menu_icon'		      => 'dashicons-book-alt',
-                'can_export'          => true,
-                'has_archive'         => true,
-                'exclude_from_search' => true,
-                'publicly_queryable'  => true,
-                'query_var'           => 'glossary',
-                'rewrite'             => $rewrite,
-                'show_in_rest'        => true,
-                'rest_base'           => 'glossary',
-                'rest_controller_class' => 'WP_REST_Posts_Controller',
+            'label' => __('Glossary', 'rrze-glossary'),
+            'description' => __('Glossary informations', 'rrze-glossary'),
+            'labels' => $labels,
+            'supports' => array('title', 'editor'),
+            'hierarchical' => false,
+            'public' => true,
+            'show_ui' => true,
+            'show_in_menu' => true,
+            'show_in_nav_menus' => false,
+            'show_in_admin_bar' => true,
+            'menu_icon' => 'dashicons-book-alt',
+            'can_export' => true,
+            'has_archive' => true,
+            'exclude_from_search' => true,
+            'publicly_queryable' => true,
+            'query_var' => 'glossary',
+            'rewrite' => $rewrite,
+            'show_in_rest' => true,
+            'rest_base' => 'glossary',
+            'rest_controller_class' => 'WP_REST_Posts_Controller',
         );
-        register_post_type( 'glossary', $args );
+        register_post_type('glossary', $args);
     }
 
-    public function registerGlossaryTaxonomy() {
+    public function registerGlossaryTaxonomy()
+    {
         $tax = [
-            [ 
+            [
                 'name' => 'glossary_category',
-                'label' => __( 'Glossary', 'rrze-glossary' ) . ' ' . __('Categories', 'rrze-glossary'),
+                'label' => __('Glossary', 'rrze-glossary') . ' ' . __('Categories', 'rrze-glossary'),
                 'slug' => 'glossary_category',
                 'rest_base' => 'glossary_category',
                 'hierarchical' => TRUE,
@@ -90,9 +96,9 @@ class CPT {
                     'update_item' => __('Update category', 'rrze-glossary')
                 )
             ],
-            [ 
+            [
                 'name' => 'glossary_tag',
-                'label' => __( 'Glossary', 'rrze-glossary' ) . ' ' . __('Tags', 'rrze-glossary'),
+                'label' => __('Glossary', 'rrze-glossary') . ' ' . __('Tags', 'rrze-glossary'),
                 'slug' => 'glossary_tag',
                 'rest_base' => 'glossary_tag',
                 'hierarchical' => FALSE,
@@ -113,88 +119,124 @@ class CPT {
                 )
             ],
         ];
-            
-        foreach ($tax as $t){
+
+        foreach ($tax as $t) {
             $ret = register_taxonomy(
                 $t['name'],  //The name of the taxonomy. Name should be in slug form (must not contain capital letters or spaces).
                 'glossary',   		 //post type name
                 array(
-                    'hierarchical'	=> $t['hierarchical'],
-                    'label' 		=> $t['label'], //Display name
-                    'labels'        => $t['labels'],
-                    'show_ui'       => TRUE,
+                    'hierarchical' => $t['hierarchical'],
+                    'label' => $t['label'], //Display name
+                    'labels' => $t['labels'],
+                    'show_ui' => TRUE,
                     'show_admin_column' => TRUE,
-                    'query_var' 	=> TRUE,
-                    'rewrite'		=> array(
-                           'slug'	    => $t['slug'], // This controls the base slug that will display before each term
-                           'with_front'	    => TRUE // Don't display the category base before
+                    'query_var' => TRUE,
+                    'rewrite' => array(
+                        'slug' => $t['slug'], // This controls the base slug that will display before each term
+                        'with_front' => TRUE // Don't display the category base before
                     ),
-                    'show_in_rest'       => TRUE,
-                    'rest_base'          => $t['rest_base'],
+                    'show_in_rest' => TRUE,
+                    'rest_base' => $t['rest_base'],
                     'rest_controller_class' => 'WP_REST_Terms_Controller'
                 )
             );
             register_term_meta(
-                $t['name'], 
-                'source', 
+                $t['name'],
+                'source',
                 array(
-                    'query_var' 	=> TRUE,
+                    'query_var' => TRUE,
                     'type' => 'string',
                     'single' => TRUE,
                     'show_in_rest' => TRUE,
-                    'rest_base'          => 'source',
+                    'rest_base' => 'source',
                     'rest_controller_class' => 'WP_REST_Terms_Controller'
-            ));
+                )
+            );
             register_term_meta(
-                $t['name'], 
-                'lang', 
+                $t['name'],
+                'lang',
                 array(
-                    'query_var' 	=> TRUE,
+                    'query_var' => TRUE,
                     'type' => 'string',
                     'single' => TRUE,
                     'show_in_rest' => TRUE,
-                    'rest_base'          => 'lang',
+                    'rest_base' => 'lang',
                     'rest_controller_class' => 'WP_REST_Terms_Controller'
-            ));
+                )
+            );
         }
     }
-       
-    public function setPostMeta( $postID ){
-        add_post_meta( $postID, 'source', 'website', TRUE );
-        add_post_meta( $postID, 'lang', $this->lang, TRUE );
-        add_post_meta( $postID, 'remoteID', $postID, TRUE );
-        $remoteChanged = get_post_timestamp( $postID, 'modified' );
-        add_post_meta( $postID, 'remoteChanged', $remoteChanged, TRUE );
-    }
-    
-    public function setTermMeta( $termID ){
-        add_term_meta( $termID, 'source', 'website', TRUE );
-        add_term_meta( $termID, 'lang', $this->lang, TRUE );
+
+    public function setPostMeta($postID)
+    {
+        add_post_meta($postID, 'source', 'website', TRUE);
+        add_post_meta($postID, 'lang', $this->lang, TRUE);
+        add_post_meta($postID, 'remoteID', $postID, TRUE);
+        $remoteChanged = get_post_timestamp($postID, 'modified');
+        add_post_meta($postID, 'remoteChanged', $remoteChanged, TRUE);
     }
 
-    
-    public function filter_single_template( $template ){
+    public function setTermMeta($termID)
+    {
+        add_term_meta($termID, 'source', 'website', TRUE);
+        add_term_meta($termID, 'lang', $this->lang, TRUE);
+    }
+
+
+    public function filter_single_template($template)
+    {
         global $post;
-        if( 'glossary' === $post->post_type ){
-            $template = plugin_dir_path( __DIR__ ) .'templates/single-glossary.php';
+        if ('glossary' === $post->post_type) {
+            $template = plugin_dir_path(__DIR__) . 'templates/single-glossary.php';
         }
         return $template;
     }
 
-    public function filter_archive_template( $template ){
-        if( is_post_type_archive('glossary')){
-            $template = plugin_dir_path( __DIR__ ) .'templates/archive-glossary.php';
+    public function filter_archive_template($template)
+    {
+        if (is_post_type_archive('glossary')) {
+            $template = plugin_dir_path(__DIR__) . 'templates/archive-glossary.php';
         }
         return $template;
     }
 
-    public function filter_taxonomy_template( $template ){
-        if( is_tax('glossary_category')){
-            $template = plugin_dir_path( __DIR__ ) .'templates/glossary_category.php';
-        }elseif( is_tax('glossary_tag')){
-            $template = plugin_dir_path( __DIR__ ) .'templates/glossary_tag.php';
+    public function filter_taxonomy_template($template)
+    {
+        if (is_tax('glossary_category')) {
+            $template = plugin_dir_path(__DIR__) . 'templates/glossary_category.php';
+        } elseif (is_tax('glossary_tag')) {
+            $template = plugin_dir_path(__DIR__) . 'templates/glossary_tag.php';
         }
         return $template;
     }
 
+
+    public function fixWrongTaxonomies()
+    {
+        global $wpdb;
+
+        if (get_option('rrze_glossary_taxonomy_fix_done')) {
+            return;
+        }
+
+        $wpdb->query("
+        UPDATE {$wpdb->term_taxonomy} tt
+        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
+        SET tt.taxonomy = 'glossary_category'
+        WHERE p.post_type = 'glossary'
+        AND tt.taxonomy = 'faq_category'
+    ");
+
+        $wpdb->query("
+        UPDATE {$wpdb->term_taxonomy} tt
+        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
+        SET tt.taxonomy = 'glossary_tag'
+        WHERE p.post_type = 'glossary'
+        AND tt.taxonomy = 'faq_tag'
+    ");
+
+        update_option('rrze_glossary_taxonomy_fix_done', 1);
+    }
 }
