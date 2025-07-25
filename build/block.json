@@ -10,7 +10,11 @@
   "example": {},
   "attributes": {
     "category": {
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "default": []
     },
     "tag": {
       "type": "string"

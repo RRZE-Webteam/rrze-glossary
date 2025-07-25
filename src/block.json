@@ -10,9 +10,13 @@
 	"example": {},
 	"attributes": {
 		"category": {
-			"type": "string"
+			"type": "array",
+			"items": {
+				"type": "number"
+			},
+			"default": []
 		},
-		"tag": {
+		"tag": {	
 			"type": "string"
 		},
 		"id": {
@@ -58,7 +62,7 @@
 			"type": "number",
 			"default": 2
 		}
-	},	
+	},
 	"supports": {
 		"html": false
 	},

@@ -136,6 +136,7 @@ class CPT
                         'with_front' => TRUE // Don't display the category base before
                     ),
                     'show_in_rest' => TRUE,
+                    'meta_box_cb' => 'post_categories_meta_box',
                     'rest_base' => $t['rest_base'],
                     'rest_controller_class' => 'WP_REST_Terms_Controller'
                 )
@@ -215,7 +216,7 @@ class CPT
     {
         global $wpdb;
 
-        if (get_option('rrze_glossary_taxonomy_fix_done')) {
+        if (get_option('rrze_glossary_taxonomy_fix2_done')) {
             return;
         }
 
@@ -237,6 +238,6 @@ class CPT
         AND tt.taxonomy = 'faq_tag'
     ");
 
-        update_option('rrze_glossary_taxonomy_fix_done', 1);
+        update_option('rrze_glossary_taxonomy_fix2_done', 1);
     }
 }
