@@ -105,22 +105,22 @@ class RESTAPI {
     }
 
     public function createTaxDetails() {
-        register_rest_field( 'glossary',
-            'glossary_category',
-            array(
-                'get_callback'    => [$this, 'getGlossaryCategories'],
-                'update_callback'   => null,
-                'schema'            => null,
-             )
-        );
-        register_rest_field( 'glossary',
-            'glossary_tag',
-            array(
-                'get_callback'    => [$this, 'getGlossaryTags'],
-                'update_callback'   => null,
-                'schema'            => null,
-             )
-        );
+        // register_rest_field( 'glossary',
+        //     'glossary_category',
+        //     array(
+        //         'get_callback'    => [$this, 'getGlossaryCategories'],
+        //         'update_callback'   => null,
+        //         'schema'            => null,
+        //      )
+        // );
+        // register_rest_field( 'glossary',
+        //     'glossary_tag',
+        //     array(
+        //         'get_callback'    => [$this, 'getGlossaryTags'],
+        //         'update_callback'   => null,
+        //         'schema'            => null,
+        //      )
+        // );
 
         $fields = array( 'glossary_category', 'glossary_tag' );
         foreach( $fields as $field ){
