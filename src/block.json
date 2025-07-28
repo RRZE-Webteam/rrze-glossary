@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "create-block/rrze-glossary",
-	"version": "2.1.1",
+	"version": "2.1.10",
 	"title": "Glossary RRZE",
 	"category": "rrze",
 	"description": "Display glossaries",
@@ -10,13 +10,9 @@
 	"example": {},
 	"attributes": {
 		"category": {
-			"type": "array",
-			"items": {
-				"type": "number"
-			},
-			"default": []
+			"type": "string"
 		},
-		"tag": {	
+		"tag": {
 			"type": "string"
 		},
 		"id": {
@@ -62,7 +58,7 @@
 			"type": "number",
 			"default": 2
 		}
-	},
+	},	
 	"supports": {
 		"html": false
 	},
