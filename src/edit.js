@@ -10,6 +10,44 @@ import {InspectorControls, BlockControls, useBlockProps, HeadingLevelDropdown} f
 import {PanelBody, TextControl, ToggleControl, SelectControl, RangeControl} from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
+function buildCategoryOptions(categories) {
+	const map = new Map();
+	const roots = [];
+
+	categories.forEach((cat) => {
+		cat.children = [];
+		map.set(cat.id, cat);
+	});
+
+	categories.forEach((cat) => {
+		if (cat.parent && map.has(cat.parent)) {
+			map.get(cat.parent).children.push(cat);
+		} else {
+			roots.push(cat);
+		}
+	});
+
+	const sortByName = (list) =>
+		list.sort((a, b) =>
+			a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+		);
+
+	const flatten = (list, depth = 0) => {
+		const result = [];
+		sortByName(list).forEach((cat) => {
+			result.push({
+				label: `${'-'.repeat(depth)} ${cat.name}`.trim(),
+				value: cat.slug,
+			});
+			result.push(...flatten(cat.children, depth + 1));
+		});
+		return result;
+	};
+
+	return flatten(roots);
+}
+
+
 
 export default function Edit({attributes, setAttributes}) {
     const {
@@ -56,9 +94,16 @@ export default function Edit({attributes, setAttributes}) {
     //     });
     // }, [register, tag, id, hstart, order, sort, lang, additional_class, color, style, load_open, expand_all_link, hide_title, hide_accordion, registerstyle, glossary, setAttributes]);
 
-    const categories = useSelect((select) => {
-        return select('core').getEntityRecords('taxonomy', 'glossary_category');
-    }, []);
+	const categories = useSelect((select) => {
+		return select('core').getEntityRecords('taxonomy', 'glossary_category', {
+			per_page: -1,
+			orderby: 'name',
+			order: 'asc',
+			status: 'publish',
+			_fields: 'id,name,slug,parent',
+		});
+	}, []);
+
 
     const categoryoptions = [
         {
@@ -67,14 +112,10 @@ export default function Edit({attributes, setAttributes}) {
         }
     ];
 
-    if (!!categories) {
-        Object.values(categories).forEach(register => {
-            categoryoptions.push({
-                label: register.name,
-                value: register.slug,
-            });
-        });
-    }
+    if (Array.isArray(categories)) {
+	    categoryoptions.push(...buildCategoryOptions(categories));
+	}
+
 
     const tags = useSelect((select) => {
         return select('core').getEntityRecords('taxonomy', 'glossary_tag');
