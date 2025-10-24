@@ -22,7 +22,7 @@ if ($thisThemeGroup == 'fauthemes') { ?>
 
 <?php }else{ ?>
 </main>
-</div>
+
 <?php }
 
 get_footer();
