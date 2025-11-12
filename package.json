@@ -1,20 +1,26 @@
 {
 	"name": "rrze-glossary",
-	"version": "2.1.12",
+	"version": "2.1.13",
 	"description": "Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget.",
 	"author": "RRZE Webteam",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
-		"build": "wp-scripts build --webpack-copy-php",
+		"build": "wp-scripts build --webpack-copy-php && npm run css:build",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
-		"start": "wp-scripts start --webpack-copy-php"
+		"start": "wp-scripts start --webpack-copy-php",
+		"css:build": "sass src/css/rrze-glossary.scss assets/css/rrze-glossary.css --style=compressed --no-source-map",
+		"css:watch": "sass --watch src/css/rrze-glossary.scss:assets/css/rrze-glossary.css"
+
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^26.19.0"
+	},
+	"dependencies": {
+		"sass": "^1.94.0"
 	}
 }
