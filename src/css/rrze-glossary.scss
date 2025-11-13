@@ -1,0 +1,82 @@
+.fau-glossar {
+    --fau-glossar-pagination-color-default: var(--FAU-Col-FAU-Blau-100, #e9edf2);
+    --fau-glossar-pagination-background-color-default: var(--FAU-Col-FAU-Blau-100, transparent);
+    
+    --fau-glossar-pagination-color-active: var(--FAU-Col-FAU-Weiss-100, #036);
+    --fau-glossar-pagination-color-active-hover: var(--FAU-Col-FAU-Blau-100, #fff);
+    
+    --fau-glossar-pagination-background-color-active: var(--FAU-Col-FAU-Blau-100, #dfe6ec);
+    --fau-glossar-pagination-background-color-active-hover: var(--FAU-Col-FAU-Blau-25, #036);
+    
+    --fau-glossar-pagination-border-radius: var(--border-radius-buttons, 4px);
+    --fau-glossar-pagination-border-color: var(--fau-glossar-pagination-color-default);
+    
+    --fau-glossar-pagination-margin: 0.1rem;
+    --fau-glossar-pagination-padding: var(--Spacing-2x, 0.5rem) var(--Spacing-4x, 1rem);
+    --fau-glossar-pagination-animation: var(--basic-animation, all 0.2s ease-in-out);
+    
+    .fau-elemental & {
+	 --fau-glossar-pagination-border-color: transparent;
+	 --fau-glossar-pagination-background-color-default: transparent;
+    }
+    
+    .letters {
+	margin: 1.5rem 0 0.5rem;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	
+	li {
+	    a, span {
+		display: flex;
+		border: 1px solid var(--fau-glossar-pagination-border-color);
+		
+		color: var(--fau-glossar-pagination-color-default);
+		background-color: var(--fau-glossar-pagination-background-color-default);
+		border-color: var(--fau-glossar-pagination-border-color);
+		border-radius: var(--fau-glossar-pagination-border-radius);
+
+		
+		vertical-align: middle;
+		text-align: center;
+		margin: var(--fau-glossar-pagination-margin);
+		padding: var(--fau-glossar-pagination-padding);
+		
+		
+		font-size: 1.125rem;
+		font-weight: 600;
+
+		transition: var(--basic-animation);
+	    }
+	    
+	    a {
+		text-decoration: none;
+	    }
+
+	}
+	li.filled {  
+	    a, span {
+		background: var(--fau-glossar-pagination-background-color-active);
+		color: var(--fau-glossar-pagination-color-active);
+	    }	
+	    
+	    a:focus,
+	    a:hover,
+	    span:hover {
+		color: var(--fau-glossar-pagination-color-active-hover);
+		background-color: var(--fau-glossar-pagination-background-color-active-hover);
+		text-decoration: none;
+	    }
+	}
+    }
+
+
+    .accordion {
+	margin: 0;
+	padding: 0;
+    }
+
+
+   
+}

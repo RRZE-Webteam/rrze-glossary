@@ -6,7 +6,7 @@ Template Name: Part of the Custom Taxonomy Templates
 $cat_slug = get_queried_object()->slug;
 $cat_name = get_queried_object()->name;
 
-echo '<h2>'.$cat_name . '</h2>';
+echo '<h1>'.$cat_name . '</h1>';
 
 $tax_post_args = array(
     'post_type' => 'glossary',
