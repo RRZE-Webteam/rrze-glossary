@@ -13,7 +13,6 @@ class Sync {
 
     public function doSync( $mode ) {
         $tStart = microtime( TRUE );
-        date_default_timezone_set('Europe/Berlin');
         $max_exec_time = ini_get('max_execution_time') - 40; // ini_get('max_execution_time') is not the correct value perhaps due to load-balancer or proxy or other fancy things I've no clue of. But this workaround works for now.
         $iCnt = 0;
         $api = new API();

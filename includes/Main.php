@@ -154,8 +154,6 @@ class Main {
     }
 
     public function setGlossaryCronjob() {
-        date_default_timezone_set( 'Europe/Berlin' );
-
         $options = get_option( 'rrze-glossary' );
 
         if ( $options['glossarysync_autosync'] != 'on' ) {
@@ -175,7 +173,7 @@ class Main {
         wp_clear_scheduled_hook( 'rrze_glossary_auto_sync' );
         wp_schedule_event( $nextcron, $options['glossarysync_frequency'], 'rrze_glossary_auto_sync' );
 
-        $timestamp = wp_next_scheduled( 'rrze_glossary_auto_sync' );
+        $timestamp = wp_next_scheduled( 'rrze_glossary_auto_sync' );     
         $message = __( 'Next automatically synchronization:', 'rrze-glossary' ) . ' ' . date( 'd.m.Y H:i:s', $timestamp );
         add_settings_error( 'AutoSyncComplete', 'autosynccomplete', $message , 'updated' );
         settings_errors();
