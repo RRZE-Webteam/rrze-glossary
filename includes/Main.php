@@ -174,7 +174,7 @@ class Main {
         wp_schedule_event( $nextcron, $options['glossarysync_frequency'], 'rrze_glossary_auto_sync' );
 
         $timestamp = wp_next_scheduled( 'rrze_glossary_auto_sync' );     
-        $message = __( 'Next automatically synchronization:', 'rrze-glossary' ) . ' ' . date( 'd.m.Y H:i:s', $timestamp );
+        $message = __( 'Next automatically synchronization:', 'rrze-glossary' ) . ' ' . wp_date( 'd.m.Y H:i:s', $timestamp );
         add_settings_error( 'AutoSyncComplete', 'autosynccomplete', $message , 'updated' );
         settings_errors();
     }
