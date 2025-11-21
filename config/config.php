@@ -391,7 +391,7 @@ function getShortcodeSettings(){
 function logIt( $msg ){
     $wp_tz = wp_timezone();
     $dt = new \DateTime('now', $wp_tz);
-	$msg = $dt . ' | ' . $msg;
+	$msg = $dt->format('Y-m-d H:i:s') . ' | ' . $msg;
 	if ( file_exists( GLOSSARYLOGFILE ) ){
 		$content = file_get_contents( GLOSSARYLOGFILE );
 		$content = $msg . "\n" . $content;
