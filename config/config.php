@@ -389,8 +389,9 @@ function getShortcodeSettings(){
 }
 
 function logIt( $msg ){
-	date_default_timezone_set('Europe/Berlin');
-	$msg = date("Y-m-d H:i:s") . ' | ' . $msg;
+    $wp_tz = wp_timezone();
+    $dt = new \DateTime('now', $wp_tz);
+	$msg = $dt->format('Y-m-d H:i:s') . ' | ' . $msg;
 	if ( file_exists( GLOSSARYLOGFILE ) ){
 		$content = file_get_contents( GLOSSARYLOGFILE );
 		$content = $msg . "\n" . $content;
