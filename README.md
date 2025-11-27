@@ -102,16 +102,16 @@ https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary
 Filterungen:
 
 Tag:
-https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_tag]=Matrix
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[rrze_glossary_tag]=Matrix
 
 Mehrere Tags:
-https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_tag]=Matrix%2BAccounts
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[rrze_glossary_tag]=Matrix%2BAccounts
 
 Kategorie:
-https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_category]=Dienste
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[rrze_glossary_category]=Dienste
 
 Tags und Kategorien:
-https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[glossary_category]=Dienste&filter[glossary_tag]=Sprache
+https://www.anleitungen.rrze.fau.de/wp-json/wp/v2/glossary?filter[rrze_glossary_category]=Dienste&filter[rrze_glossary_tag]=Sprache
 
 Pagination:
 https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/

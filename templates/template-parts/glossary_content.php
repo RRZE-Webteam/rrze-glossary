@@ -24,8 +24,8 @@ echo '<div id="post-' . esc_attr(get_the_ID()) . '" class="' . esc_attr(implode(
 <?php 
 
 $postID = get_the_ID();
-$cats = wp_kses_post(Layout::getTermLinks( $postID, 'glossary_category' ));
-$tags = wp_kses_post(Layout::getTermLinks( $postID, 'glossary_tag' ));            
+$cats = wp_kses_post(Layout::getTermLinks( $postID, 'rrze_glossary_category' ));
+$tags = wp_kses_post(Layout::getTermLinks( $postID, 'rrze_glossary_tag' ));            
 $details = '<article class="news-details">
 <!-- rrze-glossary --><p id="rrze-glossary" class="meta-footer">'
 . ( $cats ? '<span class="post-meta-categories"> '. __( 'Categories', 'rrze-glossary' ) . ': ' . $cats . '</span>' : '' )

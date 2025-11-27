@@ -43,7 +43,7 @@ class Layout
     {
         if (is_admin() && !empty($wp_query->query['post_type'])) {
             $post_type = $wp_query->query['post_type'];
-            if ($post_type == 'glossary') {
+            if ($post_type == 'rrze_glossary') {
                 if (!isset($wp_query->query['orderby'])) {
                     $wp_query->set('orderby', 'title');
                     $wp_query->set('order', 'ASC');
@@ -123,7 +123,7 @@ class Layout
     {
         $post_id = (isset($_GET['post']) ? $_GET['post'] : (isset($_POST['post_ID']) ? $_POST['post_ID'] : 0));
         if ($post_id) {
-            if (get_post_type($post_id) == 'glossary') {
+            if (get_post_type($post_id) == 'rrze_glossary') {
                 $source = get_post_meta($post_id, "source", TRUE);
                 if ($source) {
                     if ($source != 'website') {
@@ -131,16 +131,16 @@ class Layout
                         $domains = $api->getDomains();
                         $remoteID = get_post_meta($post_id, "remoteID", TRUE);
                         $link = $domains[$source] . 'wp-admin/post.php?post=' . $remoteID . '&action=edit';
-                        remove_post_type_support('glossary', 'title');
-                        remove_post_type_support('glossary', 'editor');
-                        remove_meta_box('glossary_categorydiv', 'glossary', 'side');
-                        remove_meta_box('tagsdiv-glossary_tag', 'glossary', 'side');
-                        // remove_meta_box( 'submitdiv', 'glossary', 'side' ); 2020-25-05 : we need submitdiv because of sortbox            
+                        remove_post_type_support('rrze_glossary', 'title');
+                        remove_post_type_support('rrze_glossary', 'editor');
+                        remove_meta_box('glossary_categorydiv', 'rrze_glossary', 'side');
+                        remove_meta_box('tagsdiv-rrze_glossary_tag', 'rrze_glossary', 'side');
+                        // remove_meta_box( 'submitdiv', 'rrze_glossary', 'side' ); 2020-25-05 : we need submitdiv because of sortbox            
                         add_meta_box(
                             'read_only_content_box', // id, used as the html id att
                             __('This glossary cannot be edited because it is sychronized', 'rrze-glossary') . '. <a href="' . $link . '" target="_blank">' . __('You can edit it at the source', 'rrze-glossary') . '</a>',
                             [$this, 'fillContentBox'], // callback function, spits out the content
-                            'glossary', // post type or page. This adds to posts only
+                            'rrze_glossary', // post type or page. This adds to posts only
                             'normal', // context, where on the screen
                             'high' // priority, where should this go in the context
                         );
@@ -152,7 +152,7 @@ class Layout
                         'shortcode_box', // id, used as the html id att
                         __('Integration in pages and posts', 'rrze-glossary'), // meta box title
                         [$this, 'fillShortcodeBox'], // callback function, spits out the content
-                        'glossary', // post type or page. This adds to posts only
+                        'rrze_glossary', // post type or page. This adds to posts only
                         'normal'
                     );
                 }
@@ -162,7 +162,7 @@ class Layout
             'sortbox', // id, used as the html id att
             __('Sort', 'rrze-glossary'), // meta box title
             [$this, 'sortboxCallback'], // callback function, spits out the content
-            'glossary', // post type or page. This adds to posts only
+            'rrze_glossary', // post type or page. This adds to posts only
             'side'
             // 'high' // priority, where should this go in the context
         );
@@ -178,8 +178,8 @@ class Layout
 
     public function addGlossarySortableColumns($columns)
     {
-        $columns['taxonomy-glossary_category'] = __('Category', 'rrze-glossary');
-        $columns['taxonomy-glossary_tag'] = __('Tag', 'rrze-glossary');
+        $columns['taxonomy-rrze_glossary_category'] = __('Category', 'rrze-glossary');
+        $columns['taxonomy-rrze_glossary_tag'] = __('Tag', 'rrze-glossary');
         $columns['sortfield'] = 'sortfield';
         $columns['source'] = __('Source', 'rrze-glossary');
         $columns['id'] = __('ID', 'rrze-glossary');
@@ -189,12 +189,12 @@ class Layout
 
     public function addGlossaryFilters($post_type)
     {
-        if ($post_type !== 'glossary') {
+        if ($post_type !== 'rrze_glossary') {
             return;
         }
         $taxonomies_slugs = array(
-            'glossary_category',
-            'glossary_tag'
+            'rrze_glossary_category',
+            'rrze_glossary_tag'
         );
         foreach ($taxonomies_slugs as $slug) {
             $taxonomy = get_taxonomy($slug);

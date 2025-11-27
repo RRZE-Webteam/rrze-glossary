@@ -9,7 +9,7 @@ $cat_name = get_queried_object()->name;
 echo '<h1>'.$cat_name . '</h1>';
 
 $tax_post_args = array(
-    'post_type' => 'glossary',
+    'post_type' => 'rrze_glossary',
     'posts_per_page' => 999,
     'order' => 'ASC',
     'tax_query' => array(

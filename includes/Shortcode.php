@@ -272,8 +272,8 @@ class Shortcode {
             $aTax = array();
             $tax_query = '';
 
-            // $postQuery = array('post_type' => 'glossary', 'post_status' => 'publish', 'numberposts' => -1, 'orderby' => $sort, 'order' => $order, 'suppress_filters' => false);
-            $postQuery = array('post_type' => 'glossary', 'post_status' => 'publish', 'numberposts' => -1, 'suppress_filters' => false);
+            // $postQuery = array('post_type' => 'rrze_glossary', 'post_status' => 'publish', 'numberposts' => -1, 'orderby' => $sort, 'order' => $order, 'suppress_filters' => false);
+            $postQuery = array('post_type' => 'rrze_glossary', 'post_status' => 'publish', 'numberposts' => -1, 'suppress_filters' => false);
             if ( $sort == 'sortfield' ){
                 $postQuery['orderby'] = array( 
                     'meta_value' => $order,
