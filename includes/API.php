@@ -139,15 +139,15 @@ class API {
     protected function setCategories( &$aCategories, &$shortname ){
         $aTmp = $aCategories;
         foreach ( $aTmp as $name => $aDetails ){
-            $term = term_exists( $name, 'glossary_category' );
+            $term = term_exists( $name, 'rrze_glossary_category' );
             if ( !$term ) {
-                $term = wp_insert_term( $name, 'glossary_category' );
+                $term = wp_insert_term( $name, 'rrze_glossary_category' );
             }
             update_term_meta( $term['term_id'], 'source', $shortname );    
             foreach ( $aDetails as $childname => $tmp ) {
-                $childterm = term_exists( $childname, 'glossary_category' );
+                $childterm = term_exists( $childname, 'rrze_glossary_category' );
                 if ( !$childterm ) {
-                    $childterm = wp_insert_term( $childname, 'glossary_category', array( 'parent' => $term['term_id'] ) );
+                    $childterm = wp_insert_term( $childname, 'rrze_glossary_category', array( 'parent' => $term['term_id'] ) );
                     update_term_meta( $childterm['term_id'], 'source', $shortname );    
                 }
             }
@@ -220,7 +220,7 @@ class API {
         $aCategories = $this->getTaxonomies( $url, 'category', $categories );
         $this->setCategories( $aCategories, $shortname );
         $categories = get_terms( array(
-            'taxonomy' => 'glossary_category',
+            'taxonomy' => 'rrze_glossary_category',
             'meta_query' => array( array(
                 'key' => 'source',
                 'value' => $shortname
@@ -238,7 +238,7 @@ class API {
     public function deleteGlossary( $source ){
         // deletes all glossaries by source
         $iDel = 0;
-        $allGlossaries = get_posts( array( 'post_type' => 'glossary', 'meta_key' => 'source', 'meta_value' => $source, 'numberposts' => -1 ) );
+        $allGlossaries = get_posts( array( 'post_type' => 'rrze_glossary', 'meta_key' => 'source', 'meta_value' => $source, 'numberposts' => -1 ) );
 
         foreach ( $allGlossaries as $glossary ) {
             wp_delete_post( $glossary->ID, TRUE );
@@ -306,7 +306,7 @@ class API {
     protected function getGlossary( &$url, &$categories ){
         $glossarys = array();
         $aCategoryRelation = array();
-        $filter = '&filter[glossary_category]=' . $categories;
+        $filter = '&filter[rrze_glossary_category]=' . $categories;
         $page = 1;
 
         do {
@@ -328,15 +328,15 @@ class API {
                                 'title' => $entry['title']['rendered'],
                                 'content' => $content,
                                 'lang' => $entry['lang'],
-                                'glossary_category' => $entry['glossary_category'],
+                                'rrze_glossary_category' => $entry['rrze_glossary_category'],
                                 'remoteID' => $entry['remoteID'],
                                 'remoteChanged' => $entry['remoteChanged']
                             );
                             $sTag = '';
-                            foreach ( $entry['glossary_tag'] as $tag ){
+                            foreach ( $entry['rrze_glossary_tag'] as $tag ){
                                 $sTag .= $tag . ',';
                             }
-                            $glossarys[$entry['id']]['glossary_tag'] = trim( $sTag, ',' );
+                            $glossarys[$entry['id']]['rrze_glossary_tag'] = trim( $sTag, ',' );
                             $glossarys[$entry['id']]['URLhasSlider'] = ( ( strpos( $content, 'slider') !== false ) ? $entry['link'] : FALSE ); // we cannot handle sliders, see note in Shortcode.php shortcodeOutput()
                         }
                     }
@@ -353,9 +353,9 @@ class API {
             $aTerms = explode( ',', $terms );
             foreach( $aTerms as $name ){
                 if ( $name ){
-                    $term = term_exists( $name, 'glossary_tag' );
+                    $term = term_exists( $name, 'rrze_glossary_tag' );
                     if ( !$term ) {
-                        $term = wp_insert_term( $name, 'glossary_tag' );
+                        $term = wp_insert_term( $name, 'rrze_glossary_tag' );
                         update_term_meta( $term['term_id'], 'source', $shortname );    
                     }
                 }
@@ -365,7 +365,7 @@ class API {
 
     public function getGlossaryRemoteIDs( $source ){
         $aRet = array();
-        $allGlossaries = get_posts( array( 'post_type' => 'glossary', 'meta_key' => 'source', 'meta_value' => $source, 'fields' => 'ids', 'numberposts' => -1 ) );
+        $allGlossaries = get_posts( array( 'post_type' => 'rrze_glossary', 'meta_key' => 'source', 'meta_value' => $source, 'fields' => 'ids', 'numberposts' => -1 ) );
         foreach ( $allGlossaries as $postID ){
             $remoteID = get_post_meta( $postID, 'remoteID', TRUE );
             $remoteChanged = get_post_meta( $postID, 'remoteChanged', TRUE );
@@ -395,11 +395,11 @@ class API {
         
         // set glossaries
         foreach ( $aGlossary as $glossary ){
-            $this->setTags( $glossary['glossary_tag'], $shortname );
+            $this->setTags( $glossary['rrze_glossary_tag'], $shortname );
 
             $aCategoryIDs = array();
-            foreach ( $glossary['glossary_category'] as $name ){
-                $term = get_term_by( 'name', $name, 'glossary_category' );
+            foreach ( $glossary['rrze_glossary_category'] as $name ){
+                $term = get_term_by( 'name', $name, 'rrze_glossary_category' );
                 $aCategoryIDs[] = $term->term_id;
             }
 
@@ -420,8 +420,8 @@ class API {
                                 'remoteID' => $glossary['remoteID']
                                 ),
                             'tax_input' => array(
-                                'glossary_category' => $aCategoryIDs,
-                                'glossary_tag' => $glossary['glossary_tag']
+                                'rrze_glossary_category' => $aCategoryIDs,
+                                'rrze_glossary_tag' => $glossary['rrze_glossary_tag']
                                 )
                             ) ); 
                         $iUpdated++;
@@ -430,7 +430,7 @@ class API {
                 } else {
                     // insert glossary
                     $post_id = wp_insert_post( array(
-                        'post_type' => 'glossary',
+                        'post_type' => 'rrze_glossary',
                         'post_name' => sanitize_title( $glossary['title'] ),
                         'post_title' => $glossary['title'],
                         'post_content' => $glossary['content'],
@@ -445,8 +445,8 @@ class API {
                             'sortfield' => ''
                             ),
                         'tax_input' => array(
-                            'glossary_category' => $aCategoryIDs,
-                            'glossary_tag' => $glossary['glossary_tag']
+                            'rrze_glossary_category' => $aCategoryIDs,
+                            'rrze_glossary_tag' => $glossary['rrze_glossary_tag']
                             )
                         ) );
                     $iNew++;

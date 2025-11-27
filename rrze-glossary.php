@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Glossary
 Plugin URI:      https://gitlab.rrze.fau.de/rrze-webteam/rrze-glossary
 Description:     Plugin, um Glossar-Einträge zu erstellen und aus dem FAU-Netzwerk zu synchronisieren. Verwendbar als Shortcode, Block oder Widget.
-Version:         2.1.14
+Version:         2.1.15
 Requires at least: 6.1
 Requires PHP:      8.0
 Author:          RRZE Webteam
@@ -92,10 +92,10 @@ function system_requirements() {
 }
 
 function addMetadata(){
-    if (post_type_exists('glossary')){
+    if (post_type_exists('rrze_glossary')){
         // add metadata for posts with CPT glossary
         $postIds = get_posts([
-            'post_type' => 'glossary', 
+            'post_type' => 'rrze_glossary', 
             'nopaging' => true, 
             'fields' => 'ids'
             ]);
@@ -112,10 +112,10 @@ function addMetadata(){
             }
         }    
 
-        if (taxonomy_exists('glossary_category')){
-            // add metadata for glossary_category including their children
+        if (taxonomy_exists('rrze_glossary_category')){
+            // add metadata for rrze_glossary_category including their children
             $terms = get_terms([
-                'taxonomy' => 'glossary_category',
+                'taxonomy' => 'rrze_glossary_category',
                 'hide_empty' => true
                 ]);
 
@@ -144,7 +144,7 @@ function activation() {
     // Ab hier können die Funktionen hinzugefügt werden,
     // die bei der Aktivierung des Plugins aufgerufen werden müssen.
     // Bspw. wp_schedule_event, flush_rewrite_rules, etc.
-    // Einmaliger Aufruf: vom Theme gespeicherte Daten zum CPT "glossary" und zur taxonomy "glossary_category" um Metadaten ergaenzen, damit rrze-glossary funktioniert:
+    // Einmaliger Aufruf: vom Theme gespeicherte Daten zum CPT "glossary" und zur taxonomy "rrze_glossary_category" um Metadaten ergaenzen, damit rrze-glossary funktioniert:
     if ( get_option( 'rrze-glossary-metadata' ) != 'added' ) {
         addMetadata();
         update_option( 'rrze-glossary-metadata', 'added' );
@@ -169,6 +169,46 @@ function rrze_glossary_init() {
     $script_handle = generate_block_asset_handle( 'create-block/rrze-glossary', 'editorScript' );
     wp_set_script_translations( $script_handle, 'rrze-glossary', plugin_dir_path( __FILE__ ) . 'languages' );
 }
+
+
+function rrze_update_glossary_cpt()
+{
+    global $wpdb;
+
+    if (get_option('rrze_glossary_update_cpt_done')) {
+        return;
+    }
+
+    $wpdb->query("
+        UPDATE {$wpdb->term_taxonomy} tt
+        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
+        SET tt.taxonomy = 'rrze_glossary_category'
+        WHERE p.post_type = 'glossary'
+        AND tt.taxonomy = 'glossary_category'
+    ");
+
+    $wpdb->query("
+        UPDATE {$wpdb->term_taxonomy} tt
+        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
+        SET tt.taxonomy = 'rrze_glossary_tag'
+        WHERE p.post_type = 'glossary'
+        AND tt.taxonomy = 'glossary_tag'
+    ");
+
+    $wpdb->update(
+        $wpdb->posts,
+        ['post_type' => 'rrze_glossary'],
+        ['post_type' => 'glossary']
+    );
+
+    wp_cache_flush();
+    flush_rewrite_rules();
+
+    update_option('rrze_glossary_update_cpt_done', 1);
+}
+
 
 /**
  * Wird durchgeführt, nachdem das WP-Grundsystem hochgefahren
@@ -195,5 +235,6 @@ function loaded() {
     }
 
     add_action( 'init', __NAMESPACE__ . '\rrze_glossary_init' );
+    add_action('init', __NAMESPACE__ . '\rrze_update_glossary_cpt');
 
 }

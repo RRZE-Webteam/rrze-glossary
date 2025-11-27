@@ -23,8 +23,6 @@ class CPT
         add_filter('single_template', [$this, 'filter_single_template']);
         add_filter('archive_template', [$this, 'filter_archive_template']);
         add_filter('taxonomy_template', [$this, 'filter_taxonomy_template']);
-
-        add_action('wp_loaded', [$this, 'fixWrongTaxonomies']);
     }
 
 
@@ -68,14 +66,14 @@ class CPT
             'rest_base' => 'glossary',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         );
-        register_post_type('glossary', $args);
+        register_post_type('rrze_glossary', $args);
     }
 
     public function registerGlossaryTaxonomy()
     {
         $tax = [
             [
-                'name' => 'glossary_category',
+                'name' => 'rrze_glossary_category',
                 'label' => __('Glossary', 'rrze-glossary') . ' ' . __('Categories', 'rrze-glossary'),
                 'slug' => 'glossary_category',
                 'rest_base' => 'glossary_category',
@@ -97,7 +95,7 @@ class CPT
                 )
             ],
             [
-                'name' => 'glossary_tag',
+                'name' => 'rrze_glossary_tag',
                 'label' => __('Glossary', 'rrze-glossary') . ' ' . __('Tags', 'rrze-glossary'),
                 'slug' => 'glossary_tag',
                 'rest_base' => 'glossary_tag',
@@ -123,7 +121,7 @@ class CPT
         foreach ($tax as $t) {
             $ret = register_taxonomy(
                 $t['name'],  //The name of the taxonomy. Name should be in slug form (must not contain capital letters or spaces).
-                'glossary',   		 //post type name
+                'rrze_glossary',   		 //post type name
                 array(
                     'hierarchical' => $t['hierarchical'],
                     'label' => $t['label'], //Display name
@@ -187,7 +185,7 @@ class CPT
     public function filter_single_template($template)
     {
         global $post;
-        if ('glossary' === $post->post_type) {
+        if ('rrze_glossary' === $post->post_type) {
             $template = plugin_dir_path(__DIR__) . 'templates/single-glossary.php';
         }
         return $template;
@@ -195,7 +193,7 @@ class CPT
 
     public function filter_archive_template($template)
     {
-        if (is_post_type_archive('glossary')) {
+        if (is_post_type_archive('rrze_glossary')) {
             $template = plugin_dir_path(__DIR__) . 'templates/archive-glossary.php';
         }
         return $template;
@@ -203,41 +201,12 @@ class CPT
 
     public function filter_taxonomy_template($template)
     {
-        if (is_tax('glossary_category')) {
+        if (is_tax('rrze_glossary_category')) {
             $template = plugin_dir_path(__DIR__) . 'templates/glossary_category.php';
-        } elseif (is_tax('glossary_tag')) {
+        } elseif (is_tax('rrze_glossary_tag')) {
             $template = plugin_dir_path(__DIR__) . 'templates/glossary_tag.php';
         }
         return $template;
     }
 
-
-    public function fixWrongTaxonomies()
-    {
-        global $wpdb;
-
-        if (get_option('rrze_glossary_taxonomy_fix2_done')) {
-            return;
-        }
-
-        $wpdb->query("
-        UPDATE {$wpdb->term_taxonomy} tt
-        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
-        INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
-        SET tt.taxonomy = 'glossary_category'
-        WHERE p.post_type = 'glossary'
-        AND tt.taxonomy = 'faq_category'
-    ");
-
-        $wpdb->query("
-        UPDATE {$wpdb->term_taxonomy} tt
-        INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
-        INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID
-        SET tt.taxonomy = 'glossary_tag'
-        WHERE p.post_type = 'glossary'
-        AND tt.taxonomy = 'faq_tag'
-    ");
-
-        update_option('rrze_glossary_taxonomy_fix2_done', 1);
-    }
 }

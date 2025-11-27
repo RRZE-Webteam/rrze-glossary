@@ -1,9 +1,9 @@
 <?php
 /* 
-Template Name: Custom Taxonomy glossary_tag Template
+Template Name: Custom Taxonomy rrze_glossary_tag Template
 */
 
 include_once('template-parts/head.php');
-$taxonomy = 'glossary_tag';
+$taxonomy = 'rrze_glossary_tag';
 include_once('template-parts/glossary_taxonomy.php');
 include_once('template-parts/foot.php');

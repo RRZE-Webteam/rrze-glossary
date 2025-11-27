@@ -33,19 +33,19 @@ class RESTAPI {
 
     // make API deliver source and lang for glossary
     public function createPostMeta() {
-        register_rest_field( 'glossary', 'source', array(
+        register_rest_field( 'rrze_glossary', 'source', array(
             'get_callback'    => [$this, 'getPostSource'],
             'schema'          => null,
         ));
-        register_rest_field( 'glossary', 'lang', array(
+        register_rest_field( 'rrze_glossary', 'lang', array(
             'get_callback'    => [$this, 'getPostLang'],
             'schema'          => null,
         ));
-        register_rest_field( 'glossary', 'remoteID', array(
+        register_rest_field( 'rrze_glossary', 'remoteID', array(
             'get_callback'    => [$this, 'getPostRemoteID'],
             'schema'          => null,
         ));
-        register_rest_field( 'glossary', 'remoteChanged', array(
+        register_rest_field( 'rrze_glossary', 'remoteChanged', array(
             'get_callback'    => [$this, 'getPostRemoteChanged'],
             'schema'          => null,
         ));
@@ -76,7 +76,7 @@ class RESTAPI {
     public function getChildrenCategories( $term ) {
         $children = get_terms( 
             array(
-                'taxonomy' => 'glossary_category',
+                'taxonomy' => 'rrze_glossary_category',
                 'parent' => $term['id'] 
             ));
         $aRet = array();
@@ -88,12 +88,12 @@ class RESTAPI {
 
 
     public function getGlossaryCategories( $post ) {
-        $cats = wp_get_post_terms( $post['id'], 'glossary_category', array( 'fields' => 'names') );
+        $cats = wp_get_post_terms( $post['id'], 'rrze_glossary_category', array( 'fields' => 'names') );
         return $cats;
     }
 
     public function getGlossaryTags( $post ) {
-        return wp_get_post_terms( $post['id'], 'glossary_tag', array( 'fields' => 'names')  );
+        return wp_get_post_terms( $post['id'], 'rrze_glossary_tag', array( 'fields' => 'names')  );
     }
 
     public function getTaxSource( $object ) {
@@ -105,16 +105,16 @@ class RESTAPI {
     }
 
     public function createTaxDetails() {
-        // register_rest_field( 'glossary',
-        //     'glossary_category',
+        // register_rest_field( 'rrze_glossary',
+        //     'rrze_glossary_category',
         //     array(
         //         'get_callback'    => [$this, 'getGlossaryCategories'],
         //         'update_callback'   => null,
         //         'schema'            => null,
         //      )
         // );
-        // register_rest_field( 'glossary',
-        //     'glossary_tag',
+        // register_rest_field( 'rrze_glossary',
+        //     'rrze_glossary_tag',
         //     array(
         //         'get_callback'    => [$this, 'getGlossaryTags'],
         //         'update_callback'   => null,
@@ -122,7 +122,7 @@ class RESTAPI {
         //      )
         // );
 
-        $fields = array( 'glossary_category', 'glossary_tag' );
+        $fields = array( 'rrze_glossary_category', 'rrze_glossary_tag' );
         foreach( $fields as $field ){
             register_rest_field( $field, 'source', array(
                 'get_callback'    => [$this, 'getTaxSource'],
@@ -136,7 +136,7 @@ class RESTAPI {
     }
 
     public function createChildren() {
-        register_rest_field( 'glossary_category',
+        register_rest_field( 'rrze_glossary_category',
             'children',
             array(
                 'get_callback'    => [$this, 'getChildrenCategories'],

@@ -95,7 +95,7 @@ export default function Edit({attributes, setAttributes}) {
     // }, [register, tag, id, hstart, order, sort, lang, additional_class, color, style, load_open, expand_all_link, hide_title, hide_accordion, registerstyle, glossary, setAttributes]);
 
 	const categories = useSelect((select) => {
-		return select('core').getEntityRecords('taxonomy', 'glossary_category', {
+		return select('core').getEntityRecords('taxonomy', 'rrze_glossary_category', {
 			per_page: -1,
 			orderby: 'name',
 			order: 'asc',
@@ -118,7 +118,7 @@ export default function Edit({attributes, setAttributes}) {
 
 
     const tags = useSelect((select) => {
-        return select('core').getEntityRecords('taxonomy', 'glossary_tag');
+        return select('core').getEntityRecords('taxonomy', 'rrze_glossary_tag');
     }, []);
 
     const tagoptions = [
@@ -138,7 +138,7 @@ export default function Edit({attributes, setAttributes}) {
     }
 
     const glossarys = useSelect((select) => {
-        return select('core').getEntityRecords('postType', 'glossary', {per_page: -1, orderby: 'title', order: "asc"});
+        return select('core').getEntityRecords('postType', 'rrze_glossary', {per_page: -1, orderby: 'title', order: "asc"});
     }, []);
 
     const glossaryoptions = [
