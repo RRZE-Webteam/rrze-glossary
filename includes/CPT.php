@@ -76,7 +76,7 @@ class CPT
                 'name' => 'rrze_glossary_category',
                 'label' => __('Glossary', 'rrze-glossary') . ' ' . __('Categories', 'rrze-glossary'),
                 'slug' => 'glossary_category',
-                'rest_base' => 'glossary_category',
+                'rest_base' => 'rrze_glossary_category',
                 'hierarchical' => TRUE,
                 'labels' => array(
                     'singular_name' => __('Category', 'rrze-glossary'),
