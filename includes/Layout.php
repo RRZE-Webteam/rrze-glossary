@@ -102,7 +102,7 @@ class Layout
         $tag = '';
         $fields = array('category', 'tag');
         foreach ($fields as $field) {
-            $terms = wp_get_post_terms($post->ID, 'glossary_' . $field);
+            $terms = wp_get_post_terms($post->ID, 'rrze_glossary_' . $field);
             foreach ($terms as $term) {
                 $$field .= $term->slug . ', ';
             }
@@ -133,7 +133,7 @@ class Layout
                         $link = $domains[$source] . 'wp-admin/post.php?post=' . $remoteID . '&action=edit';
                         remove_post_type_support('rrze_glossary', 'title');
                         remove_post_type_support('rrze_glossary', 'editor');
-                        remove_meta_box('glossary_categorydiv', 'rrze_glossary', 'side');
+                        remove_meta_box('rrze_glossary_categorydiv', 'rrze_glossary', 'side');
                         remove_meta_box('tagsdiv-rrze_glossary_tag', 'rrze_glossary', 'side');
                         // remove_meta_box( 'submitdiv', 'rrze_glossary', 'side' ); 2020-25-05 : we need submitdiv because of sortbox            
                         add_meta_box(

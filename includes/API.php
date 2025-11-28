@@ -118,12 +118,12 @@ class API {
                    'compare'   => '='
                 )
             ),
-            'taxonomy'  => 'glossary_' . $field,
+            'taxonomy'  => 'rrze_glossary_' . $field,
             'fields' => 'ids'
             );
         $terms = get_terms( $args );
         foreach( $terms as $ID  ){
-            wp_delete_term( $ID, 'glossary_' . $field );
+            wp_delete_term( $ID, 'rrze_glossary_' . $field );
         }
     }
 

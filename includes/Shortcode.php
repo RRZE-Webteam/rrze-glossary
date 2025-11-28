@@ -83,7 +83,7 @@ class Shortcode {
         foreach( $aTax as $field => $aVal ){
             if ( $aVal[0] ){
                 $aTmp[] = array(
-                    'taxonomy' => 'glossary_' . $field,
+                    'taxonomy' => 'rrze_glossary_' . $field,
                     'field' => 'slug',
                     'terms' => $aVal
                 );    
@@ -299,6 +299,7 @@ class Shortcode {
                     $postQuery['tax_query'] = $tax_query;
                 }    
             }
+
             $posts = get_posts( $postQuery );
 
             if ( $posts ){
@@ -318,7 +319,7 @@ class Shortcode {
                                 $aCats = $category;
                             }
                             foreach ( $aCats as $slug ){
-                                $filter_term = get_term_by( 'slug', $slug, 'glossary_category' );
+                                $filter_term = get_term_by( 'slug', $slug, 'rrze_glossary_category' );
                                 if ( $filter_term ){
                                     $valid_term_ids[] = $filter_term->term_id;
                                 } 
@@ -330,13 +331,13 @@ class Shortcode {
                                 $aTags = $tag;
                             }
                             foreach ( $aTags as $slug ){
-                                $filter_term = get_term_by( 'slug', $slug, 'glossary_tag' );
+                                $filter_term = get_term_by( 'slug', $slug, 'rrze_glossary_tag' );
                                 if ( $filter_term ){
                                     $valid_term_ids[] = $filter_term->term_id;
                                 } 
                             }
                         }     
-                        $terms = wp_get_post_terms( $post->ID, 'glossary_' . $register );
+                        $terms = wp_get_post_terms( $post->ID, 'rrze_glossary_' . $register );
 
                         if ( $terms && !isset($terms->errors)){
                             foreach( $terms as $t ){
