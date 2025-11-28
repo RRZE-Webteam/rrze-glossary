@@ -46,8 +46,8 @@ function getConstants() {
  */
 function getMenuSettings() {
     return [
-        'page_title'    => __('RRZE Glossary', 'rrze-glossary'),
-        'menu_title'    => __('RRZE Glossary', 'rrze-glossary'),
+        'page_title'    => 'RRZE Glossary',
+        'menu_title'    => 'RRZE Glossary',
         'capability'    => 'manage_options',
         'menu_slug'     => 'rrze-glossary',
         'title'         => __('RRZE Glossary Settings', 'rrze-glossary'),
