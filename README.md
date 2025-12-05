@@ -6,8 +6,6 @@
 > **RRZE-Answers ist vollständig abwärtskompatibel:**  
 > Alle bestehenden Shortcodes funktionieren weiterhin – es muss nichts am Content geändert werden.
 > 
-> https://github.com/RRZE-Webteam/rrze-answers
-> 
 
 
 [![Aktuelle Version](https://img.shields.io/github/package-json/v/rrze-webteam/rrze-glossary/main?label=Version)](https://github.com/RRZE-Webteam/rrze-glossary)
