@@ -1,3 +1,15 @@
+> ⚠️ **Wichtig: Entwicklung eingestellt**
+>
+> Mit Release **v2.1.17** wurde die Entwicklung dieses Plugins beendet.  
+> Die gesamte Funktionalität ist in **[RRZE-Answers](https://github.com/RRZE-Webteam/rrze-answers)** enthalten.  
+>
+> **RRZE-Answers ist vollständig abwärtskompatibel:**  
+> Alle bestehenden Shortcodes funktionieren weiterhin – es muss nichts am Content geändert werden.
+> 
+> https://github.com/RRZE-Webteam/rrze-answers
+> 
+
+
 [![Aktuelle Version](https://img.shields.io/github/package-json/v/rrze-webteam/rrze-glossary/main?label=Version)](https://github.com/RRZE-Webteam/rrze-glossary)
 [![Release Version](https://img.shields.io/github/v/release/rrze-webteam/rrze-glossary?label=Release+Version)](https://github.com/rrze-webteam/rrze-glossary/releases/)
 [![GitHub License](https://img.shields.io/github/license/rrze-webteam/rrze-glossary)](https://github.com/RRZE-Webteam/rrze-glossary)
