@@ -9,6 +9,13 @@
 	"icon": "book",
 	"example": {},
 	"attributes": {
+		"rrze_glossary_category": {
+			"type": "array",
+			"items": {
+				"type": "number"
+			},
+			"default": []
+		},
 		"category": {
 			"type": "string"
 		},
@@ -58,7 +65,7 @@
 			"type": "number",
 			"default": 2
 		}
-	},	
+	},
 	"supports": {
 		"html": false
 	},

@@ -3,53 +3,53 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
  */
-import {__} from '@wordpress/i18n';
-import {useEffect, useState} from '@wordpress/element';
-import {useSelect} from '@wordpress/data';
-import {InspectorControls, BlockControls, useBlockProps, HeadingLevelDropdown} from '@wordpress/block-editor';
-import {PanelBody, TextControl, ToggleControl, SelectControl, RangeControl} from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { useEffect, useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { InspectorControls, BlockControls, useBlockProps, HeadingLevelDropdown } from '@wordpress/block-editor';
+import { PanelBody, TextControl, ToggleControl, SelectControl, RangeControl } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
 function buildCategoryOptions(categories) {
-	const map = new Map();
-	const roots = [];
+    const map = new Map();
+    const roots = [];
 
-	categories.forEach((cat) => {
-		cat.children = [];
-		map.set(cat.id, cat);
-	});
+    categories.forEach((cat) => {
+        cat.children = [];
+        map.set(cat.id, cat);
+    });
 
-	categories.forEach((cat) => {
-		if (cat.parent && map.has(cat.parent)) {
-			map.get(cat.parent).children.push(cat);
-		} else {
-			roots.push(cat);
-		}
-	});
+    categories.forEach((cat) => {
+        if (cat.parent && map.has(cat.parent)) {
+            map.get(cat.parent).children.push(cat);
+        } else {
+            roots.push(cat);
+        }
+    });
 
-	const sortByName = (list) =>
-		list.sort((a, b) =>
-			a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
-		);
+    const sortByName = (list) =>
+        list.sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+        );
 
-	const flatten = (list, depth = 0) => {
-		const result = [];
-		sortByName(list).forEach((cat) => {
-			result.push({
-				label: `${'-'.repeat(depth)} ${cat.name}`.trim(),
-				value: cat.slug,
-			});
-			result.push(...flatten(cat.children, depth + 1));
-		});
-		return result;
-	};
+    const flatten = (list, depth = 0) => {
+        const result = [];
+        sortByName(list).forEach((cat) => {
+            result.push({
+                label: `${'-'.repeat(depth)} ${cat.name}`.trim(),
+                value: String(cat.id),
+            });
+            result.push(...flatten(cat.children, depth + 1));
+        });
+        return result;
+    };
 
-	return flatten(roots);
+    return flatten(roots);
 }
 
 
 
-export default function Edit({attributes, setAttributes}) {
+export default function Edit({ attributes, setAttributes }) {
     const {
         register,
         tag,
@@ -69,7 +69,7 @@ export default function Edit({attributes, setAttributes}) {
         glossary
     } = attributes;
     const blockProps = useBlockProps();
-    const [categorystate, setSelectedCategories] = useState(['']);
+    const [categorystate, setSelectedCategories] = useState([]);
     const [tagstate, setSelectedTags] = useState(['']);
     const [idstate, setSelectedIDs] = useState(['']);
 
@@ -94,15 +94,15 @@ export default function Edit({attributes, setAttributes}) {
     //     });
     // }, [register, tag, id, hstart, order, sort, lang, additional_class, color, style, load_open, expand_all_link, hide_title, hide_accordion, registerstyle, glossary, setAttributes]);
 
-	const categories = useSelect((select) => {
-		return select('core').getEntityRecords('taxonomy', 'rrze_glossary_category', {
-			per_page: -1,
-			orderby: 'name',
-			order: 'asc',
-			status: 'publish',
-			_fields: 'id,name,slug,parent',
-		});
-	}, []);
+    const categories = useSelect((select) => {
+        return select('core').getEntityRecords('taxonomy', 'rrze_glossary_category', {
+            per_page: -1,
+            orderby: 'name',
+            order: 'asc',
+            status: 'publish',
+            _fields: 'id,name,slug,parent',
+        });
+    }, []);
 
 
     const categoryoptions = [
@@ -113,8 +113,8 @@ export default function Edit({attributes, setAttributes}) {
     ];
 
     if (Array.isArray(categories)) {
-	    categoryoptions.push(...buildCategoryOptions(categories));
-	}
+        categoryoptions.push(...buildCategoryOptions(categories));
+    }
 
 
     const tags = useSelect((select) => {
@@ -138,7 +138,7 @@ export default function Edit({attributes, setAttributes}) {
     }
 
     const glossarys = useSelect((select) => {
-        return select('core').getEntityRecords('postType', 'rrze_glossary', {per_page: -1, orderby: 'title', order: "asc"});
+        return select('core').getEntityRecords('postType', 'rrze_glossary', { per_page: -1, orderby: 'title', order: "asc" });
     }, []);
 
     const glossaryoptions = [
@@ -297,19 +297,28 @@ export default function Edit({attributes, setAttributes}) {
     // console.log('edit.js attributes: ' + JSON.stringify(attributes));
 
     const onChangeCategory = (newValues) => {
-        setSelectedCategories(newValues);
-        setAttributes({category: String(newValues)})
+        const arr = Array.isArray(newValues) ? newValues : [newValues];
+        const ids = arr.map(v => parseInt(v, 10)).filter(Number.isInteger);
+
+        setSelectedCategories(arr);
+        setAttributes({
+            rrze_glossary_category: ids,
+            // optional: wenn du legacy "category" weiterhin brauchst:
+            category: ids.join(','),
+        });
     };
 
     const onChangeTag = (newValues) => {
         setSelectedTags(newValues);
-        setAttributes({tag: String(newValues)})
+        setAttributes({ tag: String(newValues) })
     };
 
     const onChangeID = (newValues) => {
         setSelectedIDs(newValues);
-        setAttributes({id: String(newValues)})
+        setAttributes({ id: String(newValues) })
     };
+
+    const selectedIds = (attributes.rrze_glossary_category || []).map(String);
 
     return (
         <>
@@ -317,7 +326,7 @@ export default function Edit({attributes, setAttributes}) {
                 <HeadingLevelDropdown
                     options={[2, 3, 4, 5, 6]}
                     value={hstart}
-                    onChange={(value) => setAttributes({hstart: value})}
+                    onChange={(value) => setAttributes({ hstart: value })}
                 />
             </BlockControls>
             <InspectorControls>
@@ -328,7 +337,7 @@ export default function Edit({attributes, setAttributes}) {
                             'rrze-glossary'
                         )}
                         help={__('Select categories to filter glossary entries.', 'rrze-glossary')}
-                        value={categorystate}
+                        value={selectedIds}
                         options={categoryoptions}
                         onChange={onChangeCategory}
                         multiple
@@ -362,7 +371,7 @@ export default function Edit({attributes, setAttributes}) {
                         )}
                         help={__('Select language to filter glossary entries.', 'rrze-glossary')}
                         options={langoptions}
-                        onChange={(value) => setAttributes({lang: value})}
+                        onChange={(value) => setAttributes({ lang: value })}
                     />
                     <SelectControl
                         label={__(
@@ -371,7 +380,7 @@ export default function Edit({attributes, setAttributes}) {
                         )}
                         help={__('Groups Glossary-Entries by category or tags.', 'rrze-glossary')}
                         options={registeroptions}
-                        onChange={(value) => setAttributes({register: value})}
+                        onChange={(value) => setAttributes({ register: value })}
                     />
                 </PanelBody>
                 <PanelBody title={__('Styles', 'rrze-glossary')} initialOpen={false}>
@@ -382,7 +391,7 @@ export default function Edit({attributes, setAttributes}) {
                         )}
                         help={__('Controls the Appearance of the Tab bar.', 'rrze-glossary')}
                         options={registerstyleoptions}
-                        onChange={(value) => setAttributes({registerstyle: value})}
+                        onChange={(value) => setAttributes({ registerstyle: value })}
                     />
                     {(!glossary || glossary === 'none') && (
                         <>
@@ -431,13 +440,13 @@ export default function Edit({attributes, setAttributes}) {
                                             'rrze-glossary'
                                         )}
                                         options={coloroptions}
-                                        onChange={(value) => setAttributes({color: value})}
+                                        onChange={(value) => setAttributes({ color: value })}
                                     />
 
                                     <SelectControl
                                         label={__('Style', 'rrze-glossary')}
                                         options={styleoptions}
-                                        onChange={(value) => setAttributes({style: value})}
+                                        onChange={(value) => setAttributes({ style: value })}
                                     />
                                 </>
                             ) : (
@@ -464,7 +473,7 @@ export default function Edit({attributes, setAttributes}) {
                             'rrze-glossary'
                         )}
                         options={sortoptions}
-                        onChange={(value) => setAttributes({sort: value})}
+                        onChange={(value) => setAttributes({ sort: value })}
                     />
                     <SelectControl
                         label={__(
@@ -472,7 +481,7 @@ export default function Edit({attributes, setAttributes}) {
                             'rrze-glossary'
                         )}
                         options={orderoptions}
-                        onChange={(value) => setAttributes({order: value})}
+                        onChange={(value) => setAttributes({ order: value })}
                     />
                 </PanelBody>
             </InspectorControls>

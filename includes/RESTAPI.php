@@ -88,12 +88,12 @@ class RESTAPI {
 
 
     public function getGlossaryCategories( $post ) {
-        $cats = wp_get_post_terms( $post['id'], 'rrze_glossary_category', array( 'fields' => 'names') );
+        $cats = wp_get_post_terms( $post['id'], 'rrze_glossary_category', array( 'fields' => 'ids') );
         return $cats;
     }
 
     public function getGlossaryTags( $post ) {
-        return wp_get_post_terms( $post['id'], 'rrze_glossary_tag', array( 'fields' => 'names')  );
+        return wp_get_post_terms( $post['id'], 'rrze_glossary_tag', array( 'fields' => 'ids')  );
     }
 
     public function getTaxSource( $object ) {
