@@ -58,7 +58,7 @@
 			"type": "number",
 			"default": 2
 		}
-	},	
+	},
 	"supports": {
 		"html": false
 	},

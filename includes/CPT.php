@@ -23,6 +23,20 @@ class CPT
         add_filter('single_template', [$this, 'filter_single_template']);
         add_filter('archive_template', [$this, 'filter_archive_template']);
         add_filter('taxonomy_template', [$this, 'filter_taxonomy_template']);
+        add_filter('wp_terms_checklist_args', [$this, 'rrze_glossary_disable_checked_ontop'], 10, 2);
+    }
+
+    function rrze_glossary_disable_checked_ontop($args, $post_id)
+    {
+
+        if (
+            isset($args['taxonomy'])
+            && $args['taxonomy'] === 'rrze_glossary_category'
+        ) {
+            $args['checked_ontop'] = false;
+        }
+
+        return $args;
     }
 
 
@@ -134,7 +148,6 @@ class CPT
                         'with_front' => TRUE // Don't display the category base before
                     ),
                     'show_in_rest' => TRUE,
-                    'meta_box_cb' => 'post_categories_meta_box',
                     'rest_base' => $t['rest_base'],
                     'rest_controller_class' => 'WP_REST_Terms_Controller'
                 )
