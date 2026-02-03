@@ -138,15 +138,15 @@ export default function Edit({ attributes, setAttributes }) {
 
     const registeroptions = [
         {
-            label: __('none', 'rrze-faq'),
+            label: __('none', 'rrze-glossary'),
             value: ''
         },
         {
-            label: __('Categories', 'rrze-faq'),
+            label: __('Categories', 'rrze-glossary'),
             value: 'category'
         },
         {
-            label: __('Tags', 'rrze-faq'),
+            label: __('Tags', 'rrze-glossary'),
             value: 'tag'
         }
     ];
@@ -154,34 +154,34 @@ export default function Edit({ attributes, setAttributes }) {
 
     const langoptions = [
         {
-            label: __('all', 'rrze-faq'),
+            label: __('all', 'rrze-glossary'),
             value: ''
         },
         {
-            label: __('German', 'rrze-faq'),
+            label: __('German', 'rrze-glossary'),
             value: 'de'
         },
         {
 
-            label: __('English', 'rrze-faq'),
+            label: __('English', 'rrze-glossary'),
             value: 'en'
         },
         {
 
-            label: __('French', 'rrze-faq'),
+            label: __('French', 'rrze-glossary'),
             value: 'fr'
         },
         {
 
-            label: __('Spanish', 'rrze-faq'),
+            label: __('Spanish', 'rrze-glossary'),
             value: 'es'
         },
         {
-            label: __('Russian', 'rrze-faq'),
+            label: __('Russian', 'rrze-glossary'),
             value: 'ru'
         },
         {
-            label: __('Chinese', 'rrze-faq'),
+            label: __('Chinese', 'rrze-glossary'),
             value: 'zh'
         }
     ];

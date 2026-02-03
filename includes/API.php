@@ -4,469 +4,161 @@ namespace RRZE\Glossary;
 
 defined('ABSPATH') || exit;
 
-define ('ENDPOINT', 'wp-json/wp/v2/glossary' );
+/**
+ * REST API for "glossary"
+ */
+class RESTAPI {
 
-class API {
-
-    private $aAllCats = array();
-
-    public function setDomain( $shortname, $url, $domains ){
-        // returns array('status' => TRUE, 'ret' => array(cleanShortname, cleanUrl)
-        // on error returns array('status' => FALSE, 'ret' => error-message)
-        $aRet = array( 'status' => FALSE, 'ret' => '' );
-        $cleanUrl = trailingslashit( preg_replace( "/^((http|https):\/\/)?/i", "https://", $url ) );
-        $cleanShortname = strtolower( preg_replace('/[^A-Za-z0-9]/', '', $shortname ) );
-
-        if ( in_array( $cleanUrl, $domains )){
-            $aRet['ret'] = $url . __( ' is already in use.', 'rrze-glossary' );
-            return $aRet;
-        }elseif ( array_key_exists( $cleanShortname, $domains )){
-            $aRet['ret'] = $cleanShortname . __( ' is already in use.', 'rrze-glossary' );
-            return $aRet;
-        }else{
-            $request = wp_remote_get( $cleanUrl . ENDPOINT . '?per_page=1' );
-            $status_code = wp_remote_retrieve_response_code( $request );
-
-            if ( $status_code != '200' ){
-                $aRet['ret'] = $cleanUrl . __( ' is not valid.', 'rrze-glossary' );
-                return $aRet;
-            }else{
-                $content = json_decode( wp_remote_retrieve_body( $request ), TRUE );
-
-                if ($content){
-                    $cleanUrl = substr( $content[0]['link'], 0 , strpos( $content[0]['link'], '/glossary' ) ) . '/';
-                }else{
-                    $aRet['ret'] = $cleanUrl . __( ' is not valid.', 'rrze-glossary' );
-                    return $aRet;    
-                }
-            } 
-        }
-
-        $aRet['status'] = TRUE;
-        $aRet['ret'] = array( 'cleanShortname' => $cleanShortname, 'cleanUrl' => $cleanUrl );
-        return $aRet;
+    public function __construct() {
+        add_action('rest_api_init', [$this, 'createPostMeta']);
+        add_action('rest_api_init', [$this, 'createTaxDetails']);
+        add_action('rest_api_init', [$this, 'createChildren']);
+        add_action('rest_api_init', [$this, 'addFilters']);
+        add_action('rest_insert_rrze_glossary_category', [$this, 'setParentOnInsert'], 10, 3);
     }
 
-    protected function isRegisteredDomain( &$url ){
-        return in_array( $url, $this->getDomains() );
+    // -------------------------
+    // Post meta for REST
+    // -------------------------
+    public function getPostSource($object) {
+        return get_post_meta($object['id'], 'source', true);
     }
 
-    public function getDomains(){
-        $domains = array();
-        $options = get_option( 'rrze-glossary' );
-        if ( isset( $options['registeredDomains'] ) ){
-            foreach( $options['registeredDomains'] as $shortname => $url ){
-                $domains[$shortname] = $url;
-            }	
-        }
-        asort( $domains );
-        return $domains;
-    }
-    
-
-    protected function getTaxonomies( $url, $field, &$filter ){
-        $aRet = array();    
-        $url .= ENDPOINT . '_' . $field;    
-        $slug = ( $filter ? '&slug=' . $filter : '' );
-        $page = 1;
-
-        do {
-            $request = wp_remote_get( $url . '?page=' . $page . $slug );
-            $status_code = wp_remote_retrieve_response_code( $request );
-            if ( $status_code == 200 ){
-                $entries = json_decode( wp_remote_retrieve_body( $request ), true );
-                if ( !empty( $entries ) ){
-                    foreach( $entries as $entry ){
-                        if ( $entry['source'] == 'website' ){                            
-                            if ( $entry['children'] ) {
-                                foreach( $entry['children'] as $childname ){
-                                    $aRet[$entry['name']][$childname] = array();        
-                                }
-                            }else{
-                                $aRet[$entry['name']] = array();
-                            }
-                        }
-                    }
-                    foreach( $aRet as $name => $aChildren ){
-                        foreach ( $aChildren as $childname => $val ){
-                            if ( isset( $aRet[$childname] ) ){
-                                $aRet[$name][$childname] = $aRet[$childname];
-                            }
-                        }
-                    }
-                }
-            }
-            $page++;   
-        } while ( ( $status_code == 200 ) && ( !empty( $entries ) ) );
-        return $aRet;
+    public function getPostLang($object) {
+        return get_post_meta($object['id'], 'lang', true);
     }
 
-    
-    public function sortIt( &$arr ){
-        uasort( $arr, function($a, $b) {
-            return strtolower( $a ) <=> strtolower( $b );
-        } );
+    public function getPostRemoteID($object) {
+        return get_post_meta($object['id'], 'remoteID', true);
     }
-    
-    public function deleteTaxonomies( $source, $field ){
-        $args = array(
-            'hide_empty' => FALSE,
-            'meta_query' => array(
-                array(
-                   'key'       => 'source',
-                   'value'     => $source,
-                   'compare'   => '='
-                )
-            ),
-            'taxonomy'  => 'rrze_glossary_' . $field,
-            'fields' => 'ids'
-            );
-        $terms = get_terms( $args );
-        foreach( $terms as $ID  ){
-            wp_delete_term( $ID, 'rrze_glossary_' . $field );
+
+    public function getPostRemoteChanged($object) {
+        return get_post_meta($object['id'], 'remoteChanged', true);
+    }
+
+    public function createPostMeta() {
+        $fields = ['source', 'lang', 'remoteID', 'remoteChanged'];
+        $callbacks = [
+            'source' => [$this, 'getPostSource'],
+            'lang' => [$this, 'getPostLang'],
+            'remoteID' => [$this, 'getPostRemoteID'],
+            'remoteChanged' => [$this, 'getPostRemoteChanged']
+        ];
+
+        foreach ($fields as $field) {
+            register_rest_field('rrze_glossary', $field, [
+                'get_callback' => $callbacks[$field],
+                'schema' => null
+            ]);
         }
     }
 
-
-    public function deleteCategories( $source ){
-        $this->deleteTaxonomies( $source, 'category');
+    // -------------------------
+    // Add filter parameters for REST queries
+    // -------------------------
+    public function addFilterParam($args, $request) {
+        if (empty($request['filter']) || !is_array($request['filter'])) {
+            return $args;
+        }
+        global $wp;
+        $filter = $request['filter'];
+        $vars = apply_filters('query_vars', $wp->public_query_vars);
+        foreach ($vars as $var) {
+            if (isset($filter[$var])) {
+                $args[$var] = $filter[$var];
+            }
+        }
+        return $args;
     }
 
-    public function deleteTags( $source ){
-        $this->deleteTaxonomies( $source, 'tag');
+    public function addFilters() {
+        add_filter('rest_glossary_query', [$this, 'addFilterParam'], 10, 2);
+        add_filter('rest_glossary_category_query', [$this, 'addFilterParam'], 10, 2);
+        add_filter('rest_glossary_tag_query', [$this, 'addFilterParam'], 10, 2);
     }
 
-    protected function setCategories( &$aCategories, &$shortname ){
-        $aTmp = $aCategories;
-        foreach ( $aTmp as $name => $aDetails ){
-            $term = term_exists( $name, 'rrze_glossary_category' );
-            if ( !$term ) {
-                $term = wp_insert_term( $name, 'rrze_glossary_category' );
-            }
-            update_term_meta( $term['term_id'], 'source', $shortname );    
-            foreach ( $aDetails as $childname => $tmp ) {
-                $childterm = term_exists( $childname, 'rrze_glossary_category' );
-                if ( !$childterm ) {
-                    $childterm = wp_insert_term( $childname, 'rrze_glossary_category', array( 'parent' => $term['term_id'] ) );
-                    update_term_meta( $childterm['term_id'], 'source', $shortname );    
-                }
-            }
-            if ( $aDetails ){
-                $aTmp = $aDetails;
-            }
+    // -------------------------
+    // Taxonomy fields
+    // -------------------------
+    public function getGlossaryCategories($post) {
+        return wp_get_post_terms($post['id'], 'rrze_glossary_category', ['fields' => 'ids']);
+    }
+
+    public function getGlossaryTags($post) {
+        return wp_get_post_terms($post['id'], 'rrze_glossary_tag', ['fields' => 'ids']);
+    }
+
+    public function getTaxSource($object) {
+        return get_term_meta($object['id'], 'source', true);
+    }
+
+    public function getTaxLang($object) {
+        return get_term_meta($object['id'], 'lang', true);
+    }
+
+    public function createTaxDetails() {
+        // Register post fields for taxonomy terms
+        register_rest_field('rrze_glossary', 'rrze_glossary_category', [
+            'get_callback' => [$this, 'getGlossaryCategories'],
+            'update_callback' => null,
+            'schema' => null
+        ]);
+        register_rest_field('rrze_glossary', 'rrze_glossary_tag', [
+            'get_callback' => [$this, 'getGlossaryTags'],
+            'update_callback' => null,
+            'schema' => null
+        ]);
+
+        // Register term meta for taxonomy
+        $taxFields = ['source' => 'getTaxSource', 'lang' => 'getTaxLang'];
+        foreach ($taxFields as $field => $callback) {
+            register_rest_field('rrze_glossary_category', $field, [
+                'get_callback' => [$this, $callback],
+                'update_callback' => null,
+                'schema' => null
+            ]);
+            register_rest_field('rrze_glossary_tag', $field, [
+                'get_callback' => [$this, $callback],
+                'update_callback' => null,
+                'schema' => null
+            ]);
         }
     }
 
-    
-    public function sortAllCats( &$cats, &$into ) {
-        foreach ($cats as $ID => $aDetails) {
-            $into[$ID]['slug'] = $aDetails['slug'];
-            $into[$ID]['name'] = $aDetails['name'];            
-            if ( $aDetails['parentID'] ) {
-                $parentID = $aDetails['parentID'];
-                $into[$parentID][$ID]['slug'] = $aDetails['slug'];
-                $into[$parentID][$ID]['name'] = $aDetails['name'];
-            }
-            unset( $cats[$parentID] );
-        }    
-        $this->sortAllCats( $cats, $into );
-    }
-
-
-    public function sortCats(Array &$cats, Array &$into, $parentID = 0, $prefix = '' ) {
-        $prefix .= ( $parentID ? '-' : '' );
-        foreach ($cats as $i => $cat) {
-            if ( $cat->parent == $parentID ) {
-                $into[$cat->term_id] = $cat;                
-                unset( $cats[$i] );
-            }
-            $this->aAllCats[$cat->term_id]['parentID'] = $cat->parent;
-            $this->aAllCats[$cat->term_id]['slug'] = $cat->slug;
-            $this->aAllCats[$cat->term_id]['name'] = str_replace( '~', '&nbsp;', str_pad( ltrim( $prefix . ' ' . $cat->name ), 100, '~') );
-        }    
-        foreach ($into as $topCat) {
-            $topCat->children = array();
-            $this->sortCats($cats, $topCat->children, $topCat->term_id, $prefix );
-        }
-        if ( !$cats ){
-            foreach ( $this->aAllCats as $ID => $aDetails ){
-                if ( $aDetails['parentID'] ){
-                    $this->aAllCats[$aDetails['parentID']]['children'][$ID] = $this->aAllCats[$ID];
-                }
-            }
-        } 
-    }
-
-    public function cleanCats(){
-        foreach ( $this->aAllCats as $ID => $aDetails ){
-            if ( $aDetails['parentID'] ){
-                unset( $this->aAllCats[$ID] );
-            }
-        }
-    }
-
-    public function getSlugNameCats(&$cats, &$into ){
-        foreach ( $cats as $i => $cat ){
-            $into[$cat['slug']] = $cat['name'];
-            if ( isset( $cat['children'] ) ){
-                $this->getSlugNameCats($cat['children'], $into );
-            }
-            unset( $cats[$i] );
-        }
-    }
-
-    public function getCategories( $url, $shortname, $categories = '' ){
-        $aRet = array();
-        $aCategories = $this->getTaxonomies( $url, 'category', $categories );
-        $this->setCategories( $aCategories, $shortname );
-        $categories = get_terms( array(
+    // -------------------------
+    // Children taxonomy field
+    // -------------------------
+    public function getChildrenCategories($term) {
+        $children = get_terms([
             'taxonomy' => 'rrze_glossary_category',
-            'meta_query' => array( array(
-                'key' => 'source',
-                'value' => $shortname
-            ) ),
-            'hide_empty' => FALSE
-            ) );
-        $categoryHierarchy = array();
-        $this->sortCats($categories, $categoryHierarchy);
-        $this->cleanCats();
-        $this->getSlugNameCats( $this->aAllCats, $aRet );
-        return $aRet;
+            'parent' => $term['id'],
+            'hide_empty' => false
+        ]);
+
+        $ret = [];
+        foreach ($children as $child) {
+            $ret[] = $child->name;
+        }
+        return $ret;
     }
 
-
-    public function deleteGlossary( $source ){
-        // deletes all glossaries by source
-        $iDel = 0;
-        $allGlossaries = get_posts( array( 'post_type' => 'rrze_glossary', 'meta_key' => 'source', 'meta_value' => $source, 'numberposts' => -1 ) );
-
-        foreach ( $allGlossaries as $glossary ) {
-            wp_delete_post( $glossary->ID, TRUE );
-            $iDel++;
-        } 
-        return $iDel;
+    public function createChildren() {
+        register_rest_field('rrze_glossary_category', 
+        'children', [
+            'get_callback' => [$this, 'getChildrenCategories'],
+            'update_callback' => null,
+            'schema' => null
+        ]);
     }
 
-    protected function cleanContent( $txt ){
-        // returns content without info below '<!-- rrze-glossary -->'
-        $pos = strpos( $txt, '<!-- rrze-glossary -->' );
-        
-        if ($pos !== false){
-            $txt = substr( $txt, 0, $pos);
-        }
-
-        return $txt;
-    }
-
-    protected function absoluteUrl( $txt, $baseUrl ){
-        // converts relative URLs to absolute ones
-        $needles = array('href="', 'src="', 'background="');
-        $newTxt = '';
-        if (substr( $baseUrl, -1 ) != '/' ){
-            $baseUrl .= '/';
-        } 
-        $newBaseUrl = $baseUrl;
-        $baseUrlParts = parse_url( $baseUrl );
-        foreach ( $needles as $needle ){
-            while( $pos = strpos( $txt, $needle ) ){
-                $pos += strlen( $needle );
-                if ( substr( $txt, $pos, 7 ) != 'http://' && substr( $txt, $pos, 8) != 'https://' && substr( $txt, $pos, 6) != 'ftp://' && substr( $txt, $pos, 7 ) != 'mailto:' ){
-                    if ( substr( $txt, $pos, 1 ) == '/' ){
-                        $newBaseUrl = $baseUrlParts['scheme'] . '://' . $baseUrlParts['host'];
-                    }
-                    $newTxt .= substr( $txt, 0, $pos ).$newBaseUrl;
-                } else {
-                    $newTxt .= substr( $txt, 0, $pos );
-                }
-                $txt = substr( $txt, $pos );
-            }
-            $txt = $newTxt . $txt;
-            $newTxt = '';
-        }
-        // convert all elements of srcset, too
-        $needle = 'srcset="';
-        while( $pos = strpos( $txt, $needle, $pos ) ){
-            $pos += strlen( $needle );
-            $len = strpos( $txt, '"', $pos ) - $pos;
-            $srcset = substr( $txt, $pos, $len );
-            $aSrcset = explode( ',', $srcset );
-            $aNewSrcset = array();
-            foreach( $aSrcset as $src ){
-                $src = trim( $src );
-                if ( substr( $src, 0, 1 ) == '/' ){
-                    $aNewSrcset[] = $newBaseUrl . $src;
-                }                                
-            }
-            $newSrcset = implode( ', ', $aNewSrcset );
-            $txt = str_replace( $srcset, $newSrcset, $txt );
-        }
-        return $txt;
-      }
-
-    protected function getGlossary( &$url, &$categories ){
-        $glossarys = array();
-        $aCategoryRelation = array();
-        $filter = '&filter[rrze_glossary_category]=' . $categories;
-        $page = 1;
-
-        do {
-            $request = wp_remote_get( $url . ENDPOINT . '?page=' . $page . $filter );
-            $status_code = wp_remote_retrieve_response_code( $request );
-            if ( $status_code == 200 ){
-                $entries = json_decode( wp_remote_retrieve_body( $request ), true );
-                if ( !empty( $entries ) ){
-                    if ( !isset( $entries[0] ) ){
-                        $entries = array( $entries );
-                    }
-                    foreach( $entries as $entry ){
-                        if ( $entry['source'] == 'website' ){
-                            $content = $this->cleanContent( $entry['content']['rendered'] );
-                            $content = $this->absoluteUrl( $content, $url );
-
-                            $glossarys[$entry['id']] = array(
-                                'id' => $entry['id'],
-                                'title' => $entry['title']['rendered'],
-                                'content' => $content,
-                                'lang' => $entry['lang'],
-                                'rrze_glossary_category' => $entry['rrze_glossary_category'],
-                                'remoteID' => $entry['remoteID'],
-                                'remoteChanged' => $entry['remoteChanged']
-                            );
-                            $sTag = '';
-                            foreach ( $entry['rrze_glossary_tag'] as $tag ){
-                                $sTag .= $tag . ',';
-                            }
-                            $glossarys[$entry['id']]['rrze_glossary_tag'] = trim( $sTag, ',' );
-                            $glossarys[$entry['id']]['URLhasSlider'] = ( ( strpos( $content, 'slider') !== false ) ? $entry['link'] : FALSE ); // we cannot handle sliders, see note in Shortcode.php shortcodeOutput()
-                        }
-                    }
-                }
-            }
-            $page++;   
-        } while ( ( $status_code == 200 ) && ( !empty( $entries ) ) );
-
-        return $glossarys;
-    }
-
-    public function setTags( $terms, $shortname ){
-        if ( $terms ){
-            $aTerms = explode( ',', $terms );
-            foreach( $aTerms as $name ){
-                if ( $name ){
-                    $term = term_exists( $name, 'rrze_glossary_tag' );
-                    if ( !$term ) {
-                        $term = wp_insert_term( $name, 'rrze_glossary_tag' );
-                        update_term_meta( $term['term_id'], 'source', $shortname );    
-                    }
-                }
-            }
+    // -------------------------
+    // Set parent term when creating via REST
+    // -------------------------
+    public function setParentOnInsert($term, $request, $creating) {
+        if ($creating && isset($request['parent']) && !empty($request['parent'])) {
+            wp_update_term($term->term_id, 'rrze_glossary_category', [
+                'parent' => (int) $request['parent']
+            ]);
         }
     }
-
-    public function getGlossaryRemoteIDs( $source ){
-        $aRet = array();
-        $allGlossaries = get_posts( array( 'post_type' => 'rrze_glossary', 'meta_key' => 'source', 'meta_value' => $source, 'fields' => 'ids', 'numberposts' => -1 ) );
-        foreach ( $allGlossaries as $postID ){
-            $remoteID = get_post_meta( $postID, 'remoteID', TRUE );
-            $remoteChanged = get_post_meta( $postID, 'remoteChanged', TRUE );
-            $aRet[$remoteID] = array(
-                'postID' => $postID,
-                'remoteChanged' => $remoteChanged
-                );
-        }
-        return $aRet;
-    }
-
-    public function setGlossary( $url, $categories, $shortname ){
-        $iNew = 0;
-        $iUpdated = 0;
-        $iDeleted = 0;
-        $aURLhasSlider = array();
-
-        // get all remoteIDs of stored glossaries to this source ( key = remoteID, value = postID )
-        $aRemoteIDs = $this->getGlossaryRemoteIDs( $shortname );
-
-        // $this->deleteTags( $shortname );
-        // $this->deleteCategories( $shortname );
-        // $this->getCategories( $url, $shortname );
-
-        // get all glossaries
-        $aGlossary = $this->getGlossary( $url, $categories );
-        
-        // set glossaries
-        foreach ( $aGlossary as $glossary ){
-            $this->setTags( $glossary['rrze_glossary_tag'], $shortname );
-
-            $aCategoryIDs = array();
-            foreach ( $glossary['rrze_glossary_category'] as $name ){
-                $term = get_term_by( 'name', $name, 'rrze_glossary_category' );
-                $aCategoryIDs[] = $term->term_id;
-            }
-
-            if ( $glossary['URLhasSlider'] ) {
-                $aURLhasSlider[] = $glossary['URLhasSlider'];
-            } else {
-                if ( isset( $aRemoteIDs[$glossary['remoteID']] ) ) {
-                    if ( $aRemoteIDs[$glossary['remoteID']]['remoteChanged'] < $glossary['remoteChanged'] ){
-                        // update glossary
-                        $post_id = wp_update_post( array(
-                            'ID' => $aRemoteIDs[$glossary['remoteID']]['postID'],
-                            'post_name' => sanitize_title( $glossary['title'] ),
-                            'post_title' => $glossary['title'],
-                            'post_content' => $glossary['content'],
-                            'meta_input' => array(
-                                'source' => $shortname,
-                                'lang' => $glossary['lang'],
-                                'remoteID' => $glossary['remoteID']
-                                ),
-                            'tax_input' => array(
-                                'rrze_glossary_category' => $aCategoryIDs,
-                                'rrze_glossary_tag' => $glossary['rrze_glossary_tag']
-                                )
-                            ) ); 
-                        $iUpdated++;
-                    }
-                    unset( $aRemoteIDs[$glossary['remoteID']] );
-                } else {
-                    // insert glossary
-                    $post_id = wp_insert_post( array(
-                        'post_type' => 'rrze_glossary',
-                        'post_name' => sanitize_title( $glossary['title'] ),
-                        'post_title' => $glossary['title'],
-                        'post_content' => $glossary['content'],
-                        'comment_status' => 'closed',
-                        'ping_status' => 'closed',
-                        'post_status' => 'publish',
-                        'meta_input' => array(
-                            'source' => $shortname,
-                            'lang' => $glossary['lang'],
-                            'remoteID' => $glossary['id'],
-                            'remoteChanged' => $glossary['remoteChanged'],
-                            'sortfield' => ''
-                            ),
-                        'tax_input' => array(
-                            'rrze_glossary_category' => $aCategoryIDs,
-                            'rrze_glossary_tag' => $glossary['rrze_glossary_tag']
-                            )
-                        ) );
-                    $iNew++;
-                }
-            }
-        }
-
-        // delete all other glossaries to this source
-        foreach( $aRemoteIDs as $remoteID => $aDetails ){
-            wp_delete_post( $aDetails['postID'], TRUE );
-            $iDeleted++;
-        }
-
-        return array( 
-            'iNew' => $iNew,
-            'iUpdated' => $iUpdated,
-            'iDeleted' => $iDeleted,
-            'URLhasSlider' => $aURLhasSlider
-        );
-    }
-}    
-
-
+}

@@ -35,7 +35,38 @@ class Layout
         add_filter('manage_glossary_tag_custom_column', [$this, 'getTaxColumnsValues'], 10, 3);
         add_filter('manage_edit-glossary_tag_sortable_columns', [$this, 'addTaxColumns']);
 
-        add_action('save_post_glossary', [$this, 'savePostMeta']);
+        add_action('save_post_rrze_glossary', [$this, 'savePostMeta'], 10, 3);
+
+    }
+
+
+        public function langboxCallback($meta_id)
+    {
+        $current = get_post_meta($meta_id->ID, 'lang', true);
+        if (empty($current)) {
+            $current = substr(get_locale(), 0, 2);
+        }
+
+        $langs = getConstants('langcodes'); // ['de' => 'German', …]
+
+        if (!is_array($langs)) {
+            $langs = [];
+        }
+
+        $output = '<select name="lang" id="lang" class="lang">';
+        foreach ($langs as $code => $label) {
+            $selected = selected($current, $code, false);
+            $output .= sprintf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr($code),
+                $selected,
+                esc_html($label)
+            );
+        }
+        $output .= '</select>';
+        $output .= '<p class="description">' . esc_html__('Language of this glossary entry', 'rrze-glossary') . '</p>';
+
+        echo wp_kses_post($output);
     }
 
 
@@ -61,12 +92,10 @@ class Layout
     // public function saveSort( $post_id ){
     public function savePostMeta($postID)
     {
-        if (!current_user_can('edit_post', $postID) || !isset($_POST['sortfield']) || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) {
+        if (!current_user_can('edit_post', $postID) || !isset($_POST['sortfield']) || !isset($_POST['lang']) || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) {
             return $postID;
         }
-        update_post_meta($postID, 'source', 'website');
-        $lang = substr(get_locale(), 0, 2);
-        update_post_meta($postID, 'lang', $lang);
+        update_post_meta($postID, 'lang', sanitize_text_field(wp_unslash($_POST['lang'])));
         update_post_meta($postID, 'remoteID', $postID);
         $remoteChanged = get_post_timestamp($postID, 'modified');
         update_post_meta($postID, 'remoteChanged', $remoteChanged);
@@ -158,6 +187,7 @@ class Layout
                 }
             }
         }
+        add_meta_box('langbox', __('Language', 'rrze-glossary'), [$this, 'langboxCallback'], 'rrze_glossary', 'side');
         add_meta_box(
             'sortbox', // id, used as the html id att
             __('Sort', 'rrze-glossary'), // meta box title
