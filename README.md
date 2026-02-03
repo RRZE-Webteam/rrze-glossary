@@ -34,6 +34,7 @@ hide=".."
 show=".."
 class=".."
 sort=".."
+lang=".."
 order=".."
 hstart=".."
 ] 
@@ -57,6 +58,8 @@ hide : hiermit können Sie bestimmen, welche standardmässige Ausgabe nicht darg
 show : belegen Sie dieses Attribut mit dem Wert "expand-all-link", dann erscheint oberhalb der Ausgabe der Glossar-Einträge ein Button, um alle Akkordeons mit einem Klick zu öffnen. Mit "load-open" werden die Akkordeons im geöffneten Zustand geladen. Voreingestellt ist die Ausgabe mit beim Laden geschlossenen Akkordeons und ohne "Alle öffnen"-Button.
 
 class : hier lässt sich festlegen, in welcher Farbe der linke Rand der accordions sein soll. Mögliche Werte sind die Kennungen der Fakultäten "med", "nat", "rw", "phil" oder "tk". Zusätlich können Sie hier beliebig viele CSS-Klassen durch Leerzeichen getrennt angeben, die als Klassen für das umrahmende DIV dienen.
+
+lang: mit diesem Attribut können Sie die Ausgabe nach Sprache filtern. Verwenden Sie dazu das zweibuchstabig Sprachkürzel, wie zB 'de', 'en', 'fr'
 
 sort : die Sortierung der Ausgabe kann hiermit gesteuert werden. Mögliche Werte sind "title", "id" und "sortfield". 
 "sortfield" bezieht sich auf das Sortierfeld, das bei jedem Glossar-Eintrag eingeben werden kann. Bei Verwendung von "sortfield" wird zuerst nach dem Sortierfeld und danach nach dem Titel sortiert. Voreingestellt ist "title", womit alle Glossar-Einträge in alphabetischer Reihenfolge angezeigt werden.
