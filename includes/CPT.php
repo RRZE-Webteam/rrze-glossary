@@ -16,10 +16,10 @@ class CPT
     {
         $this->lang = substr(get_locale(), 0, 2);
         add_action('init', [$this, 'registerGlossary'], 0);
-        add_action('init', [$this, 'registerGlossaryTaxonomy'], 0);
+        add_action('init', [$this, 'registerGlossaryTaxonomy'], 1);
         add_action('publish_glossary', [$this, 'setPostMeta'], 10, 1);
-        add_action('create_glossary_category', [$this, 'setTermMeta'], 10, 1);
-        add_action('create_glossary_tag', [$this, 'setTermMeta'], 10, 1);
+        add_action('create_rrze_glossary_category', [$this, 'setTermMeta'], 10, 1);
+        add_action('create_rrze_glossary_tag', [$this, 'setTermMeta'], 10, 1);
         add_filter('single_template', [$this, 'filter_single_template']);
         add_filter('archive_template', [$this, 'filter_archive_template']);
         add_filter('taxonomy_template', [$this, 'filter_taxonomy_template']);
@@ -90,7 +90,7 @@ class CPT
                 'name' => 'rrze_glossary_category',
                 'label' => __('Glossary', 'rrze-glossary') . ' ' . __('Categories', 'rrze-glossary'),
                 'slug' => 'glossary_category',
-                'rest_base' => 'rrze_glossary_category',
+                'rest_base' => 'glossary_category',
                 'hierarchical' => TRUE,
                 'labels' => array(
                     'singular_name' => __('Category', 'rrze-glossary'),
@@ -145,6 +145,7 @@ class CPT
                     'query_var' => TRUE,
                     'rewrite' => array(
                         'slug' => $t['slug'], // This controls the base slug that will display before each term
+                        'hierarchical' => $t['hierarchical'],
                         'with_front' => TRUE // Don't display the category base before
                     ),
                     'show_in_rest' => TRUE,

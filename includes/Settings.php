@@ -1013,10 +1013,10 @@ class Settings {
                 }
                 echo '</tbody></table>';
             }else{
-                echo esc_html(__('Logfile is empty.', 'rrze-faq'));
+                echo esc_html(__('Logfile is empty.', 'rrze-glossary'));
             }
         }else{
-            echo esc_html(__('Logfile is empty.', 'rrze-faq'));
+            echo esc_html(__('Logfile is empty.', 'rrze-glossary'));
         }
     }
 

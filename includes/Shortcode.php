@@ -4,7 +4,6 @@ namespace RRZE\Glossary;
 
 defined('ABSPATH') || exit;
 use function RRZE\Glossary\Config\getShortcodeSettings;
-use RRZE\Glossary\API;
 
 
 /**
@@ -299,6 +298,22 @@ class Shortcode {
                     $postQuery['tax_query'] = $tax_query;
                 }    
             }
+
+        $lang = $atts['lang'] ? trim($atts['lang']) : '';
+
+        if ($lang) {
+            $metaQuery[] = [
+                'key' => 'lang',
+                'value' => $lang,
+                'compare' => '=',
+            ];
+        }
+        if ($metaQuery) {
+            $postQuery['meta_query'] = array_merge([ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+                'relation' => 'AND'
+            ], $metaQuery);
+        }
+
 
             $posts = get_posts( $postQuery );
 
