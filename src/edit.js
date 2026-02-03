@@ -73,27 +73,6 @@ export default function Edit({ attributes, setAttributes }) {
     const [tagstate, setSelectedTags] = useState(['']);
     const [idstate, setSelectedIDs] = useState(['']);
 
-    // useEffect(() => {
-    //     setAttributes({
-    //         register,
-    //         tag,
-    //         id,
-    //         hstart,
-    //         order,
-    //         sort,
-    //         lang,
-    //         additional_class,
-    //         color,
-    //         style,
-    //         load_open,
-    //         expand_all_link,
-    //         hide_title,
-    //         hide_accordion,
-    //         registerstyle,
-    //         glossary
-    //     });
-    // }, [register, tag, id, hstart, order, sort, lang, additional_class, color, style, load_open, expand_all_link, hide_title, hide_accordion, registerstyle, glossary, setAttributes]);
-
     const categories = useSelect((select) => {
         return select('core').getEntityRecords('taxonomy', 'rrze_glossary_category', {
             per_page: -1,
@@ -303,7 +282,6 @@ export default function Edit({ attributes, setAttributes }) {
         setSelectedCategories(arr);
         setAttributes({
             rrze_glossary_category: ids,
-            // optional: wenn du legacy "category" weiterhin brauchst:
             category: ids.join(','),
         });
     };
